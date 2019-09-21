@@ -16,7 +16,9 @@ import {
   Button
 } from "shards-react";
 
-const Login = () => (
+const Home = () => (
+  /* Main page, contains feed */
+
   <Container fluid className="main-content-container h-100 px-4">
     <Row noGutters className="h-100">
       <Col lg="3" md="5" className="auth-form mx-auto my-auto">
@@ -93,4 +95,4 @@ const Login = () => (
   </Container>
 );
 
-export default Login;
+export default Home;
