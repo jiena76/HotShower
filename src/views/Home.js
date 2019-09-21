@@ -9,7 +9,6 @@ import {
   Card,
   CardBody,
   CardFooter,
-  CardTitle,
   Form,
   FormGroup,
   FormInput,
@@ -32,41 +31,27 @@ const Login = () => (
 
             {/* Title */}
             <h5 className="auth-form__title text-center mb-4">
-              Login
+              Not Twitter
             </h5>
 
             {/* Form Fields */}
-            <Form>
-              <FormGroup>
-                <label htmlFor="exampleInputEmail1">Email address</label>
-                <FormInput
-                  type="email"
-                  id="exampleInputEmail1"
-                  placeholder="Enter email"
-                  autoComplete="email"
-                />
-              </FormGroup>
-              <FormGroup>
-                <label htmlFor="exampleInputPassword1">Password</label>
-                <FormInput
-                  type="password"
-                  id="exampleInputPassword1"
-                  placeholder="Password"
-                  autoComplete="current-password"
-                />
-              </FormGroup>
-              <FormGroup>
-                <FormCheckbox>Remember me for 30 days.</FormCheckbox>
-              </FormGroup>
               <Button
                 pill
                 theme="accent"
                 className="d-table mx-auto"
                 type="submit"
               >
-                Access Account
+                Log In
               </Button>
-            </Form>
+
+              <Button
+                pill
+                theme="accent"
+                className="d-table mx-auto"
+                type="submit"
+              >
+                Sign Up
+              </Button>
           </CardBody>
 
           {/* Social Icons */}

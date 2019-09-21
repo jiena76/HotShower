@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 // Layout Types
-import { DefaultLayout, HeaderNavigation, IconSidebar } from "./layouts";
+import { DefaultLayout, HeaderNavigation, IconSidebar, NoLayout } from "./layouts";
 
 // Route Views
 import Analytics from "./views/Analytics";
@@ -26,6 +26,7 @@ import Tables from "./views/Tables";
 import BlogPosts from "./views/BlogPosts";
 import HeaderNav from "./views/HeaderNavigation";
 import IconSidebarView from "./views/IconSidebar";
+import Home from "./views/Home";
 
 const BlankIconSidebarLayout = ({ children }) => (
   <IconSidebar noNavbar noFooter>
@@ -33,12 +34,18 @@ const BlankIconSidebarLayout = ({ children }) => (
   </IconSidebar>
 );
 
+function isSignedIn() {
+  return false;
+}
+
 export default [
   {
     path: "/",
     exact: true,
-    layout: DefaultLayout,
-    component: () => <Redirect to="/analytics" />
+    layout: NoLayout,
+    component: () => {
+      return isSignedIn() ? <Redirect to="/home" /> : <Redirect to="/login" />
+    }
   },
   {
     path: "/analytics",
@@ -72,7 +79,7 @@ export default [
   },
   {
     path: "/login",
-    layout: BlankIconSidebarLayout,
+    layout: NoLayout,
     component: Login
   },
   {
