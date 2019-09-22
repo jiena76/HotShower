@@ -1,31 +1,21 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import { auth } from "./utils/firebase";
 
 // Layout Types
-import { DefaultLayout, HeaderNavigation, IconSidebar } from "./layouts";
+import { DefaultLayout, HeaderNavigation, IconSidebar, NoLayout } from "./layouts";
 
 // Route Views
-import Analytics from "./views/Analytics";
-import OnlineStore from "./views/OnlineStore";
 import BlogOverview from "./views/BlogOverview";
 import UserProfile from "./views/UserProfile";
-import UserProfileLite from "./views/UserProfileLite";
 import EditUserProfile from "./views/EditUserProfile";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import ForgotPassword from "./views/ForgotPassword";
 import ChangePassword from "./views/ChangePassword";
-import FileManagerList from "./views/FileManagerList";
-import FileManagerCards from "./views/FileManagerCards";
-import TransactionHistory from "./views/TransactionHistory";
-import Calendar from "./views/Calendar";
-import AddNewPost from "./views/AddNewPost";
-import Errors from "./views/Errors";
 import ComponentsOverview from "./views/ComponentsOverview";
-import Tables from "./views/Tables";
-import BlogPosts from "./views/BlogPosts";
 import HeaderNav from "./views/HeaderNavigation";
-import IconSidebarView from "./views/IconSidebar";
+import Home from "./views/Home";
 
 const BlankIconSidebarLayout = ({ children }) => (
   <IconSidebar noNavbar noFooter>
@@ -33,22 +23,23 @@ const BlankIconSidebarLayout = ({ children }) => (
   </IconSidebar>
 );
 
+function isSignedIn() {
+  return auth.currentUser != null;
+}
+
 export default [
   {
     path: "/",
     exact: true,
-    layout: DefaultLayout,
-    component: () => <Redirect to="/analytics" />
+    layout: NoLayout,
+    component: () => {
+      return isSignedIn() ? <Home /> : <Redirect to="/login" />
+    }
   },
   {
-    path: "/analytics",
-    layout: DefaultLayout,
-    component: Analytics
-  },
-  {
-    path: "/ecommerce",
-    layout: DefaultLayout,
-    component: OnlineStore
+    path: "/overview",
+    layout: NoLayout,
+    component: ComponentsOverview
   },
   {
     path: "/blog-overview",
@@ -61,24 +52,23 @@ export default [
     component: UserProfile
   },
   {
-    path: "/user-profile-lite",
-    layout: DefaultLayout,
-    component: UserProfileLite
-  },
-  {
     path: "/edit-user-profile",
     layout: DefaultLayout,
     component: EditUserProfile
   },
   {
     path: "/login",
-    layout: BlankIconSidebarLayout,
-    component: Login
+    layout: NoLayout,
+    component: () => {
+      return !isSignedIn() ? <Login /> : <Redirect to="/" />
+    }
   },
   {
     path: "/register",
     layout: BlankIconSidebarLayout,
-    component: Register
+    component: () => {
+      return !isSignedIn() ? <Register /> : <Redirect to="/" />
+    }
   },
   {
     path: "/forgot-password",
@@ -91,58 +81,8 @@ export default [
     component: ChangePassword
   },
   {
-    path: "/file-manager-list",
-    layout: DefaultLayout,
-    component: FileManagerList
-  },
-  {
-    path: "/file-manager-cards",
-    layout: DefaultLayout,
-    component: FileManagerCards
-  },
-  {
-    path: "/transaction-history",
-    layout: DefaultLayout,
-    component: TransactionHistory
-  },
-  {
-    path: "/calendar",
-    layout: DefaultLayout,
-    component: Calendar
-  },
-  {
-    path: "/add-new-post",
-    layout: DefaultLayout,
-    component: AddNewPost
-  },
-  {
-    path: "/errors",
-    layout: BlankIconSidebarLayout,
-    component: Errors
-  },
-  {
-    path: "/components-overview",
-    layout: DefaultLayout,
-    component: ComponentsOverview
-  },
-  {
-    path: "/tables",
-    layout: DefaultLayout,
-    component: Tables
-  },
-  {
-    path: "/blog-posts",
-    layout: DefaultLayout,
-    component: BlogPosts
-  },
-  {
     path: "/header-navigation",
     layout: HeaderNavigation,
     component: HeaderNav
-  },
-  {
-    path: "/icon-sidebar-nav",
-    layout: IconSidebar,
-    component: IconSidebarView
   }
 ];
