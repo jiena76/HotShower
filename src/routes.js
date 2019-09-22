@@ -32,9 +32,18 @@ export default [
   {
     path: "/",
     exact: true,
-    layout: NoLayout,
+    layout: HeaderNavigation,
     component: () => {
       return isSignedIn() ? <Feed /> : <Home />
+    }
+  },
+  {
+    path: "/logout",
+    exact: true,
+    layout: NoLayout,
+    component: () => {
+      localStorage.clear();
+      return <Redirect to='/login' />
     }
   },
   {

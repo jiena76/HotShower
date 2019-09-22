@@ -13,7 +13,6 @@ export default ({ children }) => (
     <Row>
       <Col tag="main" className="main-content p-0" lg="12" md="12" sm="12">
         <MainNavbar layout={LAYOUT_TYPES.HEADER_NAVIGATION} />
-        <HeaderNavbar items={getHeaderNavbarItems()} />
           {children}
         <MainFooter />
       </Col>
