@@ -16,6 +16,7 @@ import ChangePassword from "./views/ChangePassword";
 import ComponentsOverview from "./views/ComponentsOverview";
 import HeaderNav from "./views/HeaderNavigation";
 import Home from "./views/Home";
+import Feed from "./views/Feed";
 
 const BlankIconSidebarLayout = ({ children }) => (
   <IconSidebar noNavbar noFooter>
@@ -24,7 +25,7 @@ const BlankIconSidebarLayout = ({ children }) => (
 );
 
 function isSignedIn() {
-  return auth.currentUser != null;
+  return localStorage.getItem('uid') != null;
 }
 
 export default [
@@ -33,7 +34,7 @@ export default [
     exact: true,
     layout: NoLayout,
     component: () => {
-      return isSignedIn() ? <Home /> : <Redirect to="/login" />
+      return isSignedIn() ? <Feed /> : <Home />
     }
   },
   {
@@ -47,7 +48,7 @@ export default [
     component: BlogOverview
   },
   {
-    path: "/user-profile",
+    path: "/u/:username",
     layout: DefaultLayout,
     component: UserProfile
   },

@@ -16,17 +16,16 @@ import {
   Button
 } from "shards-react";
 
-const Home = () => (
-  /* Home page, welcomes users */
+const Feed = () => (
+  /* Main page, contains feed */
 
   <Container fluid className="main-content-container h-100 px-4">
     <Row noGutters className="h-100">
       <Col lg="3" md="5" className="mx-auto my-auto">
-        <Link to="/login"> Login </Link>
-        <Link to="/register"> Register </Link>
+      <p> Here's a post </p>
       </Col>
     </Row>
   </Container>
 );
 
-export default Home;
+export default Feed;
