@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import { auth } from "./utils/firebase";
 
 // Layout Types
 import { DefaultLayout, HeaderNavigation, IconSidebar, NoLayout } from "./layouts";
@@ -23,7 +24,7 @@ const BlankIconSidebarLayout = ({ children }) => (
 );
 
 function isSignedIn() {
-  return false;
+  return auth.currentUser != null;
 }
 
 export default [
@@ -32,7 +33,7 @@ export default [
     exact: true,
     layout: NoLayout,
     component: () => {
-      return isSignedIn() ? <Redirect to="/home" /> : <Redirect to="/login" />
+      return isSignedIn() ? <Home /> : <Redirect to="/login" />
     }
   },
   {
@@ -58,12 +59,16 @@ export default [
   {
     path: "/login",
     layout: NoLayout,
-    component: Login
+    component: () => {
+      return !isSignedIn() ? <Login /> : <Redirect to="/" />
+    }
   },
   {
     path: "/register",
     layout: BlankIconSidebarLayout,
-    component: Register
+    component: () => {
+      return !isSignedIn() ? <Register /> : <Redirect to="/" />
+    }
   },
   {
     path: "/forgot-password",

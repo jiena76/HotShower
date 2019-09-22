@@ -2,6 +2,8 @@
 
 import React from "react";
 import { auth } from "../utils/firebase";
+import { Redirect, Link } from "react-router-dom";
+import { isThisISOWeek } from "date-fns/esm";
 import {
   Container,
   Row,
@@ -15,7 +17,7 @@ import {
   FormCheckbox,
   Button
 } from "shards-react";
-import { Link } from "react-router-dom";
+
 
 class Register extends React.Component {
   constructor(props) {
@@ -25,7 +27,8 @@ class Register extends React.Component {
       username: '',
       password: '',
       confirmPassword: '',
-      email: ''
+      email: '',
+      redirectToLogin: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -35,29 +38,27 @@ class Register extends React.Component {
   handleChange(e) {
     const { id, value } = e.target;
     this.setState({ [id]: value });
-    console.log("state: " + JSON.stringify(this.state));
   }
 
   handleSubmit(e) {
     e.preventDefault();
-
     const { email, password } = this.state;
+    console.log('hello');
   
     auth.createUserWithEmailAndPassword(email, password)
       .then(function (result) {
-        console.log(JSON.stringify(result));
-        /*
-        {"user":{"uid":"erTIjKjydJUBFxPtsIxDvCDpnXg2","displayName":null,"photoURL":null,"email":"olao@purdue.edu","emailVerified":false,"phoneNumber":null,"isAnonymous":false,"tenantId":null,"providerData":[{"uid":"olao@purdue.edu","displayName":null,"photoURL":null,"email":"olao@purdue.edu","phoneNumber":null,"providerId":"password"}],"apiKey":"AIzaSyBOVlpd1oOa0koRMjT6JcxuhSBjgkCL3bc","appName":"[DEFAULT]","authDomain":"hot-shower.firebaseapp.com","stsTokenManager":{"apiKey":"AIzaSyBOVlpd1oOa0koRMjT6JcxuhSBjgkCL3bc","refreshToken":"AEu4IL0OqRW13Bb5R33x0dm2WXab-7OCk5FoJNbIDJXLDzkOFyPnQP00WwfX8CWm0ZdtXeQgNe1OG1y-YG_scHA-oAnh70VEFPZLmbCC0_-koWjJsKCJc8kYLB3_drquiNGgDtuQSY0S-T_pS-4R6N5OLY_qQMRH_zHL8b7VMKWDc6bDBlo2wNnf8pN-eFEmtr6b4hAJQD1N","accessToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlMjc0MWQ0MWY5ZDQzZmFiMWU2MjhhODVlZmI0MmE4OGVmMzIyOWYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaG90LXNob3dlciIsImF1ZCI6ImhvdC1zaG93ZXIiLCJhdXRoX3RpbWUiOjE1NjkwOTUwNzEsInVzZXJfaWQiOiJlclRJaktqeWRKVUJGeFB0c0l4RHZDRHBuWGcyIiwic3ViIjoiZXJUSWpLanlkSlVCRnhQdHNJeER2Q0RwblhnMiIsImlhdCI6MTU2OTA5NTA3MSwiZXhwIjoxNTY5MDk4NjcxLCJlbWFpbCI6Im9sYW9AcHVyZHVlLmVkdSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJvbGFvQHB1cmR1ZS5lZHUiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.gNfLVC3Ra7EdbQPi-C_BUyjxvLdqEBV-9sjsig10Dj366NZPW7LEE_W7qqEhYmyNi_phlzXsw_prnoXvlvm-a6lTdhj3TzDnKLrCYt0Y_FQqbP2cpi-B5wPNTSBfnN8sRJCCVv70-fB4FdJdfq1FSOC6wRiT31nWk-BSiCQrfFx50Zy0mxnyRZUtqY2pG31zgT4xQ1EKeQS85V0Ze9jQqDMMZLJVdoEc8ThL7iiAQnQo0TYL5fuFpPaQpTTQE-WGZOGOH6m-aswJEP7ZdkShcXXLdVIV6VaQ59tGCOxeXvZsZKy6iScUFkRjc70NIJBUhnZUFh36954tIU8tb41ijQ","expirationTime":1569098671681},"redirectEventId":null,"lastLoginAt":"1569095071388","createdAt":"1569095071388"},"credential":null,"additionalUserInfo":{"providerId":"password","isNewUser":true},"operationType":"signIn"}
-        */
-      })
+       this.setState({ redirectToLogin: true });
+      }.bind(this))
       .catch(function (error) {
-  
+        console.log(error);
       })
   }
 
   render() {
+    if (this.state.redirectToLogin) {
+      return <Redirect to="/login" />
+    }
 
-    const { username, password, confirmPassword } = this.state;
     return (
       <Container fluid className="main-content-container h-100 px-4">
         <Row noGutters className="h-100">
@@ -92,7 +93,7 @@ class Register extends React.Component {
                     <FormInput onChange={this.handleChange}
                       type="text"
                       id="username"
-                      value={username}
+                      value={this.state.username}
                       placeholder="Username"
                       autoComplete="text"
                     />
@@ -102,7 +103,7 @@ class Register extends React.Component {
                     <FormInput onChange={this.handleChange}
                       type="password"
                       id="password"
-                      value={password}
+                      value={this.state.password}
                       placeholder="Password"
                       autoComplete="new-password"
                     />
@@ -112,15 +113,10 @@ class Register extends React.Component {
                     <FormInput onChange={this.handleChange}
                       type="password"
                       id="confirmPassword"
-                      value={confirmPassword}
+                      value={this.state.confirmPassword}
                       placeholder="Confirm Password"
                       autoComplete="new-password"
                     />
-                  </FormGroup>
-                  <FormGroup>
-                    <FormCheckbox>
-                      I agree with the <a href="#">Terms & Conditions</a>.
-                </FormCheckbox>
                   </FormGroup>
                   <Button
                     pill
