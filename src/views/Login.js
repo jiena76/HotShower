@@ -56,7 +56,7 @@ class Login extends React.Component {
         });
 
         localStorage.setItem('uid', result.user);
-        
+
         this.setState({ redirectToHome: true });
       }.bind(this))
       .catch(function (error) {
@@ -85,7 +85,7 @@ class Login extends React.Component {
                 {/* Title */}
                 <h5 className="auth-form__title text-center mb-4">
                   Login
-            </h5>
+                </h5>
 
                 {/* Form Fields */}
                 <Form onSubmit={this.handleSubmit}>

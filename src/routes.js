@@ -14,7 +14,6 @@ import Register from "./views/Register";
 import ForgotPassword from "./views/ForgotPassword";
 import ChangePassword from "./views/ChangePassword";
 import ComponentsOverview from "./views/ComponentsOverview";
-import HeaderNav from "./views/HeaderNavigation";
 import Home from "./views/Home";
 import Feed from "./views/Feed";
 
@@ -32,7 +31,7 @@ export default [
   {
     path: "/",
     exact: true,
-    layout: HeaderNavigation,
+    layout: isSignedIn() ? HeaderNavigation : NoLayout,
     component: () => {
       return isSignedIn() ? <Feed /> : <Home />
     }
@@ -48,22 +47,22 @@ export default [
   },
   {
     path: "/overview",
-    layout: NoLayout,
+    layout: isSignedIn() ? HeaderNavigation : NoLayout,
     component: ComponentsOverview
   },
   {
     path: "/blog-overview",
-    layout: DefaultLayout,
+    layout: isSignedIn() ? HeaderNavigation : NoLayout,
     component: BlogOverview
   },
   {
     path: "/u/:username",
-    layout: DefaultLayout,
+    layout: isSignedIn() ? HeaderNavigation : NoLayout,
     component: UserProfile
   },
   {
     path: "/edit-user-profile",
-    layout: DefaultLayout,
+    layout: isSignedIn() ? HeaderNavigation : NoLayout,
     component: EditUserProfile
   },
   {
@@ -75,24 +74,19 @@ export default [
   },
   {
     path: "/register",
-    layout: BlankIconSidebarLayout,
+    layout: NoLayout,
     component: () => {
       return !isSignedIn() ? <Register /> : <Redirect to="/" />
     }
   },
   {
     path: "/forgot-password",
-    layout: BlankIconSidebarLayout,
+    layout: NoLayout,
     component: ForgotPassword
   },
   {
     path: "/change-password",
-    layout: BlankIconSidebarLayout,
+    layout: NoLayout,
     component: ChangePassword
-  },
-  {
-    path: "/header-navigation",
-    layout: HeaderNavigation,
-    component: HeaderNav
   }
 ];
