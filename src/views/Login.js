@@ -58,6 +58,8 @@ class Login extends React.Component {
           topics: [],
           username: this.state.username
         });
+
+        localStorage.setItem('uid', result.user)
         
         this.setState({ redirectToHome: true });
       }.bind(this))
