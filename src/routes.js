@@ -14,6 +14,7 @@ import Register from "./views/Register";
 import ForgotPassword from "./views/ForgotPassword";
 import ChangePassword from "./views/ChangePassword";
 import ComponentsOverview from "./views/ComponentsOverview";
+import Main from "./views/Main";
 import Home from "./views/Home";
 import Feed from "./views/Feed";
 
@@ -33,7 +34,7 @@ export default [
     exact: true,
     layout: isSignedIn() ? HeaderNavigation : NoLayout,
     component: () => {
-      return isSignedIn() ? <Feed /> : <Home />
+      return isSignedIn() ? <Main /> : <Home />
     }
   },
   {
@@ -42,7 +43,7 @@ export default [
     layout: NoLayout,
     component: () => {
       localStorage.clear();
-      return <Redirect to='/login' />
+      return <Redirect to='/' />
     }
   },
   {
