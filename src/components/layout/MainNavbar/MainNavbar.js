@@ -22,7 +22,7 @@ const MainNavbar = ({ layout, stickyTop }) => {
       <Container fluid={!isHeaderNav || null} className="p-0">
         <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0">
           {isHeaderNav && (
-            <NavbarBrand href="#" style={{ lineHeight: "25px" }}>
+            <NavbarBrand href="/" style={{ lineHeight: "25px" }}>
               <div className="d-table m-auto">
                 <img
                   id="main-logo"
