@@ -5,6 +5,7 @@ const ProfileBackgroundPhoto = () => (
   <CardHeader className="p-0">
     <div className="edit-user-details__bg">
       <img
+        // TODO: change url /user-profile/ into /u/:username
         src={require("../../images/user-profile/up-user-details-background.jpg")}
         alt="User Details Background"
       />

@@ -24,7 +24,7 @@ const Main = () => (
   <Container fluid className="main-content-container h-100 px-4">
     <Row noGutters className="h-100">
       <Col lg="3" md="5" className="mx-auto mb-auto">
-      <NewPost />
+        <NewPost />
       </Col>
     </Row>
   </Container>

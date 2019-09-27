@@ -98,6 +98,7 @@ UserDetails.propTypes = {
 
 UserDetails.defaultProps = {
   userData: {
+    // TODO: change url /user-profile/ into /u/:username
     coverImg: require("../../images/user-profile/up-user-details-background.jpg"),
     avatarImg: require("../../images/avatars/0.jpg"),
     name: "Sierra Brooks",

@@ -46,16 +46,16 @@ export default [
       return <Redirect to='/' />
     }
   },
-  {
-    path: "/overview",
-    layout: isSignedIn() ? HeaderNavigation : NoLayout,
-    component: ComponentsOverview
-  },
-  {
-    path: "/blog-overview",
-    layout: isSignedIn() ? HeaderNavigation : NoLayout,
-    component: BlogOverview
-  },
+  // {
+  //   path: "/overview",
+  //   layout: isSignedIn() ? HeaderNavigation : NoLayout,
+  //   component: ComponentsOverview
+  // },
+  // {
+  //   path: "/blog-overview",
+  //   layout: isSignedIn() ? HeaderNavigation : NoLayout,
+  //   component: BlogOverview
+  // },
   {
     path: "/u/:username",
     layout: isSignedIn() ? HeaderNavigation : NoLayout,

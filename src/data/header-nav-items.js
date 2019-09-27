@@ -67,7 +67,7 @@ export default function() {
       items: [
         {
           title: "User Profile",
-          to: "/user-profile"
+          to: "/u/:username"
         },
         {
           title: "Edit User Profile",

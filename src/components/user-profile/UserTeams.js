@@ -40,6 +40,7 @@ UserTeams.propTypes = {
 UserTeams.defaultProps = {
   title: "Teams",
   teams: [
+    // TODO: change url /user-profile/ into /u/:username
     {
       image: require("../../images/user-profile/team-thumb-1.png"),
       name: "Team Edison",

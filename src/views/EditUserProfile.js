@@ -55,11 +55,11 @@ class EditUserProfile extends React.Component {
   render() {
     return (
       <div>
-        <Container fluid className="px-0">
+        {/* <Container fluid className="px-0">
           <Alert theme="success" className="mb-0">
             Ole! Your profile has been successfully updated!
           </Alert>
-        </Container>
+        </Container> */}
         <Container fluid className="main-content-container px-4">
           <Row>
             <Col lg="8" className="mx-auto mt-4">
