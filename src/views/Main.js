@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import NewPost from "./../components/blog/NewPost";
 
 import {
   Container,
@@ -18,13 +17,24 @@ import {
   Button
 } from "shards-react";
 
+import NewPost from "./../components/blog/NewPost";
+import Feed from "./Feed";
+import DMList from "./DMList";
+
 const Main = () => (
   /* Main page, contains feed */
 
   <Container fluid className="main-content-container h-100 px-4">
     <Row noGutters className="h-100">
+      <Col lg="3" md="3" className="mx-auto mb-auto">
+        <br></br>
+        <DMList/>
+      </Col>
       <Col lg="3" md="5" className="mx-auto mb-auto">
+        <br></br>
         <NewPost />
+        <br></br>
+        <Feed />
       </Col>
     </Row>
   </Container>

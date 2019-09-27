@@ -8,6 +8,7 @@ import {
   Col,
   Card,
   CardBody,
+  CardHeader,
   CardFooter,
   Form,
   FormGroup,
@@ -17,15 +18,23 @@ import {
 } from "shards-react";
 
 const Feed = () => (
-  /* Main page, contains feed */
+  /* Main contains Feed */
+  <Card small className="h-100">
+    {/* Card Header */}
+    <CardHeader className="border-bottom">
+      <h6 className="m-0">Hey, it's a post!</h6>
+    </CardHeader>
 
-  <Container fluid className="main-content-container h-100 px-4">
-    <Row noGutters className="h-100">
-      <Col lg="3" md="5" className="mx-auto my-auto">
-      <p> Here's a post </p>
-      </Col>
-    </Row>
-  </Container>
+    <CardBody className="d-flex flex-column">
+      <Form className="quick-post-form">
+
+        {/* Body */}
+        <FormGroup>
+          <p> Aight-- it works </p>
+        </FormGroup>
+      </Form>
+    </CardBody>
+  </Card>
 );
 
 export default Feed;
