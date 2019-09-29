@@ -48,13 +48,6 @@ class Login extends React.Component {
     auth.signInWithEmailAndPassword(email, password)
       .then(function (result) {
 
-        db.collection('users').doc(result.user.uid).set({
-          email: result.user.email,
-          following: [],
-          topics: [],
-          username: this.state.username
-        });
-
         localStorage.setItem('uid', result.user);
 
         this.setState({ redirectToHome: true });

@@ -1,7 +1,7 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
 import React from "react";
-import { auth } from "../utils/firebase";
+import { auth, db } from "../utils/firebase";
 import { Redirect, Link } from "react-router-dom";
 import { isThisISOWeek } from "date-fns/esm";
 import {
@@ -47,6 +47,16 @@ class Register extends React.Component {
   
     auth.createUserWithEmailAndPassword(email, password)
       .then(function (result) {
+        const{ email, username } = this.state;
+
+        db.collection('users').doc(username).set({
+          email: email,
+          following: [],
+          followers: [],
+          topics: [],
+          username: username
+        })
+
        this.setState({ redirectToLogin: true });
       }.bind(this))
       .catch(function (error) {

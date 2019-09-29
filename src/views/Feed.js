@@ -1,6 +1,7 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
 import React from "react";
+import { db } from "../utils/firebase";
 import { Link } from "react-router-dom";
 import {
   Container,
@@ -17,24 +18,59 @@ import {
   Button
 } from "shards-react";
 
-const Feed = () => (
-  /* Main contains Feed */
-  <Card small className="h-100">
-    {/* Card Header */}
-    <CardHeader className="border-bottom">
-      <h6 className="m-0">Hey, it's a post!</h6>
-    </CardHeader>
 
-    <CardBody className="d-flex flex-column">
-      <Form className="quick-post-form">
+class Feed extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: []
+    }
 
-        {/* Body */}
-        <FormGroup>
-          <p> Aight-- it works </p>
-        </FormGroup>
-      </Form>
-    </CardBody>
-  </Card>
-);
+    this.getRecentPosts = this.getRecentPosts.bind(this);
+    this.getRecentPosts();
+  }
+
+  getRecentPosts() {
+    db.collection('posts').orderBy('createdAt').limit(10).get()
+    .then(function (snapshot) {
+      if (snapshot.empty) {
+        return;
+      }
+
+      let posts = [];
+
+      snapshot.forEach(doc => {
+        posts.push(doc.data());
+        console.log(doc.id, '=>', JSON.stringify(doc.data()));
+      })
+
+      this.setState({ posts: posts});
+    }.bind(this))
+  }
+
+  render() {
+    return (
+      this.state.posts.map((post) => (
+      /* Main contains Feed */
+      <Card small className="h-100">
+        {/* Card Header */}
+        <CardHeader className="border-bottom">
+          <h6 className="m-0">{ post.author }</h6>
+        </CardHeader>
+
+        <CardBody className="d-flex flex-column">
+          <Form className="quick-post-form">
+
+            {/* Body */}
+            <FormGroup>
+              <p> { post.text } </p>
+            </FormGroup>
+          </Form>
+        </CardBody>
+      </Card>
+      ))
+    )
+  }
+};
 
 export default Feed;
