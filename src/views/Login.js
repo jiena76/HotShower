@@ -47,8 +47,18 @@ class Login extends React.Component {
 
     auth.signInWithEmailAndPassword(email, password)
       .then(function (result) {
+        db.collection('users').where('email', '==', this.state.email).get()
+          .then(function(snapshot) {
+            if (snapshot.empty) {
+              // BIG ERROR OCCURED
+            }
 
-        localStorage.setItem('uid', result.user);
+            snapshot.forEach(user => {
+              localStorage.setItem('user', user.username);
+            })
+          })
+
+        localStorage.setItem('user', result.user);
 
         this.setState({ redirectToHome: true });
       }.bind(this))

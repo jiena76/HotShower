@@ -25,7 +25,7 @@ const BlankIconSidebarLayout = ({ children }) => (
 );
 
 function isSignedIn() {
-  return localStorage.getItem('uid') != null;
+  return localStorage.getItem('user') != null;
 }
 
 export default [
