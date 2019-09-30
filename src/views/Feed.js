@@ -38,7 +38,6 @@ class Feed extends React.Component {
       }
 
       let posts = [];
-
       snapshot.forEach(doc => {
         posts.push(doc.data());
       })
