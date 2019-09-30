@@ -53,8 +53,9 @@ class Login extends React.Component {
               // BIG ERROR OCCURED
             }
 
-            snapshot.forEach(user => {
-              localStorage.setItem('user', user.username);
+            snapshot.forEach(doc => {
+              
+              localStorage.setItem('user', doc.data().username);
             })
           })
 

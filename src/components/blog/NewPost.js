@@ -1,5 +1,5 @@
 import React from "react";
-import { db } from "../../utils/firebase";
+import { db, time } from "../../utils/firebase";
 import PropTypes from "prop-types";
 import {
   Card,
@@ -37,7 +37,7 @@ class NewPost extends React.Component {
     db.collection('posts').add({
       text: text,
       author: localStorage.getItem('user'),
-      createdAt: 'yeet',
+      createdAt: time.now().toDate(),
     });
   }
 

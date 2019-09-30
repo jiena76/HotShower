@@ -41,10 +41,9 @@ class Feed extends React.Component {
 
       snapshot.forEach(doc => {
         posts.push(doc.data());
-        console.log(doc.id, '=>', JSON.stringify(doc.data()));
       })
 
-      this.setState({ posts: posts});
+      this.setState({ posts: posts });
     }.bind(this))
   }
 
