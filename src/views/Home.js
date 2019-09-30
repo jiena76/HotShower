@@ -22,16 +22,16 @@ const Home = () => (
   <Container fluid className="main-content-container h-100 px-4">
 
     <Row noGutters className="my-5">
-      <Col lg="3" md="5" className="mx-auto my-auto">
+      <Col lg="3" md="5" className="mx-auto my-auto text-center">
         <h5>Hot Shower</h5>
       </Col>
     </Row>
     <Row noGutters>
-      <Col lg="3" md="5" className="mx-auto my-auto">
-        <Link className="btn btn-primary btn-pill" to="/login"> Login </Link>
-      </Col>
-      <Col lg="3" md="5" className="mx-auto my-auto">
-        <Link className="btn btn-primary btn-pill" to="/register"> Register </Link>
+      <Col lg="3" md="5" className="mx-auto my-auto text-center">
+        <div className="btn-group" >
+          <Link className="btn btn-primary btn-pill" to="/login">Login</Link>
+          <Link className="btn btn-primary btn-pill" to="/register">Register</Link>
+        </div>
       </Col>
     </Row>
   </Container>
