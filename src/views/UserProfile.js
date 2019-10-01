@@ -7,7 +7,6 @@ import UserTeams from "./../components/user-profile/UserTeams";
 import UserStats from "./../components/user-profile/UserStats";
 import UserPerformance from "./../components/user-profile/UserPerformance";
 import UserActivity from "./../components/user-profile/UserActivity";
-import Feed from "./Feed";
 
 class UserProfile extends React.Component {
     render() {
