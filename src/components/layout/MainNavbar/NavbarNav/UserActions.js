@@ -35,10 +35,10 @@ class UserActions extends React.Component {
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
           <img
             className="user-avatar rounded-circle mr-2"
-            src="https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE"
+            src={this.props.user.photoUrl}
             alt="User Avatar"
           />{" "}
-          <span className="d-none d-md-inline-block">Sierra Brooks</span>
+          <span className="d-none d-md-inline-block">{this.props.user.username}</span>
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>
           <DropdownItem tag={Link} to={'/u/' + this.props.user.username}>
