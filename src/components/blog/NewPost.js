@@ -36,6 +36,7 @@ class NewPost extends React.Component {
     e.preventDefault();
     const { text } = this.state;
     this.props.uploadPost(text);
+    this.setState({text: ''});
   }
 
   render() {

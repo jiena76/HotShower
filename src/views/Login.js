@@ -100,7 +100,6 @@ class Login extends React.Component {
                       id="email"
                       placeholder="Enter email"
                       value={this.state.email}
-                      autoComplete="email"
                     />
                   </FormGroup>
                   <FormGroup>
@@ -110,7 +109,6 @@ class Login extends React.Component {
                       id="password"
                       value={this.state.password}
                       placeholder="Password"
-                      autoComplete="current-password"
                     />
                   </FormGroup>
                   <Button

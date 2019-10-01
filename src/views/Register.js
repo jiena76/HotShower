@@ -95,7 +95,6 @@ class Register extends React.Component {
                       type="email"
                       id="email"
                       placeholder="Email address"
-                      autoComplete="email"
                     />
                   </FormGroup>
                   <FormGroup>
@@ -105,7 +104,6 @@ class Register extends React.Component {
                       id="username"
                       value={this.state.username}
                       placeholder="Username"
-                      autoComplete="text"
                     />
                   </FormGroup>
                   <FormGroup>
@@ -115,7 +113,6 @@ class Register extends React.Component {
                       id="password"
                       value={this.state.password}
                       placeholder="Password"
-                      autoComplete="new-password"
                     />
                   </FormGroup>
                   <FormGroup>
@@ -125,7 +122,6 @@ class Register extends React.Component {
                       id="confirmPassword"
                       value={this.state.confirmPassword}
                       placeholder="Confirm Password"
-                      autoComplete="new-password"
                     />
                   </FormGroup>
                   <Button
