@@ -7,22 +7,22 @@ import UserTeams from "./../components/user-profile/UserTeams";
 import UserStats from "./../components/user-profile/UserStats";
 import UserPerformance from "./../components/user-profile/UserPerformance";
 import UserActivity from "./../components/user-profile/UserActivity";
+import Feed from "./Feed";
 
-const UserProfile = () => (
-  <Container fluid className="main-content-container px-4">
-    <Row className="mt-4">
-      <Col lg="4" sm="12">
-        <UserDetails />
-        <UserContact />
-        <UserTeams />
-      </Col>
-      <Col lg="8">
-        <UserStats />
-        <UserPerformance />
-        <UserActivity />
-      </Col>
-    </Row>
-  </Container>
-);
+class UserProfile extends React.Component {
+    render() {
+        return (
+            <Container fluid className="main-content-container px-4">
+              <Row className="mt-4">
+              <Col lg="4" sm="12">
+                <UserDetails />
+                <UserTeams />
+                <UserContact />
+              </Col>
+              </Row>
+            </Container>
+        )
+    }
+};
 
 export default UserProfile;
