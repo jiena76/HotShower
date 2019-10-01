@@ -6,17 +6,14 @@ import { auth } from "./utils/firebase";
 import { DefaultLayout, HeaderNavigation, IconSidebar, NoLayout } from "./layouts";
 
 // Route Views
-import BlogOverview from "./views/BlogOverview";
 import UserProfile from "./views/UserProfile";
 import EditUserProfile from "./views/EditUserProfile";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import ForgotPassword from "./views/ForgotPassword";
 import ChangePassword from "./views/ChangePassword";
-import ComponentsOverview from "./views/ComponentsOverview";
 import Main from "./views/Main";
 import Home from "./views/Home";
-import Feed from "./views/Feed";
 
 const BlankIconSidebarLayout = ({ children }) => (
   <IconSidebar noNavbar noFooter>
@@ -46,16 +43,6 @@ export default [
       return <Redirect to='/' />
     }
   },
-  // {
-  //   path: "/overview",
-  //   layout: isSignedIn() ? HeaderNavigation : NoLayout,
-  //   component: ComponentsOverview
-  // },
-  // {
-  //   path: "/blog-overview",
-  //   layout: isSignedIn() ? HeaderNavigation : NoLayout,
-  //   component: BlogOverview
-  // },
   {
     path: "/u/:username",
     layout: isSignedIn() ? HeaderNavigation : NoLayout,

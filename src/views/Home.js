@@ -18,7 +18,6 @@ import {
 
 const Home = () => (
   /* Home page, welcomes users */
-
   <Container fluid className="main-content-container h-100 px-4">
 
     <Row noGutters className="my-5">

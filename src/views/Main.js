@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import { combineReducers, createStore } from 'redux';
 
 import {
   Container,
@@ -18,7 +19,7 @@ import {
 } from "shards-react";
 
 import NewPost from "./../components/blog/NewPost";
-import Feed from "./Feed";
+import Posts from "./Posts";
 import DMList from "./DMList";
 
 const Main = () => (
@@ -34,7 +35,7 @@ const Main = () => (
         <br></br>
         <NewPost />
         <br></br>
-        <Feed />
+        <Posts />
       </Col>
     </Row>
   </Container>

@@ -1,6 +1,8 @@
 import React from "react";
 import { db, time } from "../../utils/firebase";
 import PropTypes from "prop-types";
+import { connect } from 'react-redux';
+import { uploadPost } from '../../actions/postActions';
 import {
   Card,
   CardHeader,
@@ -33,12 +35,7 @@ class NewPost extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { text } = this.state;
-
-    db.collection('posts').add({
-      text: text,
-      author: localStorage.getItem('user'),
-      createdAt: time.now().toDate(),
-    });
+    this.props.uploadPost(text);
   }
 
   render() {
@@ -86,4 +83,11 @@ NewPost.defaultProps = {
   title: "New Post"
 };
 
-export default NewPost;
+NewPost.propTypes = {
+  uploadPost: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+})
+
+export default connect(mapStateToProps, { uploadPost })(NewPost);
