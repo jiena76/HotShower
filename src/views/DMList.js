@@ -22,7 +22,6 @@ class DMList extends React.Component {
     super(props);
     this.state = {
       inbox: [
-        // TODO: change url /user-profile/ into /u/:username
         {
           image: "https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE",
           username: "misterPander",

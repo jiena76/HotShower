@@ -52,30 +52,29 @@ export const loginUser = (email, password) => dispatch => {
     })
 };
 
-export const autoLoginUser = (username) => dispatch => {
-
+export const autoLoginUser = () => dispatch => {
+  let username = localStorage.getItem('user');
   if (!username) {
     localStorage.clear();
     return;
   }
 
   db.collection('users').doc(username).get()
-    .then(function (snapshot) {
-      if (snapshot.empty) {
+    .then(function (doc) {
+      if (!doc.exists) {
         localStorage.clear();
+        return;
       }
 
-      snapshot.forEach(doc => {
-        let user = doc.data();
-        user.isAuthenticated = true;
-        localStorage.setItem('user', user.username);
+      let user = doc.data();
+      user.isAuthenticated = true;
+      localStorage.setItem('user', user.username);
 
-        dispatch({
-          type: LOGIN_USER,
-          payload: user
-        })
+      dispatch({
+        type: LOGIN_USER,
+        payload: user
       })
-    }.this(dispatch))
+    }.bind(dispatch));
 };
 
 export const logoutUser = () => dispatch => {

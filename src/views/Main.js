@@ -27,9 +27,12 @@ import Home from './Home';
 class Main extends React.Component {
   /* Main page, contains feed */
   render() {
+    console.log(JSON.stringify(this.props.user));
+
     if (!this.props.user.isAuthenticated) {
       return <Home />
     }
+
     return (
     <Container fluid className="main-content-container h-100 px-4">
       <Row noGutters className="h-100">

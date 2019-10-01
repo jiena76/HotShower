@@ -14,20 +14,13 @@ import Register from "./views/Register";
 import ForgotPassword from "./views/ForgotPassword";
 import ChangePassword from "./views/ChangePassword";
 import Main from "./views/Main";
-import Home from "./views/Home";
-
-function isSignedIn() {
-  return localStorage.getItem('user') != null;
-}
 
 export default [
   {
     path: "/",
     exact: true,
     layout: HeaderNavigation,
-    component: () => {
-      return isSignedIn() ? <Main /> : <Home />
-    }
+    component: Main
   },
   {
     path: "/u/:username",
