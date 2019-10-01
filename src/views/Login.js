@@ -3,6 +3,9 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { auth, db } from "../utils/firebase";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { loginUser } from '../actions/userActions';
 
 import {
   Container,
@@ -45,31 +48,11 @@ class Login extends React.Component {
     console.log('email: ' + email);
     console.log('password: ' + password);
 
-    auth.signInWithEmailAndPassword(email, password)
-      .then(function (result) {
-        db.collection('users').where('email', '==', this.state.email).get()
-          .then(function(snapshot) {
-            if (snapshot.empty) {
-              // BIG ERROR OCCURED
-            }
-
-            snapshot.forEach(doc => {
-              
-              localStorage.setItem('user', doc.data().username);
-            })
-          })
-
-        localStorage.setItem('user', result.user);
-
-        this.setState({ redirectToHome: true });
-      }.bind(this))
-      .catch(function (error) {
-        console.log(error);
-      })
+    this.props.loginUser(email, password);
   }
 
   render() {
-    if (this.state.redirectToHome) {
+    if (this.props.user.isAuthenticated) {
       return <Redirect to="/" />
     }
 
@@ -163,4 +146,13 @@ class Login extends React.Component {
   };
 };
 
-export default Login;
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  user: state.user,
+})
+
+export default connect(mapStateToProps, { loginUser })(Login);

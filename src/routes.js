@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { auth } from "./utils/firebase";
+import { logoutUser } from './actions/userActions';
 
 // Layout Types
 import { DefaultLayout, HeaderNavigation, IconSidebar, NoLayout } from "./layouts";
@@ -15,12 +16,6 @@ import ChangePassword from "./views/ChangePassword";
 import Main from "./views/Main";
 import Home from "./views/Home";
 
-const BlankIconSidebarLayout = ({ children }) => (
-  <IconSidebar noNavbar noFooter>
-    {children}
-  </IconSidebar>
-);
-
 function isSignedIn() {
   return localStorage.getItem('user') != null;
 }
@@ -29,43 +24,30 @@ export default [
   {
     path: "/",
     exact: true,
-    layout: isSignedIn() ? HeaderNavigation : NoLayout,
+    layout: HeaderNavigation,
     component: () => {
       return isSignedIn() ? <Main /> : <Home />
     }
   },
   {
-    path: "/logout",
-    exact: true,
-    layout: NoLayout,
-    component: () => {
-      localStorage.clear();
-      return <Redirect to='/' />
-    }
-  },
-  {
     path: "/u/:username",
-    layout: isSignedIn() ? HeaderNavigation : NoLayout,
+    layout: HeaderNavigation,
     component: UserProfile
   },
   {
     path: "/edit-user-profile",
-    layout: isSignedIn() ? HeaderNavigation : NoLayout,
+    layout: HeaderNavigation,
     component: EditUserProfile
   },
   {
     path: "/login",
     layout: NoLayout,
-    component: () => {
-      return !isSignedIn() ? <Login /> : <Redirect to="/" />
-    }
+    component: Login
   },
   {
     path: "/register",
     layout: NoLayout,
-    component: () => {
-      return !isSignedIn() ? <Register /> : <Redirect to="/" />
-    }
+    component: Register
   },
   {
     path: "/forgot-password",

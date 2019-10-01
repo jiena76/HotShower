@@ -18,7 +18,7 @@ export const fetchPosts = () => dispatch => {
         payload: posts
       })
     });
-}
+};
 
 export const uploadPost = (text) => dispatch => {
   let post = {
@@ -33,4 +33,4 @@ export const uploadPost = (text) => dispatch => {
     type: UPLOAD_POST,
     payload: post
   })
-}
+};

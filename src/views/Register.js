@@ -3,7 +3,9 @@
 import React from "react";
 import { auth, db } from "../utils/firebase";
 import { Redirect, Link } from "react-router-dom";
-import { isThisISOWeek } from "date-fns/esm";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { registerUser } from '../actions/userActions';
 import {
   Container,
   Row,
@@ -42,31 +44,24 @@ class Register extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { email, password } = this.state;
-    console.log('hello');
-  
-    auth.createUserWithEmailAndPassword(email, password)
-      .then(function (result) {
-        const{ email, username } = this.state;
+    const { email, password, username } = this.state;
 
-        db.collection('users').doc(username).set({
-          email: email,
-          following: [],
-          followers: [],
-          topics: [],
-          username: username
-        })
+    let user = {
+      email: email,
+      following: [],
+      followers: [],
+      topics: [],
+      username: username,
+      photoUrl: 'https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE'
+    };
 
-       this.setState({ redirectToLogin: true });
-      }.bind(this))
-      .catch(function (error) {
-        console.log(error);
-      })
+    this.props.registerUser(user, password);
+    this.setState({ redirectToLogin: true });
   }
 
   render() {
-    if (this.state.redirectToLogin) {
-      return <Redirect to="/login" />
+    if (this.props.user.isAuthenticated) {
+      return <Redirect to="/" />
     }
 
     return (
@@ -176,4 +171,13 @@ class Register extends React.Component {
   };
 };
 
-export default Register;
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  user: state.user,
+})
+
+export default connect(mapStateToProps, { registerUser })(Register);

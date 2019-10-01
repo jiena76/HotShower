@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Container, Row, Col } from "shards-react";
 
 const IconSidebarLayout = ({ children }) => (
-  <Container fluid className="icon-sidebar-nav">
+  <Container fluid>
     <Row>
       <Col className="main-content col" tag="main">
         {children}

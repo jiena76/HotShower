@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import {
   Dropdown,
   DropdownToggle,
@@ -9,8 +10,9 @@ import {
   NavItem,
   NavLink
 } from "shards-react";
+import { logoutUser } from '../../../../actions/userActions';
 
-export default class UserActions extends React.Component {
+class UserActions extends React.Component {
   constructor(props) {
     super(props);
 
@@ -46,7 +48,7 @@ export default class UserActions extends React.Component {
             <i className="material-icons">&#xE8B8;</i> Edit Profile
           </DropdownItem>
           <DropdownItem divider />
-          <DropdownItem tag={Link} to="/logout" className="text-danger">
+          <DropdownItem tag="button" onClick={this.props.logoutUser} className="text-danger">
             <i className="material-icons text-danger">&#xE879;</i> Logout
           </DropdownItem>
         </Collapse>
@@ -54,3 +56,5 @@ export default class UserActions extends React.Component {
     );
   }
 }
+
+export default connect(null, { logoutUser })(UserActions)
