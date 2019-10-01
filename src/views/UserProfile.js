@@ -14,10 +14,9 @@ class UserProfile extends React.Component {
         return (
             <Container fluid className="main-content-container px-4">
               <Row className="mt-4">
-              <UserDetails />
-
               <Col lg="4" sm="12">
-              <UserTeams />
+                <UserDetails />
+                <UserTeams />
                 <UserContact />
               </Col>
               </Row>
