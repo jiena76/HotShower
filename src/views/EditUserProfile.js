@@ -1,4 +1,6 @@
+import Avatar from 'react-avatar-edit'
 import React from "react";
+import ReactDOM from 'react-dom'
 import TagsInput from "react-tagsinput";
 import {
   Alert,
@@ -28,8 +30,11 @@ import ProfileBackgroundPhoto from "../components/edit-user-profile/ProfileBackg
 class EditUserProfile extends React.Component {
   constructor(props) {
     super(props);
+    // const src = 
 
     this.state = {
+      preview: null,
+      // src,
       tags: [
         "User Experience",
         "UI Design",
@@ -42,6 +47,9 @@ class EditUserProfile extends React.Component {
 
     this.handleTagsChange = this.handleTagsChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+
+    // this.onCrop = this.onCrop.bind(this)
+    // this.onClose = this.onClose.bind(this)
   }
 
   handleTagsChange(tags) {
@@ -50,6 +58,14 @@ class EditUserProfile extends React.Component {
 
   handleFormSubmit(e) {
     e.preventDefault();
+  }
+
+  onClose() {
+    this.setState({preview: null})
+  }
+  
+  onCrop(preview) {
+    this.setState({preview})
   }
 
   render() {
@@ -70,22 +86,19 @@ class EditUserProfile extends React.Component {
                   <div className="border-bottom clearfix d-flex">
                     <Nav tabs className="border-0 mt-auto mx-4 pt-2">
                       <NavItem>
-                        <NavLink active>General</NavLink>
+                        <NavLink active>About You</NavLink>
                       </NavItem>
                       <NavItem>
                         <NavLink>Projects</NavLink>
                       </NavItem>
-                      <NavItem>
-                        <NavLink>Collaboration</NavLink>
-                      </NavItem>
                     </Nav>
                   </div>
 
-                  {/* Form Section Title :: General */}
+                  {/* Form Section Title :: About You */}
                   <Form className="py-4" onSubmit={this.handleFormSubmit}>
                     <FormSectionTitle
-                      title="General"
-                      description="Setup your general profile details."
+                      title="About You"
+                      description="Tell us who you are! You can modify your personal information here."
                     />
 
                     <Row form className="mx-4">
