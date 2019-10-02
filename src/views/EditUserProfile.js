@@ -2,6 +2,10 @@ import Avatar from 'react-avatar-edit'
 import React from "react";
 import ReactDOM from 'react-dom'
 import TagsInput from "react-tagsinput";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { updateUser } from './../actions/userActions';
+
 import {
   Alert,
   Container,
@@ -30,21 +34,31 @@ import ProfileBackgroundPhoto from "../components/edit-user-profile/ProfileBackg
 class EditUserProfile extends React.Component {
   constructor(props) {
     super(props);
-    // const src = 
+    // const src =
+
+    let user = this.props.user;
 
     this.state = {
       preview: null,
-      // src,
+      email: user.email,
+      following: [],
+      followers: [],
+      topics: [],
+      username: user.username,
+      photoUrl: user.photoUrl,
+      bio: user.bio,
       tags: [
-        "User Experience",
-        "UI Design",
-        "React JS",
-        "HTML & CSS",
-        "JavaScript",
-        "Bootstrap 4"
+        "cs307",
+        "computer science",
+        "airpods",
+        "girls",
+        "how to get girls",
+        "hot girls",
+        "hot guys"
       ]
     };
 
+    this.handleChange = this.handleChange.bind(this);
     this.handleTagsChange = this.handleTagsChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
 
@@ -56,19 +70,37 @@ class EditUserProfile extends React.Component {
     this.setState({ tags });
   }
 
+  handleChange(e) {
+    const { id, value } = e.target;
+    this.setState({ [id]: value });
+  }
+
   handleFormSubmit(e) {
-    e.preventDefault();
+    //e.preventDefault();
+    const { email, password, username, photoUrl } = this.state;
+
+    let user = {
+      email: email,
+      following: [],
+      followers: [],
+      topics: [],
+      username: username,
+      photoUrl: photoUrl
+    };
+
+    this.props.updateUser(user);
   }
 
   onClose() {
     this.setState({preview: null})
   }
-  
+
   onCrop(preview) {
     this.setState({preview})
   }
 
   render() {
+    let { userData } = this.props;
     return (
       <div>
         {/* <Container fluid className="px-0">
@@ -83,17 +115,6 @@ class EditUserProfile extends React.Component {
                 <ProfileBackgroundPhoto />
 
                 <CardBody className="p-0">
-                  <div className="border-bottom clearfix d-flex">
-                    <Nav tabs className="border-0 mt-auto mx-4 pt-2">
-                      <NavItem>
-                        <NavLink active>About You</NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink>Projects</NavLink>
-                      </NavItem>
-                    </Nav>
-                  </div>
-
                   {/* Form Section Title :: About You */}
                   <Form className="py-4" onSubmit={this.handleFormSubmit}>
                     <FormSectionTitle
@@ -104,26 +125,26 @@ class EditUserProfile extends React.Component {
                     <Row form className="mx-4">
                       <Col lg="8">
                         <Row form>
-                          {/* First Name */}
-                          <Col md="6" className="form-group">
-                            <label htmlFor="firstName">First Name</label>
-                            <FormInput
-                              id="firstName"
-                              value="Sierra"
-                              onChange={() => {}}
-                            />
-                          </Col>
 
-                          {/* Last Name */}
-                          <Col md="6" className="form-group">
-                            <label htmlFor="lastName">Last Name</label>
-                            <FormInput
-                              type="text"
-                              id="lastName"
-                              value="Brooks"
-                              onChange={() => {}}
-                            />
-                          </Col>
+                        {/* Username */}
+                        <Col md="6" className="form-group">
+                          <label htmlFor="firstName">Username</label>
+                          <FormInput
+                            disabled
+                            id="username"
+                            value={this.state.username}
+                          />
+                        </Col>
+
+                        {/* Display Name */}
+                        <Col md="6" className="form-group">
+                          <label htmlFor="firstName">Display Name</label>
+                          <FormInput onChange={this.handleChange}
+                            type="text"
+                            id="displayName"
+                            value={this.state.username}
+                          />
+                        </Col>
 
                           {/* Location */}
                           <Col md="6" className="form-group">
@@ -136,7 +157,7 @@ class EditUserProfile extends React.Component {
                               </InputGroupAddon>
                               <FormInput
                                 id="userLocation"
-                                value="Remote"
+                                value=""
                                 onChange={() => {}}
                               />
                             </InputGroup>
@@ -170,6 +191,7 @@ class EditUserProfile extends React.Component {
                               </InputGroupAddon>
                               <FormInput
                                 id="emailAddress"
+                                value={this.state.email}
                                 onChange={() => {}}
                               />
                             </InputGroup>
@@ -198,7 +220,7 @@ class EditUserProfile extends React.Component {
                         </label>
                         <div className="edit-user-details__avatar m-auto">
                           <img
-                            src={require("../images/avatars/0.jpg")}
+                            src={this.state.photoUrl}
                             alt="User Avatar"
                           />
                           <label className="edit-user-details__avatar__change">
@@ -227,14 +249,14 @@ class EditUserProfile extends React.Component {
                         <FormTextarea
                           style={{ minHeight: "87px" }}
                           id="userBio"
-                          value="I'm a design focused engineer."
+                          value={this.state.bio}
                           onChange={() => {}}
                         />
                       </Col>
 
                       {/* User Tags */}
                       <Col md="6" className="form-group">
-                        <label htmlFor="userTags">Tags</label>
+                        <label htmlFor="userTags">Topics</label>
                         <TagsInput
                           value={this.state.tags}
                           onChange={this.handleTagsChange}
@@ -348,11 +370,10 @@ class EditUserProfile extends React.Component {
                         htmlFor="conversationsEmailsToggle"
                         className="col-form-label"
                       >
-                        Conversations
+                        Messages
                         <small className="text-muted form-text">
                           Sends notification emails with updates for the
-                          conversations you are participating in or if someone
-                          mentions you.
+                          messages you are participating in.
                         </small>
                       </Col>
                       <Col className="d-flex">
@@ -373,10 +394,9 @@ class EditUserProfile extends React.Component {
                         htmlFor="newProjectsEmailsToggle"
                         className="col-form-label"
                       >
-                        New Projects
+                        Comments
                         <small className="text-muted form-text">
-                          Sends notification emails when you are invited to a
-                          new project.
+                          Sends notification emails when someone comments on your post.
                         </small>
                       </Col>
                       <Col className="d-flex">
@@ -478,4 +498,16 @@ class EditUserProfile extends React.Component {
   }
 }
 
-export default EditUserProfile;
+EditUserProfile.propTypes = {
+  /*
+   * The user data.
+   */
+  updateUser: PropTypes.func.isRequired,
+  userData: PropTypes.object
+};
+
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps, {updateUser})(EditUserProfile);

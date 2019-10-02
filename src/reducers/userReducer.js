@@ -1,4 +1,4 @@
-import { REGISTER_USER, LOGIN_USER, LOGOUT_USER } from '../actions/types';
+import { REGISTER_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER } from '../actions/types';
 
 const initialState = {
   isAuthenticated: false
@@ -12,6 +12,8 @@ function userReducer(state = initialState, { type, payload }) {
       return payload
     case LOGOUT_USER:
       return payload
+      case UPDATE_USER:
+        return payload
     default:
       return state
   }

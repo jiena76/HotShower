@@ -1,4 +1,4 @@
-import { REGISTER_USER, LOGIN_USER, LOGOUT_USER } from './types';
+import { REGISTER_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER } from './types';
 import { auth, db, time } from '../utils/firebase';
 
 export const registerUser = (user, password) => dispatch => {
@@ -101,4 +101,12 @@ export const logoutUser = () => dispatch => {
     type: LOGOUT_USER,
     payload: user
   })
+};
+
+export const updateUser = (user) => dispatch => {
+    db.collection('users').doc(user.username).set({user})
+    dispatch({
+        type: UPDATE_USER,
+        payload: user
+    });
 };
