@@ -16,7 +16,8 @@ import {
   FormGroup,
   FormInput,
   FormCheckbox,
-  Button
+  Button,
+  Badge
 } from "shards-react";
 
 
@@ -41,6 +42,18 @@ class Posts extends React.Component {
 
                 {/* Body */}
                 <FormGroup>
+                    {
+                        post.topics.map((tag, idx) => (
+                            <Badge
+                            pill
+                            theme="light"
+                            className="text-light text-uppercase mb-2 border mr-1"
+                            key={idx}
+                            >
+                            {tag}
+                            </Badge>
+                        ))
+                    }
                   <p> {post.text} </p>
                 </FormGroup>
               </Form>
