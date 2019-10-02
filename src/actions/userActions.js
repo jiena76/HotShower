@@ -9,7 +9,8 @@ export const registerUser = (user, password) => dispatch => {
         following: [],
         followers: [],
         topics: [],
-        username: user.username
+        username: user.username,
+        isAuthenticated: true
       })
 
       user.isAuthenticated = true;
@@ -44,11 +45,13 @@ export const loginUser = (email, password) => dispatch => {
     .then(function (result) {
       db.collection('users').where('email', '==', email).get()
         .then(function (snapshot) {
+
           if (snapshot.empty) {
-            // BIG ERROR OCCURED
+            
           }
 
           snapshot.forEach(doc => {
+
             let user = doc.data();
             user.isAuthenticated = true;
             localStorage.setItem('user', user.username);
@@ -91,7 +94,7 @@ export const autoLoginUser = () => dispatch => {
 };
 
 export const logoutUser = () => dispatch => {
-  auth.signOut();;
+  auth.signOut();
   localStorage.clear();
   let user = {
     isAuthenticated: false
