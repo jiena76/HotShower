@@ -31,10 +31,8 @@ export const fetchPostsByTopic = (query) => dispatch => {
       let posts = [];
       snapshot.forEach(doc => {
         console.log(doc.data().topics);
-        if (doc.data().topics.contains(query)) {
 
           posts.push(doc.data());
-        }
       })
 
       console.log(posts);

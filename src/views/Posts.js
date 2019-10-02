@@ -22,9 +22,6 @@ import {
 
 
 class Posts extends React.Component {
-  componentWillMount() {
-    this.props.fetchPosts();
-  }
 
   render() {
     return (

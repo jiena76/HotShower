@@ -25,6 +25,10 @@ import DMList from "./DMList";
 import Home from './Home';
 
 class Main extends React.Component {
+
+  componentWillMount() {
+    this.props.fetchPosts();
+  }
   /* Main page, contains feed */
   render() {
     console.log(JSON.stringify(this.props.user));
