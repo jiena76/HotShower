@@ -27,7 +27,7 @@ class NewPost extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleTagsChange = this.handleTagsChange.bind(this);
+    this.handleTopicsChange = this.handleTopicsChange.bind(this);
   }
 
   handleChange(e) {
@@ -35,8 +35,8 @@ class NewPost extends React.Component {
     this.setState({ [id]: value });
   }
 
-  handleTagsChange(tags) {
-    this.setState({ tags });
+  handleTopicsChange(topics) {
+    this.setState({ topics });
   }
 
   handleSubmit(e) {
@@ -44,7 +44,7 @@ class NewPost extends React.Component {
     const { text, topics } = this.state;
     this.props.uploadPost(text, topics);
     this.setState({text: ''});
-    this.setState({topcs: []});
+    this.setState({topics: []});
 
   }
 
@@ -58,14 +58,11 @@ class NewPost extends React.Component {
 
         <CardBody className="d-flex flex-column">
           <Form className="quick-post-form" onSubmit={this.handleSubmit}>
-
-
-
             {/* Body */}
             <FormGroup>
             <TagsInput
-                value={this.state.tags}
-                onChange={this.handleTagsChange}
+                value={this.state.topics}
+                onChange={this.handleTopicsChange}
                 placeholder="What's the topic?"
                 />
             <FormTextarea
