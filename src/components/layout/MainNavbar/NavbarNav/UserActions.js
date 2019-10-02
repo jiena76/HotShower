@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   Dropdown,
@@ -17,10 +17,16 @@ class UserActions extends React.Component {
     super(props);
 
     this.state = {
-      visible: false
+      visible: false,
+      logout: false
     };
 
     this.toggleUserActions = this.toggleUserActions.bind(this);
+    this.logout = this.logout.bind(this);
+  }
+
+  logout() {
+    this.setState({ logout: true });
   }
 
   toggleUserActions() {
@@ -30,6 +36,11 @@ class UserActions extends React.Component {
   }
 
   render() {
+    if (this.props.logout) {
+      this.props.logoutUser();
+      return <Redirect to='/'/>
+    }
+
     return (
       <NavItem tag={Dropdown} caret toggle={this.toggleUserActions}>
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
