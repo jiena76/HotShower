@@ -1,4 +1,5 @@
 import React from "react";
+import TagsInput from "react-tagsinput";
 import { db, time } from "../../utils/firebase";
 import PropTypes from "prop-types";
 import { connect } from 'react-redux';
@@ -21,16 +22,21 @@ class NewPost extends React.Component {
 
     this.state = {
       text: '',
-      topics: []
+      topics: [],
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleTagsChange = this.handleTagsChange.bind(this);
   }
 
   handleChange(e) {
     const { id, value } = e.target;
     this.setState({ [id]: value });
+  }
+
+  handleTagsChange(tags) {
+    this.setState({ tags });
   }
 
   handleSubmit(e) {
@@ -39,6 +45,7 @@ class NewPost extends React.Component {
     this.props.uploadPost(text, topics);
     this.setState({text: ''});
     this.setState({topcs: []});
+
   }
 
   render() {
@@ -52,9 +59,16 @@ class NewPost extends React.Component {
         <CardBody className="d-flex flex-column">
           <Form className="quick-post-form" onSubmit={this.handleSubmit}>
 
+
+
             {/* Body */}
             <FormGroup>
-              <FormTextarea
+            <TagsInput
+                value={this.state.tags}
+                onChange={this.handleTagsChange}
+                placeholder="What's the topic?"
+                />
+            <FormTextarea
                 placeholder="What's on your mind?"
                 onChange={this.handleChange}
                 type="text"
