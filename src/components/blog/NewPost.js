@@ -20,7 +20,8 @@ class NewPost extends React.Component {
     super(props);
 
     this.state = {
-      text: ''
+      text: '',
+      topics: []
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -34,9 +35,10 @@ class NewPost extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { text } = this.state;
-    this.props.uploadPost(text);
+    const { text, topics } = this.state;
+    this.props.uploadPost(text, topics);
     this.setState({text: ''});
+    this.setState({topcs: []});
   }
 
   render() {

@@ -20,11 +20,12 @@ export const fetchPosts = () => dispatch => {
     });
 };
 
-export const uploadPost = (text) => dispatch => {
+export const uploadPost = (text, topics) => dispatch => {
   let post = {
     text: text,
     author: localStorage.getItem('user'),
     createdAt: time.now().toDate(),
+    topics: topics,
   };
 
   db.collection('posts').add(post);
