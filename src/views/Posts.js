@@ -31,7 +31,7 @@ class Posts extends React.Component {
       <div>
         {this.props.posts.map((post) => (
           /* Main contains Feed */
-          <Card small className="h-100">
+          <Card small className="h-100 mt-3">
             {/* Card Header */}
             <CardHeader className="border-bottom">
               <h6 className="m-0">{post.author}</h6>
