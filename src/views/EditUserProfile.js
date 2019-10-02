@@ -35,10 +35,7 @@ class EditUserProfile extends React.Component {
   constructor(props) {
     super(props);
     // const src =
-
     let user = this.props.user;
-
-    console.log('tags: ' + JSON.stringify(user))
 
     this.state = {
       preview: null,
@@ -83,8 +80,6 @@ class EditUserProfile extends React.Component {
       //photoUrl: photoUrl,
       displayName: displayName
     };
-
-    console.log('submitting');
 
     this.props.updateUser(user);
   }

@@ -11,7 +11,8 @@ export const registerUser = (user, password) => dispatch => {
         topics: [],
         username: user.username,
         isAuthenticated: true,
-        displayName: user.displayName
+        displayName: user.displayName,
+        photoUrl: user.photoUrl
       })
 
       user.isAuthenticated = true;
