@@ -30,6 +30,7 @@ class Register extends React.Component {
       password: '',
       confirmPassword: '',
       email: '',
+      displayName: '',
       redirectToLogin: false
     };
 
@@ -44,13 +45,14 @@ class Register extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { email, password, username } = this.state;
+    const { email, password, username, displayName } = this.state;
 
     let user = {
       email: email,
       following: [],
       followers: [],
       topics: [],
+      displayName: displayName,
       username: username,
       photoUrl: 'https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE'
     };
@@ -99,6 +101,15 @@ class Register extends React.Component {
                       id="username"
                       value={this.state.username}
                       placeholder="Username"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <label htmlFor="username">Display Name</label>
+                    <FormInput onChange={this.handleChange}
+                      type="text"
+                      id="displayName"
+                      value={this.state.displayName}
+                      placeholder="Display Name"
                     />
                   </FormGroup>
                   <FormGroup>

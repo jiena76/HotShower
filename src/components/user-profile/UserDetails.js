@@ -79,7 +79,7 @@ class UserDetails extends React.Component {
           </div>
           {/* User Tags */}
           <div className="user-details__tags p-4">
-            {userData.tags.map((tag, idx) => (
+            {this.props.user.topics.map((tag, idx) => (
               <Badge
                 pill
                 theme="light"

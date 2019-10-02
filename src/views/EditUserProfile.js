@@ -38,6 +38,8 @@ class EditUserProfile extends React.Component {
 
     let user = this.props.user;
 
+    console.log('tags: ' + JSON.stringify(user))
+
     this.state = {
       preview: null,
       email: user.email,
@@ -45,22 +47,15 @@ class EditUserProfile extends React.Component {
       followers: [],
       topics: [],
       username: user.username,
+      displayName: user.displayName,
       photoUrl: user.photoUrl,
       bio: user.bio,
-      tags: [
-        "cs307",
-        "computer science",
-        "airpods",
-        "girls",
-        "how to get girls",
-        "hot girls",
-        "hot guys"
-      ]
+      tags: user.topics
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleTagsChange = this.handleTagsChange.bind(this);
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
     // this.onCrop = this.onCrop.bind(this)
     // this.onClose = this.onClose.bind(this)
@@ -75,18 +70,21 @@ class EditUserProfile extends React.Component {
     this.setState({ [id]: value });
   }
 
-  handleFormSubmit(e) {
-    //e.preventDefault();
-    const { email, password, username, photoUrl } = this.state;
+  handleSubmit(e) {
+    e.preventDefault();
+    const { email, username, displayName, photoUrl } = this.state;
 
     let user = {
       email: email,
       following: [],
       followers: [],
-      topics: [],
+      //topics: [],
       username: username,
-      photoUrl: photoUrl
+      //photoUrl: photoUrl,
+      displayName: displayName
     };
+
+    console.log('submitting');
 
     this.props.updateUser(user);
   }
@@ -116,7 +114,7 @@ class EditUserProfile extends React.Component {
 
                 <CardBody className="p-0">
                   {/* Form Section Title :: About You */}
-                  <Form className="py-4" onSubmit={this.handleFormSubmit}>
+                  <Form className="py-4" onSubmit={this.handleSubmit}>
                     <FormSectionTitle
                       title="About You"
                       description="Tell us who you are! You can modify your personal information here."
@@ -142,43 +140,9 @@ class EditUserProfile extends React.Component {
                           <FormInput onChange={this.handleChange}
                             type="text"
                             id="displayName"
-                            value={this.state.username}
+                            value={this.state.displayName}
                           />
                         </Col>
-
-                          {/* Location */}
-                          <Col md="6" className="form-group">
-                            <label htmlFor="userLocation">Location</label>
-                            <InputGroup seamless>
-                              <InputGroupAddon type="prepend">
-                                <InputGroupText>
-                                  <i className="material-icons">&#xE0C8;</i>
-                                </InputGroupText>
-                              </InputGroupAddon>
-                              <FormInput
-                                id="userLocation"
-                                value=""
-                                onChange={() => {}}
-                              />
-                            </InputGroup>
-                          </Col>
-
-                          {/* Phone Number */}
-                          <Col md="6" className="form-group">
-                            <label htmlFor="phoneNumber">Phone Number</label>
-                            <InputGroup seamless>
-                              <InputGroupAddon type="prepend">
-                                <InputGroupText>
-                                  <i className="material-icons">&#xE0CD;</i>
-                                </InputGroupText>
-                              </InputGroupAddon>
-                              <FormInput
-                                id="phoneNumber"
-                                value="+40 1234 567 890"
-                                onChange={() => {}}
-                              />
-                            </InputGroup>
-                          </Col>
 
                           {/* Email Address */}
                           <Col md="6" className="form-group">
@@ -190,22 +154,12 @@ class EditUserProfile extends React.Component {
                                 </InputGroupText>
                               </InputGroupAddon>
                               <FormInput
+                                disabled
                                 id="emailAddress"
                                 value={this.state.email}
                                 onChange={() => {}}
                               />
                             </InputGroup>
-                          </Col>
-
-                          <Col md="6" className="form-group">
-                            <label htmlFor="displayEmail">
-                              Display Email Publicly
-                            </label>
-                            <FormSelect>
-                              <option>Select an Option</option>
-                              <option>Yes, display my email.</option>
-                              <option>No, do not display my email.</option>
-                            </FormSelect>
                           </Col>
                         </Row>
                       </Col>
@@ -266,172 +220,11 @@ class EditUserProfile extends React.Component {
 
                     <hr />
 
-                    {/* Form Section Title :: Social Profiles */}
-                    <FormSectionTitle
-                      title="Social"
-                      description="Setup your social profiles info."
-                    />
-
-                    <Row form className="mx-4">
-                      {/* Facebook */}
-                      <Col md="4" className="form-group">
-                        <label htmlFor="socialFacebook">Facebook</label>
-                        <InputGroup seamless>
-                          <InputGroupAddon type="prepend">
-                            <InputGroupText>
-                              <i className="fab fa-facebook-f" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <FormInput id="socialFacebook" onChange={() => {}} />
-                        </InputGroup>
-                      </Col>
-
-                      {/* Twitter */}
-                      <Col md="4" className="form-group">
-                        <label htmlFor="socialTwitter">Twitter</label>
-                        <InputGroup seamless>
-                          <InputGroupAddon type="prepend">
-                            <InputGroupText>
-                              <i className="fab fa-twitter" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <FormInput id="socialTwitter" onChange={() => {}} />
-                        </InputGroup>
-                      </Col>
-
-                      {/* GitHub */}
-                      <Col md="4" className="form-group">
-                        <label htmlFor="socialGitHub">GitHub</label>
-                        <InputGroup seamless>
-                          <InputGroupAddon type="prepend">
-                            <InputGroupText>
-                              <i className="fab fa-github" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <FormInput id="socialGitHub" onChange={() => {}} />
-                        </InputGroup>
-                      </Col>
-
-                      {/* Slack */}
-                      <Col md="4" className="form-group">
-                        <label htmlFor="socialSlack">Slack</label>
-                        <InputGroup seamless>
-                          <InputGroupAddon type="prepend">
-                            <InputGroupText>
-                              <i className="fab fa-slack" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <FormInput id="socialSlack" onChange={() => {}} />
-                        </InputGroup>
-                      </Col>
-
-                      {/* Dribbble */}
-                      <Col md="4" className="form-group">
-                        <label htmlFor="socialDribbble">Dribbble</label>
-                        <InputGroup seamless>
-                          <InputGroupAddon type="prepend">
-                            <InputGroupText>
-                              <i className="fab fa-dribbble" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <FormInput id="socialDribbble" onChange={() => {}} />
-                        </InputGroup>
-                      </Col>
-
-                      {/* Google Plus */}
-                      <Col md="4" className="form-group">
-                        <label htmlFor="socialGooglePlus">Google Plus</label>
-                        <InputGroup seamless>
-                          <InputGroupAddon type="prepend">
-                            <InputGroupText>
-                              <i className="fab fa-google-plus-g" />
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <FormInput
-                            id="socialGooglePlus"
-                            onChange={() => {}}
-                          />
-                        </InputGroup>
-                      </Col>
-                    </Row>
-
-                    <hr />
-
                     {/* Form Section Title :: Notifications */}
                     <FormSectionTitle
                       title="Notifications"
                       description="Setup which notifications would you like to receive."
                     />
-
-                    {/* Notifications :: Conversations */}
-                    <Row form className="mx-4">
-                      <Col
-                        tag="label"
-                        htmlFor="conversationsEmailsToggle"
-                        className="col-form-label"
-                      >
-                        Messages
-                        <small className="text-muted form-text">
-                          Sends notification emails with updates for the
-                          messages you are participating in.
-                        </small>
-                      </Col>
-                      <Col className="d-flex">
-                        <FormCheckbox
-                          toggle
-                          checked
-                          className="ml-auto my-auto"
-                          id="conversationsEmailsToggle"
-                          onChange={() => {}}
-                        />
-                      </Col>
-                    </Row>
-
-                    {/* Notifications :: New Projects */}
-                    <Row form className="mx-4">
-                      <Col
-                        tag="label"
-                        htmlFor="newProjectsEmailsToggle"
-                        className="col-form-label"
-                      >
-                        Comments
-                        <small className="text-muted form-text">
-                          Sends notification emails when someone comments on your post.
-                        </small>
-                      </Col>
-                      <Col className="d-flex">
-                        <FormCheckbox
-                          toggle
-                          className="ml-auto my-auto"
-                          id="newProjectsEmailsToggle"
-                          onChange={() => {}}
-                        />
-                      </Col>
-                    </Row>
-
-                    {/* Notifications :: Vulnerabilities */}
-                    <Row form className="mx-4">
-                      <Col
-                        tag="label"
-                        htmlFor="conversationsEmailsToggle"
-                        className="col-form-label"
-                      >
-                        Vulnerability Alerts
-                        <small className="text-muted form-text">
-                          Sends notification emails when everything goes down
-                          and there's no hope left whatsoever.
-                        </small>
-                      </Col>
-                      <Col className="d-flex">
-                        <FormCheckbox
-                          toggle
-                          checked
-                          className="ml-auto my-auto"
-                          id="conversationsEmailsToggle"
-                          onChange={() => {}}
-                        />
-                      </Col>
-                    </Row>
 
                     <hr />
 
@@ -446,49 +239,17 @@ class EditUserProfile extends React.Component {
                     </Row>
 
                     <Row form className="mx-4">
-                      {/* Change Password :: Old Password */}
-                      <Col md="4" className="form-group">
-                        <label htmlFor="oldPassword">Old Password</label>
-                        <FormInput
-                          id="oldPassword"
-                          placeholder="Old Password"
-                          onChange={() => {}}
-                        />
-                      </Col>
-
-                      {/* Change Password :: New Password */}
-                      <Col md="4" className="form-group">
-                        <label htmlFor="newPassword">New Password</label>
-                        <FormInput
-                          id="newPassword"
-                          placeholder="New Password"
-                          onChange={() => {}}
-                        />
-                      </Col>
-
-                      {/* Change Password :: Repeat New Password */}
-                      <Col md="4" className="form-group">
-                        <label htmlFor="repeatNewPassword">
-                          Repeat New Password
-                        </label>
-                        <FormInput
-                          id="repeatNewPassword"
-                          placeholder="Old Password"
-                          onChange={() => {}}
-                        />
-                      </Col>
-                    </Row>
-                  </Form>
-                </CardBody>
-                <CardFooter className="border-top">
-                  <Button
+                    <Button
                     size="sm"
                     theme="accent"
+                    type="submit"
                     className="ml-auto d-table mr-3"
                   >
                     Save Changes
                   </Button>
-                </CardFooter>
+                    </Row>
+                  </Form>
+                </CardBody>
               </Card>
             </Col>
           </Row>

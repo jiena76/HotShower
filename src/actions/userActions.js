@@ -10,7 +10,8 @@ export const registerUser = (user, password) => dispatch => {
         followers: [],
         topics: [],
         username: user.username,
-        isAuthenticated: true
+        isAuthenticated: true,
+        displayName: user.displayName
       })
 
       user.isAuthenticated = true;
@@ -107,7 +108,7 @@ export const logoutUser = () => dispatch => {
 };
 
 export const updateUser = (user) => dispatch => {
-    db.collection('users').doc(user.username).set({user})
+    db.collection('users').doc(user.username).set(user, { merge: true })
     dispatch({
         type: UPDATE_USER,
         payload: user
