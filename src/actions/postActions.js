@@ -20,7 +20,8 @@ export const fetchPosts = () => dispatch => {
     });
 };
 
-export const fetchPostsByTopics = (query) => dispatch => {
+export const fetchPostsByTopic = (query) => dispatch => {
+  console.log('query: ' + query)
   db.collection('posts').where('topics', 'array-contains', query).orderBy('createdAt', 'desc').limit(10).get()
     .then(function (snapshot) {
       if (snapshot.empty) {
@@ -29,14 +30,20 @@ export const fetchPostsByTopics = (query) => dispatch => {
 
       let posts = [];
       snapshot.forEach(doc => {
-        posts.push(doc.data());
+        console.log(doc.data().topics);
+        if (doc.data().topics.contains(query)) {
+
+          posts.push(doc.data());
+        }
       })
+
+      console.log(posts);
 
       dispatch({
         type: FETCH_POSTS,
         payload: posts
       })
-    });
+    }.bind(dispatch));
 };
 
 export const uploadPost = (text, topics) => dispatch => {

@@ -9,6 +9,7 @@ import { DefaultLayout, HeaderNavigation, IconSidebar, NoLayout } from "./layout
 // Route Views
 import UserProfile from "./views/UserProfile";
 import EditUserProfile from "./views/EditUserProfile";
+import TopicPosts from './views/TopicPosts';
 import Login from "./views/Login";
 import Register from "./views/Register";
 import ForgotPassword from "./views/ForgotPassword";
@@ -26,6 +27,11 @@ export default [
     path: "/u/:username",
     layout: HeaderNavigation,
     component: UserProfile
+  },
+  {
+    path: "/t/:topics",
+    layout: HeaderNavigation,
+    component: TopicPosts
   },
   {
     path: "/edit-user-profile",

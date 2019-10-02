@@ -3,6 +3,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { combineReducers, createStore } from 'redux';
+import { fetchPostsByTopic } from '../actions/postActions';
 import { connect } from 'react-redux';
 
 import {
@@ -24,7 +25,13 @@ import Posts from "./Posts";
 import DMList from "./DMList";
 import Home from './Home';
 
-class Main extends React.Component {
+class TopicPosts extends React.Component {
+
+  componentWillMount() {
+    let topic = this.props.match.params.topic ? this.props.match.params.topic : 'lonely';
+
+    this.props.fetchPostsByTopic(topic)
+  }
   /* Main page, contains feed */
   render() {
     console.log(JSON.stringify(this.props.user));
@@ -46,4 +53,4 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps, { fetchPostsByTopic })(TopicPosts);
