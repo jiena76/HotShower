@@ -25,7 +25,7 @@ class DMList extends React.Component {
         {
           image: "https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE",
           username: "misterPander",
-          messagePreview: "I Love Danning Xie!!!"
+          messagePreview: "yeetdog"
         },
         {
           image: require("../images/user-profile/team-thumb-2.png"),
