@@ -11,7 +11,7 @@ class UserProfile extends React.Component {
             <Container fluid className="main-content-container px-4">
               <Row className="mt-4">
                 <Col className="mx-auto">
-                    <UserDetails />
+                  <UserDetails />
                 </Col>
               </Row>
             </Container>

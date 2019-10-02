@@ -100,7 +100,7 @@ class Login extends React.Component {
                     className="d-table mx-auto"
                     type="submit"
                   >
-                    Access Account
+                    Login
               </Button>
                 </Form>
               </CardBody>
