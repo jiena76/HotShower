@@ -15,6 +15,19 @@ export const registerUser = (user, password) => dispatch => {
       user.isAuthenticated = true;
       localStorage.setItem('user', user.username);
 
+      auth.onAuthStateChanged(function(user) {
+        if (user) {
+          user.sendEmailVerification().then(function() {
+            // Email sent.
+            console.log("email shouldve sent lmao");
+          }).catch(function(error) {
+            // An error happened.
+          });
+        } else {
+          console.log("try again boi");
+        }
+      });
+
       dispatch({
         type: REGISTER_USER,
         payload: user
