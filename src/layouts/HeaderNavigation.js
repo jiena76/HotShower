@@ -12,7 +12,7 @@ import getHeaderNavbarItems from "../data/header-nav-items";
 
 class HeaderNavigation extends React.Component {
   render() {
-    if (this.props.user.isAuthenticated) {
+    if (localStorage.getItem('user') != null) {
       return (
         <Container fluid>
           <Row>

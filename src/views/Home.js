@@ -1,7 +1,11 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { combineReducers, createStore } from 'redux';
+import { fetchPosts } from '../actions/postActions';
+import { connect } from 'react-redux';
+
 import {
   Container,
   Row,
@@ -15,26 +19,45 @@ import {
   FormCheckbox,
   Button
 } from "shards-react";
-import NavbarSearch from "./../components/layout/MainNavbar/NavbarSearch";
 
-const Home = () => (
-  /* Home page, welcomes users */
-  <Container fluid className="main-content-container h-100 px-4">
-    <Row noGutters className="my-5">
-      <Col lg="3" md="5" className="mx-auto my-auto text-center">
-        <h5>Hot Shower</h5>
-        <NavbarSearch />
-      </Col>
-    </Row>
-    <Row noGutters>
-      <Col lg="3" md="5" className="mx-auto my-auto text-center">
-        <div className="btn-group" >
-          <Link className="btn btn-primary btn-pill" to="/login">Login</Link>
-          <Link className="btn btn-primary btn-pill" to="/register">Register</Link>
-        </div>
-      </Col>
-    </Row>
-  </Container>
-);
+import NewPost from "./../components/blog/NewPost";
+import Posts from "./Posts";
+import DMList from "./DMList";
 
-export default Home;
+class Home extends React.Component {
+  componentWillMount() {
+    this.props.fetchPosts();
+  }
+  /* Main page, contains feed */
+  render() {
+    console.log(JSON.stringify(this.props.user));
+
+
+    if (!localStorage.getItem('user')) {
+      return <Redirect to='/login' />
+    }
+
+    return (
+    <Container fluid className="main-content-container h-100 px-4">
+      <Row noGutters className="h-100">
+        <Col lg="3" md="3" className="mx-auto mb-auto">
+          <br></br>
+          <DMList />
+        </Col>
+        <Col lg="3" md="5" className="mx-auto mb-auto">
+          <br></br>
+          <NewPost />
+          <br></br>
+          <Posts />
+        </Col>
+      </Row>
+    </Container>
+    )
+  };
+};
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, { fetchPosts } )(Home);

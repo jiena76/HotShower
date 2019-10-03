@@ -1,6 +1,7 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import { auth } from "./utils/firebase";
+import { connect } from 'react-redux';
 import { logoutUser } from './actions/userActions';
 
 // Layout Types
@@ -14,14 +15,18 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import ForgotPassword from "./views/ForgotPassword";
 import ChangePassword from "./views/ChangePassword";
-import Main from "./views/Main";
+import Home from "./views/Home";
+
+
+
 
 export default [
   {
     path: "/",
     exact: true,
+    private: true,
     layout: HeaderNavigation,
-    component: Main
+    component: Home
   },
   {
     path: "/u/:username",
@@ -29,12 +34,13 @@ export default [
     component: UserProfile
   },
   {
-    path: "/t/:topics",
+    path: "/t/:topic",
     layout: HeaderNavigation,
     component: TopicPosts
   },
   {
-    path: "/edit-user-profile",
+    path: "/edit-profile",
+    private: true,
     layout: HeaderNavigation,
     component: EditUserProfile
   },
@@ -47,15 +53,6 @@ export default [
     path: "/register",
     layout: NoLayout,
     component: Register
-  },
-  {
-    path: "/forgot-password",
-    layout: NoLayout,
-    component: ForgotPassword
-  },
-  {
-    path: "/change-password",
-    layout: NoLayout,
-    component: ChangePassword
   }
 ];
+

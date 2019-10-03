@@ -55,7 +55,7 @@ class UserActions extends React.Component {
           <DropdownItem tag={Link} to={'/u/' + this.props.user.username}>
             <i className="material-icons">&#xE7FD;</i> Profile
           </DropdownItem>
-          <DropdownItem tag={Link} to="/edit-user-profile">
+          <DropdownItem tag={Link} to="/edit-profile">
             <i className="material-icons">&#xE8B8;</i> Edit Profile
           </DropdownItem>
           <DropdownItem divider />

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import routes from "./routes";
 import { autoLoginUser } from './actions/userActions';
 import { connect } from 'react-redux';
@@ -8,6 +8,14 @@ import withTracker from "./withTracker";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/main.scss";
+
+const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    isAuthenticated === true
+      ? <Component {...props} />
+      : <Redirect to='/login' />
+  )} />
+)
 
 class App extends React.Component {
   componentDidMount() {
@@ -19,20 +27,39 @@ class App extends React.Component {
       <Router basename={process.env.REACT_APP_BASENAME || ""}>
         <div>
           {routes.map((route, index) => {
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                exact={route.exact}
-                component={withTracker(props => {
-                  return (
-                    <route.layout {...props}>
-                      <route.component {...props} />
-                    </route.layout>
-                  );
-                })}
-              />
-            );
+            if (route.private) {
+              return (
+                <PrivateRoute
+                isAuthenticated={localStorage.getItem('user') != null}
+                  key={index}
+                  path={route.path}
+                  exact={route.exact}
+                  component={withTracker(props => {
+                    return (
+                      <route.layout {...props}>
+                        <route.component {...props} />
+                      </route.layout>
+                    );
+                  })}
+                />
+              );
+            }
+            else {
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  exact={route.exact}
+                  component={withTracker(props => {
+                    return (
+                      <route.layout {...props}>
+                        <route.component {...props} />
+                      </route.layout>
+                    );
+                  })}
+                />
+              );
+            }
           })}
         </div>
       </Router>
@@ -40,4 +67,8 @@ class App extends React.Component {
   }
 };
 
-export default connect(null, { autoLoginUser })(App);
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps, { autoLoginUser })(App);

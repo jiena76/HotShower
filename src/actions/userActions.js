@@ -74,6 +74,7 @@ export const autoLoginUser = () => dispatch => {
   let username = localStorage.getItem('user');
   if (!username) {
     localStorage.clear();
+    console.log('clear');
     return;
   }
 
@@ -81,6 +82,7 @@ export const autoLoginUser = () => dispatch => {
     .then(function (doc) {
       if (!doc.exists) {
         localStorage.clear();
+        console.log('clear');
         return;
       }
 
@@ -98,6 +100,7 @@ export const autoLoginUser = () => dispatch => {
 export const logoutUser = () => dispatch => {
   auth.signOut();
   localStorage.clear();
+  console.log('clear');
   let user = {
     isAuthenticated: false
   }
