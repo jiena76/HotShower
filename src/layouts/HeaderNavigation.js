@@ -9,10 +9,11 @@ import MainFooter from "../components/layout/MainFooter";
 
 import { LAYOUT_TYPES } from "../utils/constants";
 import getHeaderNavbarItems from "../data/header-nav-items";
+import NoLayout from './NoLayout'
 
 class HeaderNavigation extends React.Component {
   render() {
-    if (localStorage.getItem('user') != null) {
+    if (this.props.user.isAuthenticated) {
       return (
         <Container fluid>
           <Row>
@@ -27,13 +28,9 @@ class HeaderNavigation extends React.Component {
     }
     else {
       return (
-        <Container fluid>
-          <Row>
-            <Col tag="main" className="main-content p-0" lg="12" md="12" sm="12">
-              {this.props.children}
-            </Col>
-          </Row>
-        </Container>
+        <NoLayout>
+          {this.props.children}
+        </NoLayout>
       )
     }
   };

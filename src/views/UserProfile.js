@@ -6,17 +6,17 @@ import UserDetails from "./../components/user-profile/UserDetails";
 import DMList from "./DMList"
 
 class UserProfile extends React.Component {
-    render() {
-        return (
-            <Container fluid className="main-content-container px-4">
-              <Row className="mt-4">
-                <Col className="mx-auto">
-                  <UserDetails />
-                </Col>
-              </Row>
-            </Container>
-        )
-    }
+  render() {
+    return (
+      <Container fluid className="main-content-container px-4">
+        <Row className="mt-4">
+          <Col className="mx-auto">
+            <UserDetails username={this.props.match.params.username} />
+          </Col>
+        </Row>
+      </Container>
+    )
+  }
 };
 
 export default UserProfile;

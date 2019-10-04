@@ -18,8 +18,6 @@ import ChangePassword from "./views/ChangePassword";
 import Home from "./views/Home";
 
 
-
-
 export default [
   {
     path: "/",
@@ -30,6 +28,7 @@ export default [
   },
   {
     path: "/u/:username",
+    private: true,
     layout: HeaderNavigation,
     component: UserProfile
   },

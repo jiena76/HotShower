@@ -26,12 +26,6 @@ import DMList from "./DMList";
 import Home from './Home';
 
 class TopicPosts extends React.Component {
-
-  componentWillMount() {
-    let topic = this.props.match.params.topic ? this.props.match.params.topic : 'lonely';
-
-    this.props.fetchPostsByTopic(topic)
-  }
   /* Main page, contains feed */
   render() {
     console.log(JSON.stringify(this.props.user));
@@ -41,7 +35,7 @@ class TopicPosts extends React.Component {
       <Row noGutters className="h-100">
         <Col lg="3" md="5" className="mx-auto mb-auto">
           <br></br>
-          <Posts />
+          <Posts topic={this.props.match.params.topic}/>
         </Col>
       </Row>
     </Container>

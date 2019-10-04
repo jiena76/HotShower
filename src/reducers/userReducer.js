@@ -12,8 +12,11 @@ function userReducer(state = initialState, { type, payload }) {
       return payload
     case LOGOUT_USER:
       return payload
-      case UPDATE_USER:
-        return payload
+    case UPDATE_USER:
+      Object.keys(payload).forEach(function (key) {
+        state[key] = payload[key];
+      })
+      return state
     default:
       return state
   }

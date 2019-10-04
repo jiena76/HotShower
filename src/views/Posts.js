@@ -3,7 +3,7 @@
 import React from "react";
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchPosts } from '../actions/postActions';
+import { fetchPosts, fetchPostsByTopic } from '../actions/postActions';
 import {
   Container,
   Row,
@@ -22,6 +22,21 @@ import {
 
 
 class Posts extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      topic: this.props.topic
+    }
+  }
+
+  componentWillMount() {
+    if (this.props.topic) {
+      this.props.fetchPostsByTopic(this.props.topic)
+    }
+    else {
+      this.props.fetchPosts();
+    }
+  }
 
   render() {
     return (
@@ -72,4 +87,4 @@ const mapStateToProps = state => ({
   posts: state.posts,
 })
 
-export default connect(mapStateToProps, { fetchPosts })(Posts);
+export default connect(mapStateToProps, { fetchPosts, fetchPostsByTopic })(Posts);

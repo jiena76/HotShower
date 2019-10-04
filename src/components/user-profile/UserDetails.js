@@ -2,11 +2,45 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Card, CardHeader, CardBody, Row, Col, Badge } from "shards-react";
 import { connect } from "react-redux";
+import { db } from '../../utils/firebase';
 
 class UserDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      photoUrl: '',
+      bio: '',
+      email: '',
+      topics: []
+    }
+  }
+
+  componentWillMount() {
+    console.log("props: " + this.props.username)
+    if (!this.props.username) {
+      return;
+    }
+
+    db.collection('users').doc(this.props.username).get()
+    .then(function(doc) {
+      if (doc.exists) {
+        let user = doc.data();
+        this.setState({
+          username: user.username,
+          photoUrl: user.photoUrl,
+          topics: user.topics,
+          bio: user.bio,
+          email: user.email
+        })
+        console.log('data: ' + JSON.stringify(doc.data()))
+      }
+    }.bind(this));
+  }
+
   render() {
     let { userData } = this.props;
-    let { username, photoUrl, bio, email } = this.props.user;
+    let { username, photoUrl, bio, email, topics } = this.state;
     return (
       <Card small className="user-details mb-4">
         <CardHeader className="p-0">
@@ -27,28 +61,28 @@ class UserDetails extends React.Component {
           <ul className="user-details__social user-details__social--primary d-table mx-auto mb-4">
             {userData.social.facebook && (
               <li className="mx-1">
-                <a href={userData.social.facebook}>
+                <a href="https://www.facebook.com/obitola">
                   <i className="fab fa-facebook-f" />
                 </a>
               </li>
             )}
             {userData.social.twitter && (
               <li className="mx-1">
-                <a href={userData.social.twitter}>
+                <a href="https://www.instagram.com/tobiola__">
                   <i className="fab fa-twitter" />
                 </a>
               </li>
             )}
             {userData.social.github && (
               <li className="mx-1">
-                <a href={userData.social.github}>
+                <a href="https://github.com/tobiola">
                   <i className="fab fa-github" />
                 </a>
               </li>
             )}
             {userData.social.slack && (
               <li className="mx-1">
-                <a href={userData.social.slack}>
+                <a href="https://www.instagram.com/tobiola__">
                   <i className="fab fa-slack" />
                 </a>
               </li>
@@ -79,14 +113,14 @@ class UserDetails extends React.Component {
           </div>
           {/* User Tags */}
           <div className="user-details__tags p-4">
-            {this.props.user.topics.map((tag, idx) => (
+            {topics.map((topic, idx) => (
               <Badge
                 pill
                 theme="light"
                 className="text-light text-uppercase mb-2 border mr-1"
                 key={idx}
               >
-                {tag}
+                {topic}
               </Badge>
             ))}
           </div>

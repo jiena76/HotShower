@@ -1,6 +1,7 @@
 import Avatar from 'react-avatar-edit'
 import React from "react";
 import ReactDOM from 'react-dom'
+import { Redirect } from 'react-router-dom';
 import TagsInput from "react-tagsinput";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -47,7 +48,8 @@ class EditUserProfile extends React.Component {
       displayName: user.displayName,
       photoUrl: user.photoUrl,
       bio: user.bio,
-      tags: user.topics
+      tags: user.topics ? user.topics : [],
+      redirectToProfile: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -81,7 +83,12 @@ class EditUserProfile extends React.Component {
       displayName: displayName
     };
 
+    console.log(JSON.stringify(this.props.user))
     this.props.updateUser(user);
+    console.log(JSON.stringify(this.props.user))
+    this.setState({
+      redirectToProfile: false
+    })
   }
 
   onClose() {
@@ -93,7 +100,6 @@ class EditUserProfile extends React.Component {
   }
 
   render() {
-    let { userData } = this.props;
     return (
       <div>
         {/* <Container fluid className="px-0">
