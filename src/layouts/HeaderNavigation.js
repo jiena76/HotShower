@@ -26,7 +26,6 @@ class HeaderNavigation extends React.Component {
               {this.props.children}
               </Col>
             </Row>
-            <MainFooter />
           </Col>
         </Row>
       </Container>

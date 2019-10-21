@@ -39,6 +39,7 @@ export default [
   },
   {
     path: "/t/:topic",
+    private: true,
     layout: HeaderNavigation,
     component: TopicPosts
   },
