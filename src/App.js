@@ -20,7 +20,6 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
 
 class App extends React.Component {
   render() {
-    console.log(localStorage.getItem('uid'))
     return (
       <Router basename={process.env.REACT_APP_BASENAME || ""}>
         <div>
@@ -28,7 +27,7 @@ class App extends React.Component {
             if (route.private) {
               return (
                 <PrivateRoute
-                  isAuthenticated={localStorage.getItem('uid') !== undefined}
+                  isAuthenticated={localStorage.getItem('uid') !== null}
                   key={index}
                   path={route.path}
                   exact={route.exact}
