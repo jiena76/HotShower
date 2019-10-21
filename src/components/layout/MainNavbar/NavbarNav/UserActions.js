@@ -41,18 +41,20 @@ class UserActions extends React.Component {
       return <Redirect to='/'/>
     }
 
+    const { photoUrl, username, displayName } = JSON.parse(localStorage.getItem('user'));
+
     return (
       <NavItem tag={Dropdown} caret toggle={this.toggleUserActions}>
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
           <img
             className="user-avatar rounded-circle mr-2"
-            src={this.props.user.photoUrl}
+            src={photoUrl}
             alt="User Avatar"
           />{" "}
-          <span className="d-none d-md-inline-block">{this.props.user.username}</span>
+          <span className="d-none d-md-inline-block">{displayName}</span>
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>
-          <DropdownItem tag={Link} to={'/u/' + this.props.user.username}>
+          <DropdownItem tag={Link} to={'/u/' + username}>
             <i className="material-icons">&#xE7FD;</i> Profile
           </DropdownItem>
           <DropdownItem tag={Link} to="/edit-profile">

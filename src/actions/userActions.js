@@ -2,44 +2,50 @@ import { REGISTER_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER } from './types';
 import { auth, db, time } from '../utils/firebase';
 
 export const registerUser = (user, password) => dispatch => {
-  auth.createUserWithEmailAndPassword(user.email, password)
-    .then(function (result) {
-      db.collection('users').doc(user.username).set({
-        email: user.email,
-        following: [],
-        followers: [],
-        topics: [],
-        username: user.username,
-        isAuthenticated: true,
-        displayName: user.displayName,
-        photoUrl: user.photoUrl
+  db.collection('users').doc(user.username).get()
+  .then(function(doc) {
+    if (!doc.exists) {
+      auth.createUserWithEmailAndPassword(user.email, password)
+      .then(function (result) {
+        db.collection('users').doc(user.username).set({
+          email: user.email,
+          following: [],
+          followers: [],
+          topics: [],
+          username: user.username,
+          isAuthenticated: true,
+          displayName: user.displayName,
+          photoUrl: user.photoUrl
+        })
+  
+        user.isAuthenticated = true;
+
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('uid', user.username)  
+        auth.onAuthStateChanged(function(user) {
+          if (user) {
+            user.sendEmailVerification().then(function() {
+              // Email sent.
+              console.log("email shouldve sent lmao");
+            }).catch(function(error) {
+              // An error happened.
+            });
+          } else {
+            console.log("try again boi");
+          }
+        });
+  
+        dispatch({
+          type: REGISTER_USER,
+          payload: user
+        })
+  
+      }.bind(dispatch, user))
+      .catch(function (error) {
+        console.log(error);
       })
-
-      user.isAuthenticated = true;
-      localStorage.setItem('user', user.username);
-
-      auth.onAuthStateChanged(function(user) {
-        if (user) {
-          user.sendEmailVerification().then(function() {
-            // Email sent.
-            console.log("email shouldve sent lmao");
-          }).catch(function(error) {
-            // An error happened.
-          });
-        } else {
-          console.log("try again boi");
-        }
-      });
-
-      dispatch({
-        type: REGISTER_USER,
-        payload: user
-      })
-
-    }.bind(dispatch, user))
-    .catch(function (error) {
-      console.log(error);
-    })
+    }
+  }.bind(this))
 };
 
 export const loginUser = (email, password) => dispatch => {
@@ -56,8 +62,9 @@ export const loginUser = (email, password) => dispatch => {
 
             let user = doc.data();
             user.isAuthenticated = true;
-            localStorage.setItem('user', user.username);
 
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('uid', user.username)
             dispatch({
               type: LOGIN_USER,
               payload: user
@@ -70,8 +77,25 @@ export const loginUser = (email, password) => dispatch => {
     })
 };
 
+export const followUser = (userToBeFollowed) => dispatch => {
+  const { following, username } = JSON.parse(localStorage.getItem('user'));
+  if (following.indexOf(userToBeFollowed) !== -1) {
+    return;
+  }
+
+  following.push(userToBeFollowed);
+  db.collection('users').doc(username).set({ following: following }, { merge: true })
+}
+
+export const unfollowUser = (userToBeUnfollowed) => dispatch => {
+  const { following, username } = JSON.parse(localStorage.getItem('user'));
+  if (following.indexOf(userToBeUnfollowed) === -1) {
+    return;
+  }
+}
+
 export const autoLoginUser = () => dispatch => {
-  let username = localStorage.getItem('user');
+  let username = localStorage.getItem('uid');
   if (!username) {
     localStorage.clear();
     console.log('clear');
@@ -88,7 +112,8 @@ export const autoLoginUser = () => dispatch => {
 
       let user = doc.data();
       user.isAuthenticated = true;
-      localStorage.setItem('user', user.username);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('uid', user.username)
 
       dispatch({
         type: LOGIN_USER,

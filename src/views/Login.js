@@ -42,17 +42,22 @@ class Login extends React.Component {
     this.setState({ [id]: value });
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
     const { email, password } = this.state;
     console.log('email: ' + email);
     console.log('password: ' + password);
 
-    this.props.loginUser(email, password);
+    await this.props.loginUser(email, password);
+    if (localStorage.getItem('uid')) {
+      this.setState({
+        redirectToHome: true
+      })
+    }
   }
 
   render() {
-    if (this.props.user.isAuthenticated) {
+    if (this.state.redirectToHome) {
       return <Redirect to="/" />
     }
 

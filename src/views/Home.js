@@ -27,28 +27,22 @@ import DMList from "./DMList";
 class Home extends React.Component {
   /* Main page, contains feed */
   render() {
-    console.log(JSON.stringify(this.props.user));
-
-
-    if (!localStorage.getItem('user')) {
+    if (!localStorage.getItem('uid')) {
       return <Redirect to='/login' />
     }
 
     return (
-    <Container fluid className="main-content-container h-100 px-4">
-      <Row noGutters className="h-100">
-        <Col lg="3" md="3" className="mx-auto mb-auto">
-          <br></br>
+      <Row>
+        <Col lg="4" md="4" className="mx-auto mb-auto">
           <DMList />
         </Col>
-        <Col lg="3" md="5" className="mx-auto mb-auto">
-          <br></br>
-          <NewPost />
-          <br></br>
+        <Col lg="4" md="4" className="mx-auto mb-auto">
           <Posts />
         </Col>
+        <Col lg="4" md="4" className="mx-auto mb-auto">
+          <NewPost />
+        </Col>
       </Row>
-    </Container>
     )
   };
 };
@@ -57,4 +51,4 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, { fetchPosts } )(Home);
+export default connect(mapStateToProps, { fetchPosts })(Home);

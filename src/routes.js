@@ -16,6 +16,7 @@ import Register from "./views/Register";
 import ForgotPassword from "./views/ForgotPassword";
 import ChangePassword from "./views/ChangePassword";
 import Home from "./views/Home";
+import Logout from './views/Logout'
 
 
 export default [
@@ -25,6 +26,10 @@ export default [
     private: true,
     layout: HeaderNavigation,
     component: Home
+  },
+  {
+    path: '/logout',
+    component: Logout
   },
   {
     path: "/u/:username",

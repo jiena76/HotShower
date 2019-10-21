@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, CardHeader, CardBody, Row, Col, Badge } from "shards-react";
+import { Link } from 'react-router-dom';
+import { Card, CardHeader, CardBody, Row, Col, Badge, Button } from "shards-react";
 import { connect } from "react-redux";
 import { db } from '../../utils/firebase';
 
@@ -14,6 +15,8 @@ class UserDetails extends React.Component {
       email: '',
       topics: []
     }
+
+    this.followingButton = this.followingButton.bind(this);
   }
 
   componentWillMount() {
@@ -23,24 +26,60 @@ class UserDetails extends React.Component {
     }
 
     db.collection('users').doc(this.props.username).get()
-    .then(function(doc) {
-      if (doc.exists) {
-        let user = doc.data();
-        this.setState({
-          username: user.username,
-          photoUrl: user.photoUrl,
-          topics: user.topics,
-          bio: user.bio,
-          email: user.email
-        })
-        console.log('data: ' + JSON.stringify(doc.data()))
-      }
-    }.bind(this));
+      .then(function (doc) {
+        if (doc.exists) {
+          let user = doc.data();
+          this.setState({
+            username: user.username,
+            photoUrl: user.photoUrl,
+            topics: user.topics,
+            bio: user.bio,
+            email: user.email,
+            displayName: user.displayName
+          })
+        }
+      }.bind(this));
+  }
+
+  followUser() {
+
+  }
+
+  unfollowUser() {
+
+  }
+
+  followingButton() {
+    const { username } = this.state;
+    const { following } = JSON.parse(localStorage.getItem('user'));
+
+    if (username === localStorage.getItem('uid')) {
+      return <Link 
+      to="/edit-profile"
+      className="btn btn-pill btn-secondary d-table mx-auto mb-3"
+    >Edit Profile</Link>
+    }
+    else if (following.indexOf(username) === -1) {
+      return <Button
+        pill
+        theme="secondary"
+        className="d-table mx-auto mb-3"
+        onClick={this.followUser}
+      >Follow User</Button>
+    }
+    else {
+      return <Button
+        pill
+        theme="secondary"
+        className="d-table mx-auto mb-3"
+        onClick={this.unfollowUser}
+      >Following</Button>
+    }
   }
 
   render() {
     let { userData } = this.props;
-    let { username, photoUrl, bio, email, topics } = this.state;
+    let { username, photoUrl, bio, email, topics, displayName } = this.state;
     return (
       <Card small className="user-details mb-4">
         <CardHeader className="p-0">
@@ -51,13 +90,17 @@ class UserDetails extends React.Component {
         <CardBody className="p-0">
           {/* User Avatar */}
           <div className="user-details__avatar mx-auto">
-            <img src={photoUrl} alt={username} />
+            <img src={photoUrl} alt={displayName} />
           </div>
           {/* User Name */}
-          <h4 className="text-center m-0 mt-2">{username}</h4>
+          <h4 className="text-center m-0 mt-2">{displayName}</h4>
           {/* User Bio */}
           <p className="text-center text-light m-0 mb-2">{bio}</p>
           {/* User Social Icons */}
+          {
+            this.followingButton()
+          }
+          {/*
           <ul className="user-details__social user-details__social--primary d-table mx-auto mb-4">
             {userData.social.facebook && (
               <li className="mx-1">
@@ -88,6 +131,7 @@ class UserDetails extends React.Component {
               </li>
             )}
           </ul>
+          */}
           {/* User Data */}
           <div className="user-details__user-data border-top border-bottom p-4">
             <Row className="mb-3">
@@ -96,18 +140,8 @@ class UserDetails extends React.Component {
                 <span>{email}</span>
               </Col>
               <Col className="w-50">
-                <span>Location</span>
-                <span>{userData.location}</span>
-              </Col>
-            </Row>
-            <Row>
-              <Col className="w-50">
-                <span>Phone</span>
-                <span>{userData.phone}</span>
-              </Col>
-              <Col className="w-50">
-                <span>Account Number</span>
-                <span>{userData.accNumber}</span>
+                <span>Username</span>
+                <span>{username}</span>
               </Col>
             </Row>
           </div>

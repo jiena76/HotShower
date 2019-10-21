@@ -71,7 +71,7 @@ class EditUserProfile extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { email, username, displayName, photoUrl } = this.state;
+    const { email, username, displayName, photoUrl, bio } = this.state;
 
     let user = {
       email: email,
@@ -80,7 +80,8 @@ class EditUserProfile extends React.Component {
       //topics: [],
       username: username,
       //photoUrl: photoUrl,
-      displayName: displayName
+      displayName: displayName,
+      bio: bio
     };
 
     console.log(JSON.stringify(this.props.user))
@@ -203,9 +204,10 @@ class EditUserProfile extends React.Component {
                         <label htmlFor="userBio">Bio</label>
                         <FormTextarea
                           style={{ minHeight: "87px" }}
-                          id="userBio"
+                          id="bio"
+                          type='text'
                           value={this.state.bio}
-                          onChange={() => {}}
+                          onChange={this.handleChange}
                         />
                       </Col>
 
@@ -240,11 +242,18 @@ class EditUserProfile extends React.Component {
                     </Row>
 
                     <Row form className="mx-4">
+                      <Button
+                      size="sm"
+                      theme="danger"
+                      className="ml-auto d-table"
+                      >
+                        Delete Account
+                      </Button>
                     <Button
                     size="sm"
                     theme="accent"
                     type="submit"
-                    className="ml-auto d-table mr-3"
+                    className="ml-2 d-table mr-3"
                   >
                     Save Changes
                   </Button>

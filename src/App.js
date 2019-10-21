@@ -19,51 +19,45 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
 )
 
 class App extends React.Component {
-  componentDidMount() {
-    if (this.props.user.isAuthenticated === false) {
-      this.props.autoLoginUser();
-    }
-  }
-
   render() {
+    console.log(localStorage.getItem('uid'))
     return (
       <Router basename={process.env.REACT_APP_BASENAME || ""}>
-        <HeaderNavigation>
-          <div>
-            {routes.map((route, index) => {
-              if (route.private) {
-                return (
-                  <PrivateRoute
-                    isAuthenticated={localStorage.getItem('user') != null}
-                    key={index}
-                    path={route.path}
-                    exact={route.exact}
-                    component={withTracker(props => {
-                      return (
+        <div>
+          {routes.map((route, index) => {
+            if (route.private) {
+              return (
+                <PrivateRoute
+                  isAuthenticated={localStorage.getItem('uid') !== undefined}
+                  key={index}
+                  path={route.path}
+                  exact={route.exact}
+                  component={withTracker(props => {
+                    return (
+                      <HeaderNavigation>
                         <route.component {...props} />
-                      );
-                    })}
-                  />
-                );
-              }
-              else {
-                return (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    exact={route.exact}
-                    component={withTracker(props => {
-                      return (
-                        <route.component {...props} />
-                      );
-                    })}
-                  />
-                );
-              }
-            })}
-          </div>
-        </HeaderNavigation>
-
+                      </HeaderNavigation>
+                    );
+                  })}
+                />
+              );
+            }
+            else {
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  exact={route.exact}
+                  component={withTracker(props => {
+                    return (
+                      <route.component {...props} />
+                    );
+                  })}
+                />
+              );
+            }
+          })}
+        </div>
       </Router>
     )
   }

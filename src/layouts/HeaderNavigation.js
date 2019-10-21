@@ -9,21 +9,27 @@ import MainFooter from "../components/layout/MainFooter";
 
 import { LAYOUT_TYPES } from "../utils/constants";
 import getHeaderNavbarItems from "../data/header-nav-items";
+import { Breadcrumb, BreadcrumbItem } from 'shards-react'
+import PageTitle from '../components/common/PageTitle';
 import NoLayout from './NoLayout'
 
 class HeaderNavigation extends React.Component {
   render() {
-    if (this.props.user.isAuthenticated) {
+    if (true) {
       return (
         <Container fluid>
-          <Row>
-            <Col tag="main" className="main-content p-0" lg="12" md="12" sm="12">
-              <MainNavbar layout={LAYOUT_TYPES.HEADER_NAVIGATION} />
+        <Row>
+          <Col tag="main" className="main-content p-0" lg="12" md="12" sm="12">
+            <MainNavbar layout={LAYOUT_TYPES.HEADER_NAVIGATION} />
+            <Row>
+              <Col className="p-4" lg="12" md="12" sm="12">
               {this.props.children}
-              <MainFooter />
-            </Col>
-          </Row>
-        </Container>
+              </Col>
+            </Row>
+            <MainFooter />
+          </Col>
+        </Row>
+      </Container>
       )
     }
     else {

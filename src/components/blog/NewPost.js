@@ -42,10 +42,13 @@ class NewPost extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { text, topics } = this.state;
-    this.props.uploadPost(text, topics);
-    this.setState({text: ''});
-    this.setState({topics: []});
-
+    const { username } = JSON.parse(localStorage.getItem('user'))
+    if (text === '') {
+      return;
+    }
+    this.props.uploadPost(text, topics, username);
+    this.setState({ text: '' });
+    this.setState({ topics: [] });
   }
 
   render() {
@@ -60,17 +63,18 @@ class NewPost extends React.Component {
           <Form className="quick-post-form" onSubmit={this.handleSubmit}>
             {/* Body */}
             <FormGroup>
-            <TagsInput
-                value={this.state.topics}
-                onChange={this.handleTopicsChange}
-                placeholder="What's the topic?"
-                />
-            <FormTextarea
+
+              <FormTextarea
                 placeholder="What's on your mind?"
                 onChange={this.handleChange}
                 type="text"
                 id="text"
                 value={this.state.text} />
+              <TagsInput
+                value={this.state.topics}
+                onChange={this.handleTopicsChange}
+                placeholder="What's the topic?"
+              />
             </FormGroup>
 
             {/* Create Draft */}
@@ -102,6 +106,7 @@ NewPost.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  user: state.user,
 })
 
 export default connect(mapStateToProps, { uploadPost })(NewPost);

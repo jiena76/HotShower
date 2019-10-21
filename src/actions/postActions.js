@@ -21,6 +21,7 @@ export const fetchPosts = () => dispatch => {
 };
 
 export const fetchPostsByTopic = (query) => dispatch => {
+  query = query.toLowerCase();
   console.log('query: ' + query)
   db.collection('posts').where('topics', 'array-contains', query).orderBy('createdAt', 'desc').limit(10).get()
     .then(function (snapshot) {
@@ -31,7 +32,6 @@ export const fetchPostsByTopic = (query) => dispatch => {
       let posts = [];
       snapshot.forEach(doc => {
         console.log(doc.data().topics);
-
           posts.push(doc.data());
       })
 
@@ -44,10 +44,15 @@ export const fetchPostsByTopic = (query) => dispatch => {
     }.bind(dispatch));
 };
 
-export const uploadPost = (text, topics) => dispatch => {
+export const uploadPost = (text, topics, user) => dispatch => {
+  topics = topics.map(function (topic) {
+    return topic.toLowerCase();
+  })
+
   let post = {
     text: text,
-    author: localStorage.getItem('user'),
+    author: user.username,
+    authorPic: user.photoUrl,
     createdAt: time.now().toDate(),
     topics: topics,
   };
