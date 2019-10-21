@@ -11,7 +11,7 @@ export const registerUser = (user, password) => dispatch => {
           email: user.email,
           following: [],
           followers: [],
-          topics: [],
+          topics: ["hotshower"],
           username: user.username,
           isAuthenticated: true,
           displayName: user.displayName,
@@ -77,21 +77,42 @@ export const loginUser = (email, password) => dispatch => {
     })
 };
 
-export const followUser = (userToBeFollowed) => dispatch => {
-  const { following, username } = JSON.parse(localStorage.getItem('user'));
+export const followUser = (userToBeFollowed) => async dispatch => {
+  console.log(userToBeFollowed);
+
+  let user = JSON.parse(localStorage.getItem('user'));
+  const { following, username } = user;
   if (following.indexOf(userToBeFollowed) !== -1) {
     return;
   }
 
   following.push(userToBeFollowed);
-  db.collection('users').doc(username).set({ following: following }, { merge: true })
+  user.following = following;
+  localStorage.setItem('user', JSON.stringify(user));
+
+  console.log(following)
+  await db.collection('users').doc(username).set({
+    following: following
+  }, { merge: true })
 }
 
-export const unfollowUser = (userToBeUnfollowed) => dispatch => {
-  const { following, username } = JSON.parse(localStorage.getItem('user'));
-  if (following.indexOf(userToBeUnfollowed) === -1) {
+export const unfollowUser = (userToBeUnfollowed) => async dispatch => {
+  console.log(userToBeUnfollowed);
+  let user = JSON.parse(localStorage.getItem('user'));
+  const { following, username } = user;
+  let index = following.indexOf(userToBeUnfollowed);
+  if (index === -1) {
     return;
   }
+
+  following.splice(index, 1);
+  user.following = following;
+  localStorage.setItem('user', JSON.stringify(user));
+
+  console.log(following)
+  db.collection('users').doc(username).set({
+    following: following
+  }, { merge: true })
 }
 
 export const autoLoginUser = () => dispatch => {

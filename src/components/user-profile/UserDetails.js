@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardBody, Row, Col, Badge, Button } from "shards-react";
 import { connect } from "react-redux";
 import { db } from '../../utils/firebase';
+import { followUser, unfollowUser } from '../../actions/userActions';
 
 class UserDetails extends React.Component {
   constructor(props) {
@@ -13,14 +14,16 @@ class UserDetails extends React.Component {
       photoUrl: '',
       bio: '',
       email: '',
-      topics: []
+      topics: [],
+      isFollowing: false
     }
 
     this.followingButton = this.followingButton.bind(this);
+    this.followUser = this.followUser.bind(this);
+    this.unfollowUser = this.unfollowUser.bind(this);
   }
 
   componentWillMount() {
-    console.log("props: " + this.props.username)
     if (!this.props.username) {
       return;
     }
@@ -37,20 +40,32 @@ class UserDetails extends React.Component {
             email: user.email,
             displayName: user.displayName
           })
+          const { following } = JSON.parse(localStorage.getItem('user'));
+          this.setState({
+            isFollowing: following.indexOf(this.props.username) !== -1
+          })
+          
         }
       }.bind(this));
   }
 
-  followUser() {
 
+  followUser() {
+    this.props.followUser(this.state.username);
+    this.setState({
+      isFollowing: true
+    })
   }
 
   unfollowUser() {
-
+    this.props.unfollowUser(this.state.username);
+    this.setState({
+      isFollowing: false
+    })
   }
 
   followingButton() {
-    const { username } = this.state;
+    const { username, isFollowing } = this.state;
     const { following } = JSON.parse(localStorage.getItem('user'));
 
     if (username === localStorage.getItem('uid')) {
@@ -59,7 +74,7 @@ class UserDetails extends React.Component {
       className="btn btn-pill btn-secondary d-table mx-auto mb-3"
     >Edit Profile</Link>
     }
-    else if (following.indexOf(username) === -1) {
+    else if (!isFollowing) {
       return <Button
         pill
         theme="secondary"
@@ -70,7 +85,7 @@ class UserDetails extends React.Component {
     else {
       return <Button
         pill
-        theme="secondary"
+        theme="primary"
         className="d-table mx-auto mb-3"
         onClick={this.unfollowUser}
       >Following</Button>
@@ -203,4 +218,4 @@ const mapStateToProps = state => ({
   user: state.user
 })
 
-export default connect(mapStateToProps)(UserDetails);
+export default connect(mapStateToProps, { followUser, unfollowUser })(UserDetails);
