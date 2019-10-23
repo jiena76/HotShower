@@ -45,8 +45,6 @@ class Login extends React.Component {
   async handleSubmit(e) {
     e.preventDefault();
     const { email, password } = this.state;
-    console.log('email: ' + email);
-    console.log('password: ' + password);
 
     await this.props.loginUser(email, password);
     if (localStorage.getItem('uid')) {

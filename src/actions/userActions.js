@@ -90,14 +90,12 @@ export const followUser = (userToBeFollowed) => async dispatch => {
   user.following = following;
   localStorage.setItem('user', JSON.stringify(user));
 
-  console.log(following)
   await db.collection('users').doc(username).set({
     following: following
   }, { merge: true })
 }
 
 export const unfollowUser = (userToBeUnfollowed) => async dispatch => {
-  console.log(userToBeUnfollowed);
   let user = JSON.parse(localStorage.getItem('user'));
   const { following, username } = user;
   let index = following.indexOf(userToBeUnfollowed);
@@ -109,7 +107,6 @@ export const unfollowUser = (userToBeUnfollowed) => async dispatch => {
   user.following = following;
   localStorage.setItem('user', JSON.stringify(user));
 
-  console.log(following)
   db.collection('users').doc(username).set({
     following: following
   }, { merge: true })
@@ -119,7 +116,6 @@ export const autoLoginUser = () => dispatch => {
   let username = localStorage.getItem('uid');
   if (!username) {
     localStorage.clear();
-    console.log('clear');
     return;
   }
 
@@ -127,7 +123,6 @@ export const autoLoginUser = () => dispatch => {
     .then(function (doc) {
       if (!doc.exists) {
         localStorage.clear();
-        console.log('clear');
         return;
       }
 
@@ -146,7 +141,6 @@ export const autoLoginUser = () => dispatch => {
 export const logoutUser = () => dispatch => {
   auth.signOut();
   localStorage.clear();
-  console.log('clear');
   let user = {
     isAuthenticated: false
   }
@@ -178,11 +172,20 @@ export const deleteUser = () => dispatch => {
     })
   })
 
-  db.collection('users').doc('user').delete();
+  db.collection('users').doc(user).delete();
 
   auth.currentUser.delete().then(function() {
     console.log('user deleted');
   }).catch(function(error) {
     console.log(error);
+  })
+
+  user = {
+    isAuthenticated: false
+  }
+
+  dispatch({
+    type: LOGOUT_USER,
+    payload: user
   })
 }

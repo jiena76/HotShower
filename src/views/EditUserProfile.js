@@ -98,9 +98,9 @@ class EditUserProfile extends React.Component {
   }
   
   deleteAccount() {
-    deleteUser();
+    this.props.deleteUser();
     this.setState({
-      redirectToHome: true
+      redirectToHome: false //true
     })
   }
 
@@ -319,4 +319,4 @@ const mapStateToProps = state => ({
   user: state.user
 })
 
-export default connect(mapStateToProps, { updateUser })(EditUserProfile);
+export default connect(mapStateToProps, { updateUser, deleteUser })(EditUserProfile);
