@@ -22,7 +22,6 @@ export const fetchPosts = () => dispatch => {
 
 export const fetchPostsByTopic = (query) => dispatch => {
   query = query.toLowerCase();
-  console.log('query: ' + query)
   db.collection('posts').where('topics', 'array-contains', query).orderBy('createdAt', 'desc').limit(10).get()
     .then(function (snapshot) {
       if (snapshot.empty) {
@@ -31,11 +30,8 @@ export const fetchPostsByTopic = (query) => dispatch => {
 
       let posts = [];
       snapshot.forEach(doc => {
-        console.log(doc.data().topics);
           posts.push(doc.data());
       })
-
-      console.log(posts);
 
       dispatch({
         type: FETCH_POSTS,
@@ -44,17 +40,39 @@ export const fetchPostsByTopic = (query) => dispatch => {
     }.bind(dispatch));
 };
 
-export const uploadPost = (text, topics, user) => dispatch => {
+export const likePost = (post) => {
+  const { author, createdAt, text, likes } = post;
+  if (likes.indexOf(localStorage.getItem('uid')) === -1) {
+    likes.push(localStorage.getItem('uid'));
+  }
+  
+  db.collection('posts').where('author', '==', author)
+  .where('createdAt', '==', createdAt)
+  .where('text', '==', text).get()
+  .then(snapshot => {
+    snapshot.forEach(doc => {
+      db.collection('posts').doc(doc.id).set({
+        likes: likes
+      }, { merge: true })
+    })
+  })
+};
+
+export const uploadPost = (text, topics) => dispatch => {
+  let user = JSON.parse(localStorage.getItem('user'))
+
   topics = topics.map(function (topic) {
     return topic.toLowerCase();
   })
 
   let post = {
     text: text,
+    displayName: user.displayName,
     author: user.username,
     authorPic: user.photoUrl,
     createdAt: time.now().toDate(),
     topics: topics,
+    likes: [user.username]
   };
 
   db.collection('posts').add(post);

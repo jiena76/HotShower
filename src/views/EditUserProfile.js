@@ -5,7 +5,9 @@ import { Redirect } from 'react-router-dom';
 import TagsInput from "react-tagsinput";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { confirmAlert } from 'react-confirm-alert';
 import { updateUser } from './../actions/userActions';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import {
   Alert,
@@ -36,7 +38,7 @@ class EditUserProfile extends React.Component {
   constructor(props) {
     super(props);
     // const src =
-    let user = this.props.user;
+    let user = JSON.parse(localStorage.getItem('user'));
 
     this.state = {
       preview: null,
@@ -92,12 +94,28 @@ class EditUserProfile extends React.Component {
     })
   }
 
+  deleteAccount() {
+    confirmAlert({
+      title: 'Delete Account',
+      message: 'Are you sure that you would like to delete your account?',
+      buttons: [
+        {
+          label: 'Agree',
+          //onClick: () => this.submitCode()
+        },
+        {
+          label: 'No'
+        }
+      ]
+    });
+  };
+
   onClose() {
-    this.setState({preview: null})
+    this.setState({ preview: null })
   }
 
   onCrop(preview) {
-    this.setState({preview})
+    this.setState({ preview })
   }
 
   render() {
@@ -126,25 +144,25 @@ class EditUserProfile extends React.Component {
                       <Col lg="8">
                         <Row form>
 
-                        {/* Username */}
-                        <Col md="6" className="form-group">
-                          <label htmlFor="firstName">Username</label>
-                          <FormInput
-                            disabled
-                            id="username"
-                            value={this.state.username}
-                          />
-                        </Col>
+                          {/* Username */}
+                          <Col md="6" className="form-group">
+                            <label htmlFor="firstName">Username</label>
+                            <FormInput
+                              disabled
+                              id="username"
+                              value={this.state.username}
+                            />
+                          </Col>
 
-                        {/* Display Name */}
-                        <Col md="6" className="form-group">
-                          <label htmlFor="firstName">Display Name</label>
-                          <FormInput onChange={this.handleChange}
-                            type="text"
-                            id="displayName"
-                            value={this.state.displayName}
-                          />
-                        </Col>
+                          {/* Display Name */}
+                          <Col md="6" className="form-group">
+                            <label htmlFor="firstName">Display Name</label>
+                            <FormInput onChange={this.handleChange}
+                              type="text"
+                              id="displayName"
+                              value={this.state.displayName}
+                            />
+                          </Col>
 
                           {/* Email Address */}
                           <Col md="6" className="form-group">
@@ -159,7 +177,7 @@ class EditUserProfile extends React.Component {
                                 disabled
                                 id="emailAddress"
                                 value={this.state.email}
-                                onChange={() => {}}
+                                onChange={() => { }}
                               />
                             </InputGroup>
                           </Col>
@@ -243,19 +261,20 @@ class EditUserProfile extends React.Component {
 
                     <Row form className="mx-4">
                       <Button
-                      size="sm"
-                      theme="danger"
-                      className="ml-auto d-table"
+                        size="sm"
+                        theme="danger"
+                        className="ml-auto d-table"
+                        onClick={this.deleteAccount}
                       >
                         Delete Account
                       </Button>
-                    <Button
-                    size="sm"
-                    theme="accent"
-                    type="submit"
-                    className="ml-2 d-table mr-3"
-                  >
-                    Save Changes
+                      <Button
+                        size="sm"
+                        theme="accent"
+                        type="submit"
+                        className="ml-2 d-table mr-3"
+                      >
+                        Save Changes
                   </Button>
                     </Row>
                   </Form>
@@ -281,4 +300,4 @@ const mapStateToProps = state => ({
   user: state.user
 })
 
-export default connect(mapStateToProps, {updateUser})(EditUserProfile);
+export default connect(mapStateToProps, { updateUser })(EditUserProfile);

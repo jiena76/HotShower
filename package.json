@@ -20,6 +20,7 @@
     "react": "^16.6.3",
     "react-avatar-edit": "^0.8.3",
     "react-big-calendar": "^0.20.3",
+    "react-confirm-alert": "^2.4.1",
     "react-dom": "^16.6.3",
     "react-dropzone": "^8.0.1",
     "react-ga": "^2.5.6",

@@ -42,11 +42,10 @@ class NewPost extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { text, topics } = this.state;
-    const { username } = JSON.parse(localStorage.getItem('user'))
     if (text === '') {
       return;
     }
-    this.props.uploadPost(text, topics, username);
+    this.props.uploadPost(text, topics);
     this.setState({ text: '' });
     this.setState({ topics: [] });
   }

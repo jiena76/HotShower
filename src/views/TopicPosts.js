@@ -28,12 +28,11 @@ import Home from './Home';
 class TopicPosts extends React.Component {
   /* Main page, contains feed */
   render() {
-    console.log(JSON.stringify(this.props.user));
-
     return (
     <Container fluid className="main-content-container h-100 px-4">
       <Row noGutters className="h-100">
         <Col lg="3" md="5" className="mx-auto mb-auto">
+          <h3>{this.props.match.params.topic}</h3>
           <br></br>
           <Posts topic={this.props.match.params.topic}/>
         </Col>

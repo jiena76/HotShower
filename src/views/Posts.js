@@ -4,7 +4,7 @@ import React from "react";
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchPosts, fetchPostsByTopic } from '../actions/postActions';
+import { fetchPosts, fetchPostsByTopic, likePost } from '../actions/postActions';
 import {
   Container,
   Row,
@@ -28,9 +28,7 @@ class Posts extends React.Component {
     this.state = {
       topic: this.props.topic
     }
-  }
 
-  componentWillMount() {
     if (this.props.topic) {
       this.props.fetchPostsByTopic(this.props.topic)
     }
@@ -39,12 +37,21 @@ class Posts extends React.Component {
     }
   }
 
+  componentWillUpdate(nextProps) {
+    if (nextProps.topic) {
+      this.props.fetchPostsByTopic(nextProps.topic)
+    }
+    else {
+      this.props.fetchPosts();
+    }
+  }
+
   render() {
-    const { posts } = this.props;
-    return (
+    const { posts } = this.props;    return (
       <div>
         {posts.map((post) => {
-          const { author, authorPic, text } = post;
+          const { author, authorPic, text, likes } = post;
+          const liked = likes.indexOf(localStorage.getItem('uid')) !== -1;
           return (
             /* Main contains Feed */
             <Card small className="h-100 mb-3">
@@ -56,7 +63,7 @@ class Posts extends React.Component {
                     <img className="rounded" src={authorPic} alt={author} />
                   </Col>
                   <Col className="user-teams__info pl-3">
-                    <h5 className="m-0"><Link to={'/u/' + author}> {author}</Link></h5>
+                    <h5 className="m-0"><Link to={'/u/' + author}> {'@' + author}</Link></h5>
                     <h6 className="text-bold">{text}</h6>
                   </Col>
                 </Row>
@@ -64,7 +71,7 @@ class Posts extends React.Component {
               </CardHeader>
               <CardBody className="d-flex flex-column">
                 <Row>
-                  <Col md='12'>
+                  <Col sm='6' md='7' lg='8'>
                 <Form className="quick-post-form">
 
                   {/* Body */}
@@ -87,11 +94,9 @@ class Posts extends React.Component {
                 </Form>
                 
                 </Col>
-                {/*
-                <Col md="4">
-                  <Button theme="danger" pill className="ml-auto">Delete post</Button>
+                <Col sm='6' md="5" lg='4'>
+                  <Button onClick={() => likePost(post)} theme='light' pill className="ml-auto">{likes.length} <span>{liked ? '❤️' : '♡' }</span></Button>
                 </Col>
-                */}
                 </Row>
               </CardBody>
             </Card>
@@ -111,4 +116,4 @@ const mapStateToProps = state => ({
   posts: state.posts,
 })
 
-export default connect(mapStateToProps, { fetchPosts, fetchPostsByTopic })(Posts);
+export default connect(mapStateToProps, { fetchPosts, fetchPostsByTopic, likePost })(Posts);
