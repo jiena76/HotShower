@@ -30,7 +30,7 @@ export const fetchPostsByTopic = (query) => dispatch => {
 
       let posts = [];
       snapshot.forEach(doc => {
-          posts.push(doc.data());
+        posts.push(doc.data());
       })
 
       dispatch({
@@ -45,17 +45,17 @@ export const likePost = (post) => {
   if (likes.indexOf(localStorage.getItem('uid')) === -1) {
     likes.push(localStorage.getItem('uid'));
   }
-  
+
   db.collection('posts').where('author', '==', author)
-  .where('createdAt', '==', createdAt)
-  .where('text', '==', text).get()
-  .then(snapshot => {
-    snapshot.forEach(doc => {
-      db.collection('posts').doc(doc.id).set({
-        likes: likes
-      }, { merge: true })
+    .where('createdAt', '==', createdAt)
+    .where('text', '==', text).get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        db.collection('posts').doc(doc.id).set({
+          likes: likes
+        }, { merge: true })
+      })
     })
-  })
 };
 
 export const uploadPost = (text, topics) => dispatch => {

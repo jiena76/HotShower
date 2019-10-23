@@ -6,7 +6,7 @@ import TagsInput from "react-tagsinput";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { confirmAlert } from 'react-confirm-alert';
-import { updateUser } from './../actions/userActions';
+import { updateUser, deleteUser } from './../actions/userActions';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import {
@@ -51,12 +51,15 @@ class EditUserProfile extends React.Component {
       photoUrl: user.photoUrl,
       bio: user.bio,
       tags: user.topics ? user.topics : [],
-      redirectToProfile: false
+      redirectToProfile: false,
+      redirectToHome: false
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleTagsChange = this.handleTagsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.deleteAccount = this.deleteAccount.bind(this);
+    this.confirmDeleteAccount = this.confirmDeleteAccount.bind(this);
 
     // this.onCrop = this.onCrop.bind(this)
     // this.onClose = this.onClose.bind(this)
@@ -90,18 +93,25 @@ class EditUserProfile extends React.Component {
     this.props.updateUser(user);
     console.log(JSON.stringify(this.props.user))
     this.setState({
-      redirectToProfile: false
+      redirectToProfile: true
+    })
+  }
+  
+  deleteAccount() {
+    deleteUser();
+    this.setState({
+      redirectToHome: true
     })
   }
 
-  deleteAccount() {
+  confirmDeleteAccount() {
     confirmAlert({
       title: 'Delete Account',
       message: 'Are you sure that you would like to delete your account?',
       buttons: [
         {
-          label: 'Agree',
-          //onClick: () => this.submitCode()
+          label: 'Yes',
+          onClick: () => this.deleteAccount()
         },
         {
           label: 'No'
@@ -119,6 +129,15 @@ class EditUserProfile extends React.Component {
   }
 
   render() {
+    const { redirectToHome, redirectToProfile } = this.state;
+    if (redirectToHome) {
+      return <Redirect to='/' />
+    }
+
+    if (redirectToProfile) {
+      return <Redirect to={'/u/' + localStorage.getItem('uid')} />
+    }
+
     return (
       <div>
         {/* <Container fluid className="px-0">
@@ -264,7 +283,7 @@ class EditUserProfile extends React.Component {
                         size="sm"
                         theme="danger"
                         className="ml-auto d-table"
-                        onClick={this.deleteAccount}
+                        onClick={this.confirmDeleteAccount}
                       >
                         Delete Account
                       </Button>

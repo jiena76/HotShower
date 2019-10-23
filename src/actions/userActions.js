@@ -166,3 +166,23 @@ export const updateUser = (user) => dispatch => {
     payload: user
   });
 };
+
+export const deleteUser = () => dispatch => {
+  let user = localStorage.getItem('uid');
+  localStorage.clear();
+
+  db.collection('posts').where('author', '==', user).get()
+  .then(snapshot => {
+    snapshot.forEach(doc => {
+      db.collection('posts').doc(doc.id).delete();
+    })
+  })
+
+  db.collection('users').doc('user').delete();
+
+  auth.currentUser.delete().then(function() {
+    console.log('user deleted');
+  }).catch(function(error) {
+    console.log(error);
+  })
+}
