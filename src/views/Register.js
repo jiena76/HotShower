@@ -31,7 +31,8 @@ class Register extends React.Component {
       confirmPassword: '',
       email: '',
       displayName: '',
-      redirectToLogin: false
+      redirectToLogin: false,
+      errorMessage: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -59,6 +60,14 @@ class Register extends React.Component {
 
     this.props.registerUser(user, password);
     this.setState({ redirectToLogin: true });
+  }
+
+  errorMessageField() {
+    const { errorMessage } = this.state;
+    
+    if (errorMessage) {
+      return <p>{errorMessage}</p>
+    }
   }
 
   render() {
@@ -140,6 +149,8 @@ class Register extends React.Component {
               </Button>
                 </Form>
               </CardBody>
+
+              {this.errorMessageField()}
 
               {/* Social Icons */}
               <CardFooter>

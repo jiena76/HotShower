@@ -76,22 +76,20 @@ class EditUserProfile extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { email, username, displayName, photoUrl, bio } = this.state;
+    const { email, username, displayName, photoUrl, bio, tags } = this.state;
 
     let user = {
       email: email,
       following: [],
       followers: [],
-      //topics: [],
+      topics: tags,
       username: username,
-      //photoUrl: photoUrl,
+      photoUrl: photoUrl,
       displayName: displayName,
       bio: bio
     };
 
-    console.log(JSON.stringify(this.props.user))
     this.props.updateUser(user);
-    console.log(JSON.stringify(this.props.user))
     this.setState({
       redirectToProfile: true
     })
