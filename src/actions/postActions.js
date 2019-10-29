@@ -20,9 +20,17 @@ export const fetchPosts = () => dispatch => {
     });
 };
 
-export const fetchPostsByTopic = (query) => dispatch => {
-  query = query.toLowerCase();
-  db.collection('posts').where('topics', 'array-contains', query).orderBy('createdAt', 'desc').limit(10).get()
+let isRelevantTopic = (topics1, topics2) => {
+  let intersection = topics1.filter(function(topic) {
+    return topics2.indexOf(topic) > -1;
+  });
+
+  return intersection !== undefined;
+}
+
+
+export const fetchPostsByTopics = (topics) => dispatch => {
+  db.collection('posts').orderBy('createdAt', 'desc').limit(100).get()
     .then(function (snapshot) {
       if (snapshot.empty) {
         return;
@@ -37,7 +45,33 @@ export const fetchPostsByTopic = (query) => dispatch => {
         type: FETCH_POSTS,
         payload: posts
       })
-    }.bind(dispatch));
+    });
+};
+
+export const fetchPostsByTopic = (query) => dispatch => {
+  query = query.toLowerCase();
+  let collection = query === 'liked' ? db.collection('posts').where('likes', 'array-contains', localStorage.getItem('uid')) :
+                                       db.collection('posts').where('topics', 'array-contains', query);
+
+  collection.orderBy('createdAt', 'desc').limit(10).get()
+    .then(function (snapshot) {
+      if (snapshot.empty) {
+        return;
+      }
+
+      let posts = [];
+      snapshot.forEach(doc => {
+        posts.push(doc.data());
+      })
+
+      dispatch({
+        type: FETCH_POSTS,
+        payload: posts
+      })
+    }.bind(dispatch))
+    .catch(function(error) {
+      console.log(error)
+    });
 };
 
 export const likePost = (post) => {

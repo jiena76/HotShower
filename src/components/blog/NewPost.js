@@ -9,6 +9,8 @@ import {
   CardHeader,
   CardBody,
   Form,
+  Row,
+  Col,
   FormGroup,
   FormInput,
   FormTextarea,
@@ -51,11 +53,19 @@ class NewPost extends React.Component {
   }
 
   render() {
+    let { text } = this.state;
     return (
       <Card small className="h-100">
         {/* Card Header */}
         <CardHeader className="border-bottom">
-          <h6 className="m-0">{this.props.title}</h6>
+          <Row>
+            <Col>
+              <h6 className="m-0">{this.props.title}</h6>
+            </Col>
+            <Col>
+              <div className='text-right mr-3'>{ 'chars left: ' + (255 - text.length) }</div>
+            </Col>
+          </Row>
         </CardHeader>
 
         <CardBody className="d-flex flex-column">
@@ -67,6 +77,7 @@ class NewPost extends React.Component {
                 placeholder="What's on your mind?"
                 onChange={this.handleChange}
                 type="text"
+                maxLength='255'
                 id="text"
                 value={this.state.text} />
               <TagsInput

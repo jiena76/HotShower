@@ -60,6 +60,9 @@ class UserActions extends React.Component {
           <DropdownItem tag={Link} to="/edit-profile">
             <i className="material-icons">&#xE8B8;</i> Edit Profile
           </DropdownItem>
+          <DropdownItem tag={Link} to="/t/liked">
+            <i className="material-icons">♡</i> Liked Posts
+          </DropdownItem>
           <DropdownItem divider />
           <DropdownItem tag="button" onClick={this.props.logoutUser} className="text-danger">
             <i className="material-icons text-danger">&#xE879;</i> Logout
