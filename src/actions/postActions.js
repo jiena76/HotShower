@@ -2,8 +2,10 @@ import { UPLOAD_POST, FETCH_POSTS } from './types';
 import { db, time } from '../utils/firebase';
 
 export const fetchPosts = () => dispatch => {
+
   db.collection('posts').orderBy('createdAt', 'desc').limit(10).get()
     .then(function (snapshot) {
+
       if (snapshot.empty) {
         return;
       }
@@ -30,11 +32,15 @@ let isRelevantTopic = (topics1, topics2) => {
 
 
 export const fetchPostsByTopics = (topics) => dispatch => {
+  console.log('hot shower')
+
   db.collection('posts').orderBy('createdAt', 'desc').limit(100).get()
     .then(function (snapshot) {
       if (snapshot.empty) {
         return;
       }
+
+      console.log('hot shower')
 
       let posts = [];
       snapshot.forEach(doc => {
@@ -53,11 +59,14 @@ export const fetchPostsByTopic = (query) => dispatch => {
   let collection = query === 'liked' ? db.collection('posts').where('likes', 'array-contains', localStorage.getItem('uid')) :
                                        db.collection('posts').where('topics', 'array-contains', query);
 
+                                       console.log('hot shower')
+
   collection.orderBy('createdAt', 'desc').limit(10).get()
     .then(function (snapshot) {
       if (snapshot.empty) {
         return;
       }
+      console.log('hot shower')
 
       let posts = [];
       snapshot.forEach(doc => {
@@ -79,12 +88,17 @@ export const likePost = (post) => {
   if (likes.indexOf(localStorage.getItem('uid')) === -1) {
     likes.push(localStorage.getItem('uid'));
   }
+  console.log('hot shower')
+
 
   db.collection('posts').where('author', '==', author)
     .where('createdAt', '==', createdAt)
     .where('text', '==', text).get()
     .then(snapshot => {
+      console.log('hot shower')
+
       snapshot.forEach(doc => {
+        console.log('hehe')
         db.collection('posts').doc(doc.id).set({
           likes: likes
         }, { merge: true })
@@ -99,6 +113,9 @@ export const uploadPost = (text, topics) => dispatch => {
     return topic.toLowerCase();
   })
 
+  console.log('hot shower')
+
+
   let post = {
     text: text,
     displayName: user.displayName,
@@ -110,6 +127,8 @@ export const uploadPost = (text, topics) => dispatch => {
   };
 
   db.collection('posts').add(post);
+  console.log('hot shower')
+
 
   dispatch({
     type: UPLOAD_POST,
