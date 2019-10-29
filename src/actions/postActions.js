@@ -26,13 +26,13 @@ let isRelevantTopic = (topics1, topics2) => {
   let intersection = topics1.filter(function(topic) {
     return topics2.indexOf(topic) > -1;
   });
+  console.log('intersection: ' + typeof(intersection));
 
-  return intersection !== undefined;
+  return Object.keys(intersection).length !== 0;
 }
 
 
-export const fetchPostsByTopics = (topics) => dispatch => {
-  console.log('hot shower')
+export const fetchPostsByTopics = () => dispatch => {
 
   db.collection('posts').orderBy('createdAt', 'desc').limit(100).get()
     .then(function (snapshot) {
@@ -44,6 +44,7 @@ export const fetchPostsByTopics = (topics) => dispatch => {
 
       let posts = [];
       snapshot.forEach(doc => {
+        if (isRelevantTopic(JSON.parse(localStorage.getItem('user')).topics, doc.data().topics))
         posts.push(doc.data());
       })
 
@@ -110,10 +111,8 @@ export const uploadPost = (text, topics) => dispatch => {
   let user = JSON.parse(localStorage.getItem('user'))
 
   topics = topics.map(function (topic) {
-    return topic.toLowerCase();
+    return topic.toLowerCase().replace(/\s/g, '');
   })
-
-  console.log('hot shower')
 
 
   let post = {
@@ -127,7 +126,6 @@ export const uploadPost = (text, topics) => dispatch => {
   };
 
   db.collection('posts').add(post);
-  console.log('hot shower')
 
 
   dispatch({
