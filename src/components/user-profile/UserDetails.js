@@ -173,7 +173,7 @@ class UserDetails extends React.Component {
                 <span>Following Topics:</span>
                 <Row className="pl-3 pt-1">
                   {
-                    this.state.topics.map((tag, idx) => (
+                    topics.map((tag, idx) => (
                       <Badge
                         pill
                         theme="light"

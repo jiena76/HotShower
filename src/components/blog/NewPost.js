@@ -14,7 +14,8 @@ import {
   FormGroup,
   FormInput,
   FormTextarea,
-  Button
+  Button,
+  Badge,
 } from "shards-react";
 
 
@@ -25,6 +26,7 @@ class NewPost extends React.Component {
     this.state = {
       text: '',
       topics: [],
+      existingTopics: [],
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -50,6 +52,12 @@ class NewPost extends React.Component {
     this.props.uploadPost(text, topics);
     this.setState({ text: '' });
     this.setState({ topics: [] });
+  }
+
+  componentDidMount(){
+    db.collection('collection').doc('topics').get().then((doc) => 
+      this.setState({ existingTopics: doc.data().topics })
+    );
   }
 
   render() {
@@ -79,12 +87,33 @@ class NewPost extends React.Component {
                 type="text"
                 maxLength='255'
                 id="text"
-                value={this.state.text} />
-              <TagsInput
+                value={this.state.text}
+              />
+              <div className="pt-3">
+                <div className="pb-1">Topics</div>
+                <div>{
+                  this.state.existingTopics.map((topic, idx) => (
+                    <div className="custom-control custom-checkbox">
+                      <input type="checkbox" className="custom-control-input" id={`checkbox ${idx}`} />
+                      <label className="custom-control-label" for={`checkbox ${idx}`}>{topic}</label>
+                    </div>
+                  ))
+                  }</div>
+                  <div className="ml-auto input-group pt-1">
+                    <input placeholder="New Topic" className="form-control" />
+                    <div className="input-group-append">
+                      <button className="px-2 btn btn-white">
+                        <i className="material-icons">add</i>
+                      </button>
+                    </div>
+                  </div>
+              </div>
+              {/* <TagsInput
+                className="rounded border"
                 value={this.state.topics}
                 onChange={this.handleTopicsChange}
                 placeholder="What's the topic?"
-              />
+              /> */}
             </FormGroup>
 
             {/* Create Draft */}
