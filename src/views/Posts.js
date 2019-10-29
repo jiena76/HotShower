@@ -33,11 +33,16 @@ class Posts extends React.Component {
       this.props.fetchPostsByTopic(this.props.topic)
     }
     else {
+      console.log('hehe')
       this.props.fetchPosts();
     }
   }
 
   componentWillUpdate(nextProps) {
+    if (this.props.topic === nextProps.topic) {
+      return;
+    }
+
     if (nextProps.topic) {
       this.props.fetchPostsByTopic(nextProps.topic)
     }

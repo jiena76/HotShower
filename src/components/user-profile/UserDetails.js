@@ -27,6 +27,7 @@ class UserDetails extends React.Component {
     if (!this.props.username) {
       return;
     }
+    console.log('hot shower')
 
     db.collection('users').doc(this.props.username).get()
       .then(function (doc) {
