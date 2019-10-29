@@ -9,6 +9,7 @@ import { followUser, unfollowUser } from '../../actions/userActions';
 class UserDetails extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       username: '',
       photoUrl: '',
@@ -36,9 +37,9 @@ class UserDetails extends React.Component {
           this.setState({
             username: user.username,
             photoUrl: user.photoUrl,
-            topics: user.topics,
             bio: user.bio,
             email: user.email,
+            topics: user.topics,
             displayName: user.displayName
           })
           const { following } = JSON.parse(localStorage.getItem('user'));
@@ -96,6 +97,12 @@ class UserDetails extends React.Component {
   render() {
     let { userData } = this.props;
     let { username, photoUrl, bio, email, topics, displayName } = this.state;
+    // let topicsArray = [];
+    // for(let i = 0; i < this.state.topics.length; i++){
+    //   array.push(
+
+    //   );
+    // }
     return (
       <Card small className="user-details mb-4">
         <CardHeader className="p-0">
@@ -160,9 +167,30 @@ class UserDetails extends React.Component {
                 <span>{username}</span>
               </Col>
             </Row>
+            {/* Following Topics */}
+            <Row className="mb-3">
+              <Col>
+                <span>Following Topics:</span>
+                <Row className="pl-3 pt-1">
+                  {
+                    this.state.topics.map((tag, idx) => (
+                      <Badge
+                        pill
+                        theme="light"
+                        className="text-light text-uppercase mb-0 border mr-1"
+                        key={idx}
+                      ><Link to={'/t/' + tag}>
+                        {tag}
+                        </Link>
+                      </Badge>
+                    ))
+                  }
+                </Row>
+              </Col>
+            </Row>
           </div>
           {/* User Tags */}
-          <div className="user-details__tags p-4">
+          {/* <div className="user-details__tags p-4">
             {topics.map((topic, idx) => (
               <Badge
                 pill
@@ -173,7 +201,7 @@ class UserDetails extends React.Component {
                 {topic}
               </Badge>
             ))}
-          </div>
+          </div> */}
         </CardBody>
       </Card>
     )
