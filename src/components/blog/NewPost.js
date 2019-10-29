@@ -24,7 +24,7 @@ class NewPost extends React.Component {
 
     this.state = {
       text: '',
-      topics: [],
+      topics: ['hotshower'],
     }
 
     this.handleChange = this.handleChange.bind(this);

@@ -4,7 +4,7 @@ import React from "react";
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchPosts, fetchPostsByTopic, likePost } from '../actions/postActions';
+import { fetchPostsByTopics, fetchPostsByTopic, likePost } from '../actions/postActions';
 import {
   Container,
   Row,
@@ -34,7 +34,7 @@ class Posts extends React.Component {
     }
     else {
       console.log('hehe')
-      this.props.fetchPosts();
+      this.props.fetchPostsByTopics();
     }
   }
 
@@ -47,7 +47,7 @@ class Posts extends React.Component {
       this.props.fetchPostsByTopic(nextProps.topic)
     }
     else {
-      this.props.fetchPosts();
+      this.props.fetchPostsByTopics();
     }
   }
 
@@ -121,4 +121,4 @@ const mapStateToProps = state => ({
   posts: state.posts,
 })
 
-export default connect(mapStateToProps, { fetchPosts, fetchPostsByTopic, likePost })(Posts);
+export default connect(mapStateToProps, { fetchPostsByTopics, fetchPostsByTopic, likePost })(Posts);
