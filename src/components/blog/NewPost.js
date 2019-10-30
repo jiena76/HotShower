@@ -17,7 +17,6 @@ import {
   Button
 } from "shards-react";
 
-
 class NewPost extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +24,7 @@ class NewPost extends React.Component {
     this.state = {
       text: '',
       topics: ['hotshower'],
+      invalidText: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -34,7 +34,10 @@ class NewPost extends React.Component {
 
   handleChange(e) {
     const { id, value } = e.target;
-    this.setState({ [id]: value });
+    this.setState({
+      [id]: value,
+      invalidText: false
+    });
   }
 
   handleTopicsChange(topics) {
@@ -44,16 +47,27 @@ class NewPost extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { text, topics } = this.state;
-    if (text === '') {
+    if (text === '' || topics.length === 0) {
+      if (text === '') {
+        this.setState({
+          invalidText: true
+        })
+      }
       return;
     }
+
+    this.setState({
+      invalidText: true
+    })
+
     this.props.uploadPost(text, topics);
     this.setState({ text: '' });
     this.setState({ topics: [] });
   }
 
   render() {
-    let { text } = this.state;
+    let { text, invalidText } = this.state;
+
     return (
       <Card small className="h-100">
         {/* Card Header */}
@@ -74,12 +88,13 @@ class NewPost extends React.Component {
             <FormGroup>
 
               <FormTextarea
-                placeholder="What's on your mind?"
+                placeholder={invalidText ? "Please add text before sending" : "What's on your mind?" }
                 onChange={this.handleChange}
                 type="text"
                 maxLength='255'
                 id="text"
-                value={this.state.text} />
+                value={text} 
+                invalid={invalidText}/>
               <TagsInput
                 value={this.state.topics}
                 onChange={this.handleTopicsChange}

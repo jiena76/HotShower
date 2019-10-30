@@ -170,7 +170,7 @@ class UserDetails extends React.Component {
             {/* Following Topics */}
             <Row className="mb-3">
               <Col>
-                <span>Following Topics:</span>
+                <span>Topics</span>
                 <Row className="pl-3 pt-1">
                   {
                     this.state.topics.map((tag, idx) => (
