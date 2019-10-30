@@ -56,7 +56,7 @@ export const fetchPostsByTopics = () => dispatch => {
 };
 
 export const fetchPostsByTopic = (query) => dispatch => {
-  query = query.toLowerCase();
+  query = query.toLowerCase().replace(/\s/g, '');;
   let collection = query === 'liked' ? db.collection('posts').where('likes', 'array-contains', localStorage.getItem('uid')) :
                                        db.collection('posts').where('topics', 'array-contains', query);
 

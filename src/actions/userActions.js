@@ -171,6 +171,25 @@ export const updateUser = (user) => dispatch => {
   });
 };
 
+export const addTopics = (topics) => dispatch => {
+  console.log(topics)
+  let user = JSON.parse(localStorage.getItem('user'));
+  topics.forEach(function(topic) {
+    topic = topic.toLowerCase().replace(/\s/g, '');
+    if (user.topics.indexOf(topic) === -1) {
+      user.topics.push(topic);
+    }
+  })
+
+  console.log(user)
+
+  db.collection('users').doc(user.username).set(user, { merge: true })
+  dispatch({
+    type: UPDATE_USER,
+    payload: user
+  });
+}
+
 export const deleteUser = () => dispatch => {
   let user = localStorage.getItem('uid');
   localStorage.clear();

@@ -4,6 +4,7 @@ import { db, time } from "../../utils/firebase";
 import PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import { uploadPost } from '../../actions/postActions';
+import { addTopics } from '../../actions/userActions';
 import {
   Card,
   CardHeader,
@@ -11,10 +12,11 @@ import {
   Form,
   Row,
   Col,
+  Button,
   FormGroup,
+  FormCheckbox,
   FormInput,
   FormTextarea,
-  Button,
   Badge,
 } from "shards-react";
 
@@ -24,21 +26,30 @@ class NewPost extends React.Component {
 
     this.state = {
       text: '',
-      topics: ['hotshower'],
+      topicText: '',
+      topics: JSON.parse(localStorage.getItem('user')).topics.map(function (topic) {
+        return {
+          topicName: topic,
+          selected: false
+        }
+      }),
       invalidText: false,
-      userTopics: JSON.parse(localStorage.getItem('user')).topics,
+      invalidTopic: false
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleTopicsChange = this.handleTopicsChange.bind(this);
+    this.toggleTopic = this.toggleTopic.bind(this);
+    this.addTopic = this.addTopic.bind(this);
   }
 
   handleChange(e) {
     const { id, value } = e.target;
     this.setState({
       [id]: value,
-      invalidText: false
+      invalidText: false,
+      invalidTopic: false
     });
   }
 
@@ -49,26 +60,67 @@ class NewPost extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { text, topics } = this.state;
-    if (text === '' || topics.length === 0) {
-      if (text === '') {
-        this.setState({
-          invalidText: true
-        })
-      }
+    if (text === '') {
+      this.setState({
+        invalidText: true
+      })
       return;
     }
 
-    this.setState({
-      invalidText: true
+    let postTopics = [];
+    topics.forEach(function (topic) {
+      const { topicName, selected } = topic;
+        
+      if (selected) {
+        postTopics.push(topicName)
+      }
     })
 
-    this.props.uploadPost(text, topics);
-    this.setState({ text: '' });
-    this.setState({ topics: [] });
+    if (postTopics.length === 0) {
+      // display error
+    }
+
+    this.props.uploadPost(text, postTopics);
+    this.props.addTopics(postTopics);
+    this.setState({
+      text: '',
+      topicText: ''
+    });
+
+  }
+
+  addTopic() {
+    let { topicText, topics } = this.state;
+
+    if (topicText === '') {
+      this.setState({
+        invalidTopic: true
+      })
+      return;
+    }
+
+    topics.push({
+      topicName: topicText,
+      selected: true
+    })
+
+    this.setState({
+      topicText: '',
+      topics: topics
+    })
+  }
+
+  toggleTopic(e, topicIndex) {
+    e.preventDefault();
+    const { topics } = this.state;
+    topics[topicIndex].selected = !topics[topicIndex].selected;
+    this.setState({
+      topics: topics
+    })
   }
 
   render() {
-    let { text, invalidText } = this.state;
+    const { text, invalidText, topics, invalidTopic, topicText } = this.state;
 
     return (
       <Card small className="h-100">
@@ -79,7 +131,7 @@ class NewPost extends React.Component {
               <h6 className="m-0">{this.props.title}</h6>
             </Col>
             <Col>
-              <div className='text-right mr-3'>{ 'chars left: ' + (255 - text.length) }</div>
+              <div className='text-right mr-3'>{'chars left: ' + (255 - text.length)}</div>
             </Col>
           </Row>
         </CardHeader>
@@ -88,33 +140,37 @@ class NewPost extends React.Component {
           <Form className="quick-post-form" onSubmit={this.handleSubmit}>
             {/* Body */}
             <FormGroup>
-
               <FormTextarea
-                placeholder={invalidText ? "Please add text before sending" : "What's on your mind?" }
+                placeholder={invalidText ? "Please add text before sending" : "What's on your mind?"}
                 onChange={this.handleChange}
                 type="text"
                 maxLength='255'
                 id="text"
-                value={text} 
-                invalid={invalidText}/>
+                value={text}
+                invalid={invalidText} />
               <div className="pt-3">
                 <div className="pb-1">Topics</div>
                 <div>{
-                  this.state.userTopics.map((topic, idx) => (
-                    <div className="custom-control custom-checkbox">
-                      <input type="checkbox" className="custom-control-input" id={`checkbox ${idx}`} />
-                      <label className="custom-control-label" for={`checkbox ${idx}`}>{topic}</label>
-                    </div>
-                  ))
-                  }</div>
-                  <div className="ml-auto input-group pt-1">
-                    <input placeholder="New Topic" className="form-control" />
-                    <div className="input-group-append">
-                      <button className="px-2 btn btn-white">
-                        <i className="material-icons">add</i>
-                      </button>
-                    </div>
+                  topics.map((topic, idx) => {
+
+                    const { topicName, selected } = topic;
+                    return (
+                      <FormCheckbox onChange={(e) => { this.toggleTopic(e, idx) }} checked={selected}>{topicName}</FormCheckbox>
+                    )
+                  })
+                }</div>
+                <div className="ml-auto input-group pt-1">
+                  <FormInput placeholder="New Topic"
+                    onChange={this.handleChange}
+                    id='topicText'
+                    value={topicText}
+                    invalid={invalidTopic} />
+                  <div className="input-group-append">
+                    <Button className="px-2 btn btn-white" onClick={this.addTopic}>
+                      <i className="material-icons">add</i>
+                    </Button>
                   </div>
+                </div>
               </div>
               {/* <TagsInput
                 className="rounded border"
@@ -156,4 +212,4 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 
-export default connect(mapStateToProps, { uploadPost })(NewPost);
+export default connect(mapStateToProps, { uploadPost, addTopics })(NewPost);

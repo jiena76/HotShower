@@ -16,6 +16,7 @@ function userReducer(state = initialState, { type, payload }) {
       Object.keys(payload).forEach(function (key) {
         state[key] = payload[key];
       })
+      localStorage.setItem('user', JSON.stringify(state));
       return state
     default:
       return state

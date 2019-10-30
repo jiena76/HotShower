@@ -45,7 +45,7 @@ class DMList extends React.Component {
     return (
       <Card small className="user-teams mb-4">
         <CardHeader className="border-bottom">
-          <h6 className="m-0"> Direct Messeging </h6>
+          <h6 className="m-0"> Direct Messaging </h6>
           <div className="block-handle" />
         </CardHeader>
         <CardBody className="p-0">
