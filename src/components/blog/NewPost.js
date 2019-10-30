@@ -14,7 +14,8 @@ import {
   FormGroup,
   FormInput,
   FormTextarea,
-  Button
+  Button,
+  Badge,
 } from "shards-react";
 
 class NewPost extends React.Component {
@@ -24,7 +25,8 @@ class NewPost extends React.Component {
     this.state = {
       text: '',
       topics: ['hotshower'],
-      invalidText: false
+      invalidText: false,
+      userTopics: JSON.parse(localStorage.getItem('user')).topics,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -95,11 +97,31 @@ class NewPost extends React.Component {
                 id="text"
                 value={text} 
                 invalid={invalidText}/>
-              <TagsInput
+              <div className="pt-3">
+                <div className="pb-1">Topics</div>
+                <div>{
+                  this.state.userTopics.map((topic, idx) => (
+                    <div className="custom-control custom-checkbox">
+                      <input type="checkbox" className="custom-control-input" id={`checkbox ${idx}`} />
+                      <label className="custom-control-label" for={`checkbox ${idx}`}>{topic}</label>
+                    </div>
+                  ))
+                  }</div>
+                  <div className="ml-auto input-group pt-1">
+                    <input placeholder="New Topic" className="form-control" />
+                    <div className="input-group-append">
+                      <button className="px-2 btn btn-white">
+                        <i className="material-icons">add</i>
+                      </button>
+                    </div>
+                  </div>
+              </div>
+              {/* <TagsInput
+                className="rounded border"
                 value={this.state.topics}
                 onChange={this.handleTopicsChange}
                 placeholder="What's the topic?"
-              />
+              /> */}
             </FormGroup>
 
             {/* Create Draft */}
