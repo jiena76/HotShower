@@ -30,7 +30,7 @@ class NewPost extends React.Component {
       topics: JSON.parse(localStorage.getItem('user')).topics.map(function (topic) {
         return {
           topicName: topic,
-          selected: false
+          selected: topic === 'hotshower'
         }
       }),
       invalidText: false,
@@ -100,7 +100,7 @@ class NewPost extends React.Component {
     }
 
     topics.push({
-      topicName: topicText,
+      topicName: topicText.toLowerCase().replace(/\s/g, ''),
       selected: true
     })
 
