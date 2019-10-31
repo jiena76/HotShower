@@ -58,7 +58,8 @@ class Register extends React.Component {
       photoUrl: 'https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE'
     };
 
-    let yeet = this.props.registerUser(user, password);
+    this.props.registerUser(user, password);
+    
     if (localStorage.getItem('user') == 'username_taken') {
         this.setState({errorMessage: 'Username already in use.'})
     }
