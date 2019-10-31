@@ -2,8 +2,6 @@ import { REGISTER_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER } from './types';
 import { auth, db, time } from '../utils/firebase';
 
 export const registerUser = (user, password) => dispatch => {
-  console.log('hot shower')
-
   db.collection('users').doc(user.username).get()
     .then(function (doc) {
       if (!doc.exists) {
@@ -45,19 +43,22 @@ export const registerUser = (user, password) => dispatch => {
           }.bind(dispatch, user))
           .catch(function (error) {
             console.log(error);
+            console.log('email taken')
+            localStorage.setItem('user', 'email_taken');
           })
+      }
+      else {
+          console.log('username taken')
+          localStorage.setItem('user', 'username_taken');
       }
     }.bind(this))
 };
 
 export const loginUser = (email, password) => dispatch => {
-  console.log('yello')
-  console.log('hot shower')
+  console.log('login')
 
   auth.signInWithEmailAndPassword(email, password)
     .then(function (result) {
-      console.log('hot shower')
-
       db.collection('users').where('email', '==', email).get()
         .then(function (snapshot) {
 
@@ -120,14 +121,12 @@ export const unfollowUser = (userToBeUnfollowed) => async dispatch => {
 }
 
 export const autoLoginUser = () => dispatch => {
-  console.log('yeah')
+  console.log('auto logging in')
   let username = localStorage.getItem('uid');
   if (!username) {
     localStorage.clear();
     return;
   }
-
-  console.log('hot shower')
 
   db.collection('users').doc(username).get()
     .then(function (doc) {
@@ -135,8 +134,6 @@ export const autoLoginUser = () => dispatch => {
         localStorage.clear();
         return;
       }
-
-      console.log('hot shower')
 
       let user = doc.data();
       user.isAuthenticated = true;

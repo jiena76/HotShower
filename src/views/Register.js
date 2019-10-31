@@ -24,7 +24,7 @@ import {
 class Register extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       username: '',
       password: '',
@@ -58,13 +58,23 @@ class Register extends React.Component {
       photoUrl: 'https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE'
     };
 
-    this.props.registerUser(user, password);
+    let yeet = this.props.registerUser(user, password);
+    if (localStorage.getItem('user') == 'username_taken') {
+        this.setState({errorMessage: 'Username already in use.'})
+    }
+    else if (localStorage.getItem('user') == 'email_taken') {
+        this.setState({errorMessage: 'Email address already in use.'});
+    }
+    else {
+        this.setState({errorMessage: 'Unknown error occurred.'});
+    }
+
     this.setState({ redirectToLogin: true });
   }
 
   errorMessageField() {
-    const { errorMessage } = this.state;
-    
+    const errorMessage = this.state.errorMessage
+
     if (errorMessage) {
       return <p>{errorMessage}</p>
     }
