@@ -39,6 +39,7 @@ class EditUserProfile extends React.Component {
     super(props);
     // const src =
     let user = JSON.parse(localStorage.getItem('user'));
+    console.log(user)
 
     this.state = {
       preview: null,
@@ -49,7 +50,7 @@ class EditUserProfile extends React.Component {
       username: user.username,
       displayName: user.displayName,
       photoUrl: user.photoUrl,
-      bio: user.bio,
+      bio: user.bio ? user.bio : 'This is my bio',
       tags: user.topics ? user.topics : [],
       redirectToProfile: false,
       redirectToHome: false
@@ -86,7 +87,7 @@ class EditUserProfile extends React.Component {
       username: username,
       photoUrl: photoUrl,
       displayName: displayName,
-      bio: bio
+      bio: bio ? bio : 'This is my bio :)'
     };
 
     this.props.updateUser(user);

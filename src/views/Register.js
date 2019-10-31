@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { registerUser } from '../actions/userActions';
 import {
+  Alert,
   Container,
   Row,
   Col,
@@ -52,7 +53,8 @@ class Register extends React.Component {
       email: email,
       following: [],
       followers: [],
-      topics: [],
+      topics: ['hotshower'],
+      bio: 'This is my bio',
       displayName: displayName,
       username: username,
       photoUrl: 'https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE'
@@ -74,10 +76,14 @@ class Register extends React.Component {
   }
 
   errorMessageField() {
-    const errorMessage = this.state.errorMessage
+    const { errorMessage } = this.state;
 
     if (errorMessage) {
-      return <p>{errorMessage}</p>
+      return (
+      <Alert theme="danger">
+      {errorMessage}
+    </Alert>
+      )
     }
   }
 

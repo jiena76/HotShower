@@ -22,35 +22,40 @@ class UserDetails extends React.Component {
     this.followingButton = this.followingButton.bind(this);
     this.followUser = this.followUser.bind(this);
     this.unfollowUser = this.unfollowUser.bind(this);
+    this.loadData = this.loadData.bind(this);
+
+    this.loadData(this.props.username);
   }
 
-  componentWillMount() {
-    if (!this.props.username) {
+  componentWillUpdate(nextProps) {
+    if (nextProps.username !== this.props.username) {
+      this.loadData(nextProps.username);
+    }
+  }
+
+  loadData(username) {
+    if (!username) {
       return;
     }
-    console.log('hot shower')
 
-    db.collection('users').doc(this.props.username).get()
+    db.collection('users').doc(username).get()
       .then(function (doc) {
         if (doc.exists) {
           let user = doc.data();
+          const { following } = JSON.parse(localStorage.getItem('user'));
+
           this.setState({
             username: user.username,
             photoUrl: user.photoUrl,
             bio: user.bio,
             email: user.email,
             topics: user.topics,
-            displayName: user.displayName
-          })
-          const { following } = JSON.parse(localStorage.getItem('user'));
-          this.setState({
+            displayName: user.displayName,
             isFollowing: following.indexOf(this.props.username) !== -1
           })
-          
         }
       }.bind(this));
   }
-
 
   followUser() {
     this.props.followUser(this.state.username);
@@ -96,13 +101,8 @@ class UserDetails extends React.Component {
 
   render() {
     let { userData } = this.props;
-    let { username, photoUrl, bio, email, topics, displayName } = this.state;
-    // let topicsArray = [];
-    // for(let i = 0; i < this.state.topics.length; i++){
-    //   array.push(
+    const { username, photoUrl, bio, email, topics, displayName } = this.state;
 
-    //   );
-    // }
     return (
       <Card small className="user-details mb-4">
         <CardHeader className="p-0">
