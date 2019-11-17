@@ -1,5 +1,5 @@
 import { UPLOAD_POST, FETCH_POSTS } from './types';
-import { db, time, FieldValue, DocRef } from '../utils/firebase';
+import { db, time, FieldValue } from '../utils/firebase';
 
 export const fetchPosts = () => dispatch => {
 
