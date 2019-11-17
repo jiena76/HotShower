@@ -55,7 +55,7 @@ class Posts extends React.Component {
       <div>
         {posts.map((post) => {
           const { author, authorPic, text, likes } = post;
-          console.log(post);
+          // console.log(post);
           const liked = likes.indexOf(localStorage.getItem('uid')) !== -1;
           return (
             /* Main contains Feed */
@@ -120,6 +120,7 @@ class Posts extends React.Component {
 
 Posts.propTypes = {
   fetchPosts: PropTypes.func.isRequired,
+  deletePost: PropTypes.func.isRequired,
   posts: PropTypes.array.isRequired,
 };
 
@@ -127,4 +128,4 @@ const mapStateToProps = state => ({
   posts: state.posts,
 })
 
-export default connect(mapStateToProps, { fetchPostsByTopics, fetchPostsByTopic, likePost })(Posts);
+export default connect(mapStateToProps, { fetchPostsByTopics, fetchPostsByTopic, likePost, deletePost })(Posts);

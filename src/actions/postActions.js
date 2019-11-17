@@ -1,4 +1,4 @@
-import { UPLOAD_POST, FETCH_POSTS } from './types';
+import { UPLOAD_POST, FETCH_POSTS, DELETE_POST } from './types';
 import { db, time, FieldValue } from '../utils/firebase';
 
 export const fetchPosts = () => dispatch => {
@@ -161,7 +161,7 @@ export const uploadPost = (text, topics) => dispatch => {
 };
 
 // TODO: Deleting a post that have been just added to the timeline causes an error
-export const deletePost = (post) => {
+export const deletePost = (post) => /*dispatch =>*/ {
   let postRef = db.collection('posts').doc(post.docID);
 
   if (post.topics.length === 0){
@@ -190,4 +190,10 @@ export const deletePost = (post) => {
 
   // delete the post
   postRef.delete();
+
+  // TODO: I can't get this to work
+  // dispatch({
+  //   type: DELETE_POST,
+  //   payload: post
+  // })
 };
