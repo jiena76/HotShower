@@ -1,5 +1,5 @@
 import { UPLOAD_POST, FETCH_POSTS } from './types';
-import { db, time } from '../utils/firebase';
+import { db, time, fieldValue } from '../utils/firebase';
 
 export const fetchPosts = () => dispatch => {
 
@@ -123,10 +123,31 @@ export const uploadPost = (text, topics) => dispatch => {
     createdAt: time.now().toDate(),
     topics: topics,
     likes: [user.username]
-  };
+  };  
 
-  db.collection('posts').add(post);
-
+  db.collection('posts').add(post)
+  .then(function(docRef){
+    let docPath = docRef.path;
+    db.collection("collection").doc("topics").get().then(function(doc){
+      let DB_topics = db.collection("collection").doc("topics");
+      let topicsInDB = doc.data().topics;
+      
+      topics.forEach(function(topic) {
+        topic = topic.toLowerCase().replace(/\s/g, '');
+        if (topicsInDB.indexOf(topic) === -1) {
+          DB_topics.update({
+            topics: fieldValue.arrayUnion(topic),
+            [topic]: fieldValue.arrayUnion(docPath)
+          });
+        }
+        else{
+          DB_topics.update({
+            [topic]: fieldValue.arrayUnion(docPath)
+          });
+        }
+      })
+    });
+  });
 
   dispatch({
     type: UPLOAD_POST,

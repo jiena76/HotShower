@@ -170,7 +170,6 @@ export const updateUser = (user) => dispatch => {
 };
 
 export const addTopics = (topics) => dispatch => {
-  console.log(topics)
   let user = JSON.parse(localStorage.getItem('user'));
   topics.forEach(function(topic) {
     topic = topic.toLowerCase().replace(/\s/g, '');
@@ -178,8 +177,6 @@ export const addTopics = (topics) => dispatch => {
       user.topics.push(topic);
     }
   })
-
-  console.log(user)
 
   db.collection('users').doc(user.username).set(user, { merge: true })
   dispatch({
