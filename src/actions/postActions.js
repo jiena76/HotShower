@@ -26,9 +26,13 @@ let isRelevantTopic = (topics1, topics2) => {
   let intersection = topics1.filter(function(topic) {
     return topics2.indexOf(topic) > -1;
   });
-  console.log('intersection: ' + typeof(intersection));
+  // console.log('intersection: ' + typeof(intersection));
 
   return Object.keys(intersection).length !== 0;
+}
+
+let isAuthorUser = (author) => {
+  return author === JSON.parse(localStorage.getItem('user')).username;
 }
 
 
@@ -44,7 +48,8 @@ export const fetchPostsByTopics = () => dispatch => {
 
       let posts = [];
       snapshot.forEach(doc => {
-        if (isRelevantTopic(JSON.parse(localStorage.getItem('user')).topics, doc.data().topics))
+        if (isRelevantTopic(JSON.parse(localStorage.getItem('user')).topics, doc.data().topics)
+            || isAuthorUser(doc.data().author))
         posts.push({...doc.data(), docID: doc.id});
       })
 
@@ -155,29 +160,33 @@ export const uploadPost = (text, topics) => dispatch => {
   })
 };
 
+// TODO: Deleting a post that have been just added to the timeline causes an error
 export const deletePost = (post) => {
   let postRef = db.collection('posts').doc(post.docID);
-  let DB_topics = db.collection("collection").doc("topics");
-  post.topics.forEach(function(topic) {
-    // remove document reference from this topic
-    DB_topics.update({ [topic]: FieldValue.arrayRemove(postRef) })
-    .then(function(){
-      // if no more post under same topic exist,
-      // delete this topic from the collection and topics array
-      DB_topics.get().then(function(doc){
-        console.log(doc.data()[topic]);
-        if(doc.data()[topic].length === 0){
-          DB_topics.update({
-            [topic]: FieldValue.delete(),
-            topics: FieldValue.arrayRemove(topic),
-          });
-        }
+
+  if (post.topics.length === 0){
+    let DB_topics = db.collection("collection").doc("topics");
+    post.topics.forEach(function(topic) {
+      // remove document reference from this topic
+      DB_topics.update({ [topic]: FieldValue.arrayRemove(postRef) })
+      .then(function(){
+        // if no more post under same topic exist,
+        // delete this topic from the collection and topics array
+        DB_topics.get().then(function(doc){
+          console.log(doc.data()[topic]);
+          if(doc.data()[topic].length === 0){
+            DB_topics.update({
+              [topic]: FieldValue.delete(),
+              topics: FieldValue.arrayRemove(topic),
+            });
+          }
+        });
+      })
+      .catch(function(error){
+        console.error("Error while removing this topic: [" + topic + "], ", error);
       });
-    })
-    .catch(function(error){
-      console.error("Error while removing this topic: [" + topic + "], ", error);
     });
-  });
+  }
 
   // delete the post
   postRef.delete();

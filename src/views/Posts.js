@@ -59,7 +59,7 @@ class Posts extends React.Component {
           const liked = likes.indexOf(localStorage.getItem('uid')) !== -1;
           return (
             /* Main contains Feed */
-            <Card small className="h-100 mb-3">
+            <Card small className="h-100 mb-3" key={post.docID}>
               {/* Card Header */}
               <CardHeader className="border-bottom d-flex flex-column">
                 <Row className="px-3">
