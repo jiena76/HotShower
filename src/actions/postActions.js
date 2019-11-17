@@ -155,23 +155,30 @@ export const uploadPost = (text, topics) => dispatch => {
   })
 };
 
-export const deletePost = (docID, topics) => {
-  // let DB_topics = db.collection("collection").doc("topics");
-  // topics.forEach(function(topic) {
-  //   DB_topics.update({ [topic]: FieldValue.arrayRemove(docID) })
-  //   .then();
-  //   if()
-  //   if (topicsInDB.indexOf(topic) === -1) {
-  //     DB_topics.update({
-  //       topics: FieldValue.arrayUnion(topic),
-  //       [topic]: FieldValue.arrayUnion(docPath)
-  //     });
-  //   }
-  //   else{
-  //     DB_topics.update({
-  //       [topic]: FieldValue.delete()
-  //     });
-  // });
+export const deletePost = (post) => {
+  let postRef = db.collection('posts').doc(post.docID);
+  let DB_topics = db.collection("collection").doc("topics");
+  post.topics.forEach(function(topic) {
+    // remove document reference from this topic
+    DB_topics.update({ [topic]: FieldValue.arrayRemove(postRef) })
+    .then(function(){
+      // if no more post under same topic exist,
+      // delete this topic from the collection and topics array
+      DB_topics.get().then(function(doc){
+        console.log(doc.data()[topic]);
+        if(doc.data()[topic].length === 0){
+          DB_topics.update({
+            [topic]: FieldValue.delete(),
+            topics: FieldValue.arrayRemove(topic),
+          });
+        }
+      });
+    })
+    .catch(function(error){
+      console.error("Error while removing this topic: [" + topic + "], ", error);
+    });
+  });
 
-  db.collection('posts').doc(docID).delete();
+  // delete the post
+  postRef.delete();
 };

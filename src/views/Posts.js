@@ -72,7 +72,7 @@ class Posts extends React.Component {
                     <h6 className="text-bold">{text}</h6>
                   </Col>
                   <Col>
-                    <Button onClick={() => deletePost(post.docID, post.topics)}
+                    <Button onClick={() => deletePost(post)}
                             className="px-2 py-1 float-right btn btn-outline-secondary border-0 btn-small">
                       <i className="far fa-trash-alt"></i>
                     </Button>
