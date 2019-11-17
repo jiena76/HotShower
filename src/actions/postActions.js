@@ -127,6 +127,7 @@ export const uploadPost = (text, topics) => dispatch => {
 
   db.collection('posts').add(post)
   .then(function(docRef){
+    // update collections/topics when new post created
     let docPath = docRef.path;
     db.collection("collection").doc("topics").get().then(function(doc){
       let DB_topics = db.collection("collection").doc("topics");
