@@ -161,10 +161,10 @@ export const uploadPost = (text, topics) => dispatch => {
 };
 
 // TODO: Deleting a post that have been just added to the timeline causes an error
-export const deletePost = (post) => /*dispatch =>*/ {
+export const deletePost = (post) => {
   let postRef = db.collection('posts').doc(post.docID);
-
-  if (post.topics.length === 0){
+  console.log("Delete " + post.docID);
+  if (post.topics.length > 0){
     let DB_topics = db.collection("collection").doc("topics");
     post.topics.forEach(function(topic) {
       // remove document reference from this topic
