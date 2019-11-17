@@ -4,7 +4,7 @@ import React from "react";
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchPostsByTopics, fetchPostsByTopic, likePost } from '../actions/postActions';
+import { fetchPostsByTopics, fetchPostsByTopic, likePost, deletePost } from '../actions/postActions';
 import {
   Container,
   Row,
@@ -55,6 +55,7 @@ class Posts extends React.Component {
       <div>
         {posts.map((post) => {
           const { author, authorPic, text, likes } = post;
+          console.log(post);
           const liked = likes.indexOf(localStorage.getItem('uid')) !== -1;
           return (
             /* Main contains Feed */
@@ -69,6 +70,12 @@ class Posts extends React.Component {
                   <Col className="user-teams__info pl-3">
                     <h5 className="m-0"><Link to={'/u/' + author}> {'@' + author}</Link></h5>
                     <h6 className="text-bold">{text}</h6>
+                  </Col>
+                  <Col>
+                    <Button onClick={() => deletePost(post.docID, post.topics)}
+                            className="px-2 py-1 float-right btn btn-outline-secondary border-0 btn-small">
+                      <i className="far fa-trash-alt"></i>
+                    </Button>
                   </Col>
                 </Row>
 

@@ -1,5 +1,5 @@
 import { UPLOAD_POST, FETCH_POSTS } from './types';
-import { db, time, fieldValue } from '../utils/firebase';
+import { db, time, FieldValue, DocRef } from '../utils/firebase';
 
 export const fetchPosts = () => dispatch => {
 
@@ -12,7 +12,7 @@ export const fetchPosts = () => dispatch => {
 
       let posts = [];
       snapshot.forEach(doc => {
-        posts.push(doc.data());
+        posts.push({...doc.data(), docID: doc.id});
       })
 
       dispatch({
@@ -45,7 +45,7 @@ export const fetchPostsByTopics = () => dispatch => {
       let posts = [];
       snapshot.forEach(doc => {
         if (isRelevantTopic(JSON.parse(localStorage.getItem('user')).topics, doc.data().topics))
-        posts.push(doc.data());
+        posts.push({...doc.data(), docID: doc.id});
       })
 
       dispatch({
@@ -71,7 +71,7 @@ export const fetchPostsByTopic = (query) => dispatch => {
 
       let posts = [];
       snapshot.forEach(doc => {
-        posts.push(doc.data());
+        posts.push({...doc.data(), docID: doc.id});
       })
 
       dispatch({
@@ -128,7 +128,6 @@ export const uploadPost = (text, topics) => dispatch => {
   db.collection('posts').add(post)
   .then(function(docRef){
     // update collections/topics when new post created
-    let docPath = docRef.path;
     db.collection("collection").doc("topics").get().then(function(doc){
       let DB_topics = db.collection("collection").doc("topics");
       let topicsInDB = doc.data().topics;
@@ -137,16 +136,16 @@ export const uploadPost = (text, topics) => dispatch => {
         topic = topic.toLowerCase().replace(/\s/g, '');
         if (topicsInDB.indexOf(topic) === -1) {
           DB_topics.update({
-            topics: fieldValue.arrayUnion(topic),
-            [topic]: fieldValue.arrayUnion(docPath)
+            topics: FieldValue.arrayUnion(topic),
+            [topic]: FieldValue.arrayUnion(docRef)
           });
         }
         else{
           DB_topics.update({
-            [topic]: fieldValue.arrayUnion(docPath)
+            [topic]: FieldValue.arrayUnion(docRef)
           });
         }
-      })
+      });
     });
   });
 
@@ -154,4 +153,25 @@ export const uploadPost = (text, topics) => dispatch => {
     type: UPLOAD_POST,
     payload: post
   })
+};
+
+export const deletePost = (docID, topics) => {
+  // let DB_topics = db.collection("collection").doc("topics");
+  // topics.forEach(function(topic) {
+  //   DB_topics.update({ [topic]: FieldValue.arrayRemove(docID) })
+  //   .then();
+  //   if()
+  //   if (topicsInDB.indexOf(topic) === -1) {
+  //     DB_topics.update({
+  //       topics: FieldValue.arrayUnion(topic),
+  //       [topic]: FieldValue.arrayUnion(docPath)
+  //     });
+  //   }
+  //   else{
+  //     DB_topics.update({
+  //       [topic]: FieldValue.delete()
+  //     });
+  // });
+
+  db.collection('posts').doc(docID).delete();
 };
