@@ -9,12 +9,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardFooter,
-  Form,
-  FormGroup,
-  FormInput,
-  FormCheckbox,
-  Button
 } from "shards-react";
 
 class DMList extends React.Component {

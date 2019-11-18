@@ -7,17 +7,8 @@ import { fetchPosts } from '../actions/postActions';
 import { connect } from 'react-redux';
 
 import {
-  Container,
   Row,
   Col,
-  Card,
-  CardBody,
-  CardFooter,
-  Form,
-  FormGroup,
-  FormInput,
-  FormCheckbox,
-  Button
 } from "shards-react";
 
 import NewPost from "./../components/blog/NewPost";

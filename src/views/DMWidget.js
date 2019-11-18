@@ -90,8 +90,6 @@ class DMWidget extends React.Component {
   }
 
   async loadData(username) {
-    console.log('username: ' + username)
-
     if (!username) {
       return;
     }
@@ -112,8 +110,6 @@ class DMWidget extends React.Component {
         return conversationId;
       }.bind(this));
 
-    console.log('conversationId: ' + conversationId)
-
     if (conversationId === '') {
       conversationId = await db.collection('conversations').add({
         participants: [
@@ -126,8 +122,6 @@ class DMWidget extends React.Component {
         return docRef.id
       })
     }
-
-    console.log('conversationId: ' + conversationId)
 
     this.setState({
       conversationId: conversationId

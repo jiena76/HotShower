@@ -4,19 +4,15 @@ import React from "react";
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchPostsByTopics, fetchPostsByTopic, likePost, deletePost } from '../actions/postActions';
+import { fetchPostsByTopics, fetchPostsByTopic, likePost, deletePost, fetchPostsByUser } from '../actions/postActions';
 import {
-  Container,
   Row,
   Col,
   Card,
   CardBody,
   CardHeader,
-  CardFooter,
   Form,
   FormGroup,
-  FormInput,
-  FormCheckbox,
   Button,
   Badge
 } from "shards-react";
@@ -29,11 +25,16 @@ class Posts extends React.Component {
       topic: this.props.topic
     }
 
-    if (this.props.topic) {
-      this.props.fetchPostsByTopic(this.props.topic)
+    const { topic, user, fetchPostsByTopic, fetchPostsByTopics, fetchPostsByUser } = this.props;
+
+    if (topic) {
+      fetchPostsByTopic(topic)
+    }
+    else if (user) {
+      fetchPostsByUser(user)
     }
     else {
-      this.props.fetchPostsByTopics();
+      fetchPostsByTopics();
     }
   }
 
@@ -128,4 +129,4 @@ const mapStateToProps = state => ({
   posts: state.posts,
 })
 
-export default connect(mapStateToProps, { fetchPostsByTopics, fetchPostsByTopic, likePost, deletePost })(Posts);
+export default connect(mapStateToProps, { fetchPostsByTopics, fetchPostsByTopic, likePost, deletePost, fetchPostsByUser })(Posts);

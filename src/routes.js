@@ -1,11 +1,4 @@
-import React from "react";
-import { Redirect, Route } from "react-router-dom";
-import { auth } from "./utils/firebase";
-import { connect } from 'react-redux';
-import { logoutUser } from './actions/userActions';
-
-// Layout Types
-import { DefaultLayout, HeaderNavigation, IconSidebar, NoLayout } from "./layouts";
+import { HeaderNavigation, NoLayout } from "./layouts";
 
 // Route Views
 import UserProfile from "./views/UserProfile";
@@ -13,8 +6,6 @@ import EditUserProfile from "./views/EditUserProfile";
 import TopicPosts from './views/TopicPosts';
 import Login from "./views/Login";
 import Register from "./views/Register";
-import ForgotPassword from "./views/ForgotPassword";
-import ChangePassword from "./views/ChangePassword";
 import Home from "./views/Home";
 import Logout from './views/Logout'
 
