@@ -1,8 +1,7 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
-import { combineReducers, createStore } from 'redux';
+import { Redirect } from "react-router-dom";
 import { fetchPosts } from '../actions/postActions';
 import { connect } from 'react-redux';
 

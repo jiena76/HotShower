@@ -1,5 +1,5 @@
 import { REGISTER_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER } from './types';
-import { auth, db, time } from '../utils/firebase';
+import { auth, db } from '../utils/firebase';
 
 export const registerUser = (user, password) => dispatch => {
   db.collection('users').doc(user.username).get()

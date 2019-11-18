@@ -1,7 +1,6 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
 import React from "react";
-import { auth, db } from "../utils/firebase";
 import { Redirect, Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -17,7 +16,6 @@ import {
   Form,
   FormGroup,
   FormInput,
-  FormCheckbox,
   Button
 } from "shards-react";
 
@@ -62,10 +60,10 @@ class Register extends React.Component {
 
     this.props.registerUser(user, password);
     
-    if (localStorage.getItem('user') == 'username_taken') {
+    if (localStorage.getItem('user') === 'username_taken') {
         this.setState({errorMessage: 'Username already in use.'})
     }
-    else if (localStorage.getItem('user') == 'email_taken') {
+    else if (localStorage.getItem('user') === 'email_taken') {
         this.setState({errorMessage: 'Email address already in use.'});
     }
     else {

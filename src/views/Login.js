@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import { auth, db } from "../utils/firebase";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { loginUser } from '../actions/userActions';
@@ -14,7 +13,6 @@ import {
   Card,
   CardBody,
   CardFooter,
-  CardTitle,
   Form,
   FormGroup,
   FormInput,

@@ -1,7 +1,6 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
 import React from "react";
-import { Link } from "react-router-dom";
 import { db, time } from "../utils/firebase";
 import { connect } from "react-redux";
 import {
@@ -12,10 +11,7 @@ import {
   CardBody,
   CardHeader,
   CardFooter,
-  Form,
-  FormGroup,
   FormInput,
-  FormCheckbox,
   Button
 } from "shards-react";
 

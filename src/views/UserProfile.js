@@ -1,11 +1,9 @@
 import React from "react";
 import { Container, Row, Col } from "shards-react";
-import { combineReducers, createStore } from 'redux';
 import { fetchPostsByUser } from "../actions/postActions"
 import { connect } from 'react-redux';
 
 import UserDetails from "./../components/user-profile/UserDetails";
-import DMList from "./DMList";
 import DMWidget from "./DMWidget";
 import Posts from "./Posts";
 

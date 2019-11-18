@@ -73,7 +73,6 @@ class UserDetails extends React.Component {
 
   followingButton() {
     const { username, isFollowing } = this.state;
-    const { following } = JSON.parse(localStorage.getItem('user'));
 
     if (username === localStorage.getItem('uid')) {
       return <Link 

@@ -1,6 +1,4 @@
 import React from "react";
-import TagsInput from "react-tagsinput";
-import { db, time } from "../../utils/firebase";
 import PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import { uploadPost } from '../../actions/postActions';
@@ -17,7 +15,6 @@ import {
   FormCheckbox,
   FormInput,
   FormTextarea,
-  Badge,
 } from "shards-react";
 
 class NewPost extends React.Component {
