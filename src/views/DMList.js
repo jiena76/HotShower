@@ -51,15 +51,17 @@ class DMList extends React.Component {
         <CardBody className="p-0">
           <Container fluid>
             {this.state.inbox.map((user, index) => (
-              <Row className="px-3" key={index}>
-                <Col lg="12" sm="1" className="user-teams__image my-auto p-0">
-                  <img className="rounded" src={user.image} alt={user.username} />
-                </Col>
-                <Col className="user-teams__info pl-3">
-                  <h6 className="m-0">{user.username}</h6>
-                  <span className="text-light">{user.messagePreview}</span>
-                </Col>
-              </Row>
+              <Link to='/u/tobi'>
+                <Row className="px-3" key={index}>
+                  <Col lg="12" sm="1" className="user-teams__image my-auto p-0">
+                    <img className="rounded" src={user.image} alt={user.username} />
+                  </Col>
+                  <Col className="user-teams__info pl-3">
+                    <h6 className="m-0">{user.username}</h6>
+                    <span className="text-light">{user.messagePreview}</span>
+                  </Col>
+                </Row>
+              </Link>
             ))}
           </Container>
         </CardBody>
