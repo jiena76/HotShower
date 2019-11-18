@@ -2,6 +2,8 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import { db, time } from "../utils/firebase";
+import { connect } from "react-redux";
 import {
   Container,
   Row,
@@ -22,49 +24,35 @@ class DMWidget extends React.Component {
     super(props);
 
     this.state = {
-      messageText: "hello",
+      messageText: "",
       invalidMessage: false,
       messages: [
         {
-          sender: "youngsik",
-          message: "yeetdog"
-        },
-        {
-          sender: "jeremy",
-          message: "yeatdog"
-        },
-        {
-          sender: "Jieun",
-          message: "yotedog"
+          sender: "Hello",
+          message: "loading messages..."
         }
-      ]
+      ],
+      conversationId: "",
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.loadData = this.loadData.bind(this);
+    this.refresh = this.refresh.bind(this);
 
     this.loadData(this.props.username);
   }
 
-  sendMessage() {
-    let { messageText, messages } = this.state;
-
-    if (messageText === '') {
-      this.setState({
-        invalidMessage: true
-      })
-      return;
-    }
-  
-    messages.push({
-      sender: localStorage.getItem('uid'),
-      message: messageText
-    })
-
+  refresh() {
     this.setState({
-      messages: messages,
-      messageText: ''
+      messages: [
+        {
+          sender: "Hello",
+          message: "loading messages..."
+        }
+      ],
     })
+    this.loadData(this.props.username);
   }
 
   componentWillUpdate(nextProps) {
@@ -73,29 +61,93 @@ class DMWidget extends React.Component {
     }
   }
 
-  loadData(username) {
+  sendMessage() {
+    let { messageText, messages, conversationId } = this.state;
+
+    if (messageText === '' || conversationId === '') {
+      this.setState({
+        invalidMessage: true
+      })
+      return;
+    }
+
+    messages.push({
+      sender: localStorage.getItem('uid'),
+      message: messageText
+    })
+
+    db.collection('messages').add({
+      conversationId: conversationId,
+      sender: localStorage.getItem('uid'),
+      message: messageText,
+      sentAt: time.now().toDate()
+    })
+
+    this.setState({
+      messages: messages,
+      messageText: ''
+    })
+  }
+
+  async loadData(username) {
+    console.log('username: ' + username)
+
     if (!username) {
       return;
     }
-    /*
-        db.collection('users').doc(username).get()
-          .then(function (doc) {
-            if (doc.exists) {
-              let user = doc.data();
-              const { following } = JSON.parse(localStorage.getItem('user'));
-    
-              this.setState({
-                username: user.username,
-                photoUrl: user.photoUrl,
-                bio: user.bio,
-                email: user.email,
-                topics: user.topics,
-                displayName: user.displayName,
-                isFollowing: following.indexOf(this.props.username) !== -1
-              })
-            }
-          }.bind(this));
-          */
+
+    let conversationId = await db.collection('conversations')
+      .where("participants", "array-contains", username).get()
+      .then(function (snapshot) {
+        let conversationId = '';
+
+        snapshot.forEach((doc) => {
+          if (doc.data().participants.indexOf(localStorage.getItem('uid')) !== -1) {
+            conversationId = doc.id;
+          }
+        })
+
+
+
+        return conversationId;
+      }.bind(this));
+
+    console.log('conversationId: ' + conversationId)
+
+    if (conversationId === '') {
+      conversationId = await db.collection('conversations').add({
+        participants: [
+          username,
+          localStorage.getItem('uid')
+        ], 
+        conversationPreview: "Tobi: yeattttt"
+      })
+      .then(function(docRef) {
+        return docRef.id
+      })
+    }
+
+    console.log('conversationId: ' + conversationId)
+
+    this.setState({
+      conversationId: conversationId
+    })
+
+    db.collection('messages')
+      .where("conversationId", "==", conversationId)
+      .orderBy('sentAt', 'asc').get()
+      .then(function (snapshot) {
+        let messages = [];
+        snapshot.forEach(function (doc) {
+          if (doc.exists) {
+            messages.push(doc.data());
+          }
+        })
+
+        this.setState({
+          messages: messages
+        })
+      }.bind(this))
   }
 
   handleChange(e) {
@@ -112,7 +164,18 @@ class DMWidget extends React.Component {
     return (
       <Card small className="user-teams mb-4">
         <CardHeader className="border-bottom">
-          <h6 className="m-0"> Conversation </h6>
+          <Row>
+            <Col md="9">
+              <h6 className="m-0"> Conversation </h6>
+
+            </Col>
+            <Col md="3">
+              <Button className="px-2 btn btn-white" onClick={this.refresh}>
+                <i className="material-icons">refresh</i>
+              </Button>
+            </Col>
+          </Row>
+
         </CardHeader>
         <CardBody className="pt-3 px-0">
           <Container fluid>
@@ -147,5 +210,8 @@ class DMWidget extends React.Component {
   }
 };
 
+const mapStateToProps = state => ({
+  user: state.user
+})
 
-export default DMWidget;
+export default connect(mapStateToProps, {})(DMWidget);

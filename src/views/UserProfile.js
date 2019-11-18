@@ -7,6 +7,15 @@ import DMList from "./DMList";
 import DMWidget from "./DMWidget";
 
 class UserProfile extends React.Component {
+  getDMWidget() {
+    if (this.props.match.params.username !== localStorage.getItem('uid')) {
+      return <Col md="4"><DMWidget username={this.props.match.params.username} /></Col>
+    }
+    else {
+      return <div></div>
+    }
+  }
+
   render() {
     return (
       <Container fluid className="main-content-container px-4">
@@ -14,9 +23,8 @@ class UserProfile extends React.Component {
           <Col className="mx-auto" md="8">
             <UserDetails username={this.props.match.params.username} />
           </Col>
-          <Col md="4">
-            <DMWidget user={this.props.match.params.username} />
-          </Col>
+          
+            { this.getDMWidget() }
         </Row>
       </Container>
     )
