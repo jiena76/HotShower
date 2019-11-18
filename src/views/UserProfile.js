@@ -33,7 +33,7 @@ class UserProfile extends React.Component {
           {this.getDMWidget()}
         </Row>
         <Row>
-          <Col className="mx-auto" >
+          <Col className="mx-auto" md="4" >
             <Posts user={this.props.match.params.username}/>
           </Col>
         </Row>
