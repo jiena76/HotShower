@@ -195,6 +195,13 @@ export const deleteUser = () => dispatch => {
       db.collection('posts').doc(doc.id).delete();
     })
   })
+  
+  db.collection('conversations').where('participants', 'array-contains', user).get()
+  .then(snapshot => {
+    snapshot.forEach(doc => {
+      db.collection('conversations').doc(doc.id).delete();
+    })
+  })
 
   db.collection('users').doc(user).delete();
 

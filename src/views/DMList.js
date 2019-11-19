@@ -45,7 +45,7 @@ class DMList extends React.Component {
         <CardBody className="p-0">
           <Container fluid>
             {this.state.inbox.map((user, index) => (
-              <Link to='/u/tobi'>
+              <Link to={'/u/' + user.username}>
                 <Row className="px-3" key={index}>
                   <Col lg="12" sm="1" className="user-teams__image my-auto p-0">
                     <img className="rounded" src={user.image} alt={user.username} />
