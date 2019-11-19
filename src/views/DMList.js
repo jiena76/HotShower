@@ -15,6 +15,7 @@ class DMList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      following: JSON.parse(localStorage.getItem('user')).following,
       inbox: [
         {
           image: "https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE",
@@ -44,15 +45,15 @@ class DMList extends React.Component {
         </CardHeader>
         <CardBody className="p-0">
           <Container fluid>
-            {this.state.inbox.map((user, index) => (
-              <Link to={'/u/' + user.username}>
+            {this.state.following.map((user, index) => (
+              <Link to={'/u/' + user}>
                 <Row className="px-3" key={index}>
                   <Col lg="12" sm="1" className="user-teams__image my-auto p-0">
-                    <img className="rounded" src={user.image} alt={user.username} />
+                    <img className="rounded" src={"https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE"} alt={user} />
                   </Col>
                   <Col className="user-teams__info pl-3">
-                    <h6 className="m-0">{user.username}</h6>
-                    <span className="text-light">{user.messagePreview}</span>
+                    <h6 className="m-0">{user}</h6>
+                    <span className="text-light">{"Click to message " + user}</span>
                   </Col>
                 </Row>
               </Link>
