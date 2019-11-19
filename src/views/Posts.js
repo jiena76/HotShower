@@ -25,6 +25,21 @@ class Posts extends React.Component {
       topic: this.props.topic
     }
 
+    this.fetchPosts = this.fetchPosts.bind(this);
+    this.fetchPosts();
+  }
+
+  componentWillUpdate(nextProps) {
+    const { topic, user } = this.props;
+    if ((topic === nextProps.topic) && (user === nextProps.user)) {
+      return;
+    }
+
+    this.props = nextProps;
+    this.fetchPosts();
+  }
+
+  fetchPosts() {
     const { topic, user, fetchPostsByTopic, fetchPostsByTopics, fetchPostsByUser } = this.props;
 
     if (topic) {
@@ -35,19 +50,6 @@ class Posts extends React.Component {
     }
     else {
       fetchPostsByTopics();
-    }
-  }
-
-  componentWillUpdate(nextProps) {
-    if (this.props.topic === nextProps.topic) {
-      return;
-    }
-
-    if (nextProps.topic) {
-      this.props.fetchPostsByTopic(nextProps.topic)
-    }
-    else {
-      this.props.fetchPostsByTopics();
     }
   }
 

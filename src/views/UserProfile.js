@@ -16,7 +16,11 @@ class UserProfile extends React.Component {
 
   getDMWidget() {
     if (this.props.match.params.username !== localStorage.getItem('uid')) {
-      return <Col md="4"><DMWidget username={this.props.match.params.username} /></Col>
+      return (
+        <Col className="mx-auto" md="4">
+          <DMWidget username={this.props.match.params.username} />
+        </Col>
+      )
     }
     else {
       return <div></div>
@@ -27,15 +31,17 @@ class UserProfile extends React.Component {
     return (
       <Container fluid className="main-content-container px-4">
         <Row className="mt-4">
-          <Col className="mx-auto" md="8">
+          <Col className="mx-auto" md="4">
             <UserDetails username={this.props.match.params.username} />
+          </Col>
+          <Col className="mx-auto" md="4">
+            <Posts user={this.props.match.params.username} />
           </Col>
           {this.getDMWidget()}
         </Row>
         <Row>
           <Col className="mx-auto" md="4" >
-            <Posts user={this.props.match.params.username}/>
-          </Col>
+          </Col>Î
         </Row>
       </Container>
     )
