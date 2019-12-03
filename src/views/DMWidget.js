@@ -14,6 +14,7 @@ import {
   FormInput,
   Button
 } from "shards-react";
+import moment from "moment";
 
 class DMWidget extends React.Component {
   constructor(props) {
@@ -76,7 +77,7 @@ class DMWidget extends React.Component {
       conversationId: conversationId,
       sender: localStorage.getItem('uid'),
       message: messageText,
-      sentAt: time.now().toDate()
+      sentAt: time.now()
     })
 
     this.setState({
@@ -171,9 +172,16 @@ class DMWidget extends React.Component {
           <Container fluid>
             {
               messages.map((msg) => {
-                const { sender, message } = msg;
+                const { sender, message, sentAt } = msg;
                 return (
-                  <span><b> {sender + ": "} </b> {message} </span>
+                  <Row noGutters >
+                    <Col sm="3" md="5" lg="4">
+                      {sentAt ? moment.unix(sentAt.seconds).format("MM/DD LT") : ""}
+                    </Col>
+                    <Col>
+                      <span><b> {sender + ": "} </b> {message}</span>
+                    </Col>
+                  </Row>
                 )
               })
             }
