@@ -15,7 +15,10 @@ class UserProfile extends React.Component {
   }
 
   getDMWidget() {
-    if (this.props.match.params.username !== localStorage.getItem('uid')) {
+    const { following } = JSON.parse(localStorage.getItem('user'));
+
+
+    if (this.props.match.params.username !== localStorage.getItem('uid') && following.indexOf(this.props.match.params.username) !== -1) {
       return (
         <Col className="mx-auto" md="4">
           <DMWidget username={this.props.match.params.username} />

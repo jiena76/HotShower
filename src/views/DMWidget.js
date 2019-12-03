@@ -26,7 +26,7 @@ class DMWidget extends React.Component {
       messages: [
         {
           sender: "Hello",
-          message: "loading messages..."
+          message: "loading messages...",
         }
       ],
       conversationId: "",
@@ -45,7 +45,7 @@ class DMWidget extends React.Component {
       messages: [
         {
           sender: "Hello",
-          message: "loading messages..."
+          message: "loading messages...",
         }
       ],
     })
@@ -70,7 +70,7 @@ class DMWidget extends React.Component {
 
     messages.push({
       sender: localStorage.getItem('uid'),
-      message: messageText
+      message: messageText,
     })
 
     db.collection('messages').add({
@@ -172,16 +172,19 @@ class DMWidget extends React.Component {
           <Container fluid>
             {
               messages.map((msg) => {
+                console.log(msg);
+                if (msg.sentAt != null) {
+                  msg.sentAt = msg.sentAt.toDate();
+                  msg.sentAt = msg.sentAt.getMonth() + "/" + msg.sentAt.getDate() + "/" + msg.sentAt.getFullYear();
+                }
                 const { sender, message, sentAt } = msg;
                 return (
-                  <Row noGutters >
-                    <Col sm="3" md="5" lg="4">
-                      {sentAt ? moment.unix(sentAt.seconds).format("MM/DD LT") : ""}
-                    </Col>
-                    <Col>
-                      <span><b> {sender + ": "} </b> {message}</span>
-                    </Col>
-                  </Row>
+                  <p style={{float : 'left'}}>
+                    <b> {sender + ": "} </b> {message}
+                    <span style={{float : 'right'}}>
+                      {sentAt}
+                    </span>
+                  </p>
                 )
               })
             }
