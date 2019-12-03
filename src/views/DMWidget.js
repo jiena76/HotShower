@@ -172,17 +172,13 @@ class DMWidget extends React.Component {
           <Container fluid>
             {
               messages.map((msg) => {
-                console.log(msg);
-                if (msg.sentAt != null) {
-                  msg.sentAt = msg.sentAt.toDate();
-                  msg.sentAt = msg.sentAt.getMonth() + "/" + msg.sentAt.getDate() + "/" + msg.sentAt.getFullYear();
-                }
+                // console.log(msg);
                 const { sender, message, sentAt } = msg;
                 return (
                   <p style={{float : 'left'}}>
                     <b> {sender + ": "} </b> {message}
                     <span style={{float : 'right'}}>
-                      {sentAt}
+                      {sentAt ? moment.unix(sentAt.seconds).format("MM/DD LT") : ""}
                     </span>
                   </p>
                 )
