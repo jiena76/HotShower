@@ -41,7 +41,7 @@ class UserProfile extends React.Component {
         </Row>
         <Row>
           <Col className="mx-auto" md="4" >
-          </Col>Î
+          </Col>
         </Row>
       </Container>
     )
