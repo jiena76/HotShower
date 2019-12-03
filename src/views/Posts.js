@@ -16,6 +16,7 @@ import {
   Button,
   Badge
 } from "shards-react";
+import moment from "moment";
 
 
 class Posts extends React.Component {
@@ -57,7 +58,7 @@ class Posts extends React.Component {
     const { posts } = this.props;    return (
       <div>
         {posts.map((post) => {
-          const { author, authorPic, text, likes } = post;
+          const { author, authorPic, text, likes, createdAt } = post;
           // console.log(post);
           const liked = likes.indexOf(localStorage.getItem('uid')) !== -1;
           return (
@@ -75,6 +76,9 @@ class Posts extends React.Component {
                     <h6 className="text-bold">{text}</h6>
                   </Col>
                   <Col>
+                    <span style={{color: 'silver'}}>
+                      {createdAt ? moment.unix(createdAt.seconds).format("MM/DD LT") : ""}
+                    </span>
                     <Button onClick={() => deletePost(post)}
                             className="px-2 py-1 float-right btn btn-outline-secondary border-0 btn-small">
                       <i className="far fa-trash-alt"></i>
