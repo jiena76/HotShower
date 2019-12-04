@@ -29,7 +29,7 @@ export default class DropdownExample extends React.Component {
           {topic} <i className="fas fa-caret-down"></i>
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem ><Link to={'/t/' + topic}>Go to</Link></DropdownItem>
+          <DropdownItem ><Link className="text-dark" to={'/t/' + topic}>Go to</Link></DropdownItem>
           <DropdownItem >Follow {username}'s {topic}</DropdownItem>
         </DropdownMenu>
       </Dropdown>
