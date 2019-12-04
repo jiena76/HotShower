@@ -18,7 +18,8 @@ class UserDetails extends React.Component {
       email: '',
       topics: [],
       following: [],
-      isFollowing: false
+      isFollowing: false,
+      userTopics: [],
     }
 
     this.followingButton = this.followingButton.bind(this);
@@ -29,7 +30,7 @@ class UserDetails extends React.Component {
     this.loadData(this.props.username);
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps, nextState) {
     if (nextProps.username !== this.props.username) {
       this.loadData(nextProps.username);
     }
@@ -44,7 +45,9 @@ class UserDetails extends React.Component {
       .then(function (doc) {
         if (doc.exists) {
           let user = doc.data();
-          const { following } = JSON.parse(localStorage.getItem('user'));
+          const local_user = JSON.parse(localStorage.getItem('user'));
+          const login_user = local_user.username;
+          const following = local_user.following;
 
           this.setState({
             username: user.username,
@@ -56,6 +59,14 @@ class UserDetails extends React.Component {
             following: user.following,
             isFollowing: following.indexOf(this.props.username) !== -1
           })
+          
+          if(username !== login_user){
+            db.collection("collection").doc(login_user).get().then(function (doc) {
+              if(doc.data()[username]){
+                this.setState({ userTopics: doc.data()[username] });
+              }
+            }.bind(this));
+          }
         }
       }.bind(this));
   }
@@ -105,7 +116,7 @@ class UserDetails extends React.Component {
 
   render() {
     let { userData } = this.props;
-    const { username, photoUrl, bio, email, topics, displayName, following } = this.state;
+    const { username, photoUrl, bio, email, topics, displayName, following, userTopics } = this.state;
     const login_user = JSON.parse(localStorage.getItem('user')).username;
 
     return (
@@ -197,7 +208,7 @@ class UserDetails extends React.Component {
                 <span>Topics</span>
                 <Row className="pl-3 pt-1">
                   { topics.map((tag, idx) => (
-                    <Topic key={idx} topic={tag} username={login_user} author={username} />
+                    <Topic key={idx} topic={tag} username={login_user} author={username} isFollowing={userTopics.indexOf(tag) !== -1} />
                   ), this) }
                 </Row>
               </Col>

@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import { followUserTopic } from "../actions/userActions";
+import { followUserTopic, unfollowUserTopic } from "../actions/userActions";
 import {
   Badge,
-  Button,
   Dropdown,
   DropdownToggle,
   DropdownMenu,
@@ -26,7 +25,8 @@ export default class Topic extends React.Component {
   render() {
     // username: logged-in user
     // author: person the topic belongs to
-    const { idx, topic, username, author } = this.props;
+    const { idx, topic, username, author, isFollowing } = this.props;
+
     if (username === author){
       return (
         <Badge
@@ -45,12 +45,15 @@ export default class Topic extends React.Component {
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem key="go_to"><Link className="text-dark" to={'/t/' + topic}>Go to</Link></DropdownItem>
-          <DropdownItem key="followTopic" onClick={() => followUserTopic(author, topic)}>
-            {/* what if the user is already following the topic from this user */}
-            {/* <Button outline theme="secondary" onClick={followUserTopic(author, topic)} className="border-0">  */}
-            Follow {author}'s {topic}
-            {/* </Button> */}
-          </DropdownItem>
+          {isFollowing ? (
+            <DropdownItem key="unfollowTopic" onClick={() => unfollowUserTopic(author, topic)}>
+              Unfollow {author}'s {topic}
+            </DropdownItem>
+          ) : (
+            <DropdownItem key="followTopic" onClick={() => followUserTopic(author, topic)}>
+              Follow {author}'s {topic}
+            </DropdownItem>
+          )}
         </DropdownMenu>
       </Dropdown>
     );

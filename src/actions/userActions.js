@@ -153,11 +153,9 @@ export const followUserTopic = (author, topic) => {
   const { following, username } = user;
   // user is not following author
   if (following.indexOf(author) === -1) {
-    return;
+    // follow author
+    followUser(author);
   }
-
-  // follow author
-  followUser(author);
 
   topic = topic.toLowerCase().replace(/\s/g, '');
   const DB_following = db.collection("collection").doc(username);
@@ -170,9 +168,40 @@ export const followUserTopic = (author, topic) => {
       });
     }
     // add topic
-    DB_following.update({
-      [author]: FieldValue.arrayUnion(topic)
-    });
+    if(doc.data()[author].indexOf(topic) === -1){
+      DB_following.update({
+        [author]: FieldValue.arrayUnion(topic)
+      });
+    }
+  });
+
+  // dispatch({
+  //   type: UPDATE_USER,
+  //   payload: user
+  // });
+}
+
+export const unfollowUserTopic = (author, topic) => {
+  let user = JSON.parse(localStorage.getItem('user'));
+  const { following, username } = user;
+  // user is not following author
+  if (following.indexOf(author) === -1) {
+    return;
+  }
+
+  topic = topic.toLowerCase().replace(/\s/g, '');
+  const DB_following = db.collection("collection").doc(username);
+  DB_following.get().then(function (doc) {
+    const authorTopics = doc.data()[author];
+    if(!authorTopics)
+      return;
+
+    // remove topic
+    if(doc.data()[author].indexOf(topic) !== -1){
+      DB_following.update({
+        [author]: FieldValue.arrayRemove(topic)
+      });
+    }
   });
 
   // dispatch({

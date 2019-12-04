@@ -59,7 +59,6 @@ export const fetchPostsByUser = (user) => dispatch => {
     });
 };
 
-
 export const fetchPostsByTopics = () => dispatch => {
 
   db.collection('posts').orderBy('createdAt', 'desc').limit(100).get()
@@ -80,6 +79,55 @@ export const fetchPostsByTopics = () => dispatch => {
         payload: posts
       })
     });
+};
+
+// user follows the author and/or topics
+let isRelevant = (postTopics, followingAuthorTopics) => {
+  // user not following the author
+  if(!followingAuthorTopics){
+    return false;
+  }
+  // when user following the author as whole
+  if(followingAuthorTopics.length === 0 || followingAuthorTopics[0] === "all"){
+    return true;
+  }
+
+  let intersection = followingAuthorTopics.filter(function (topic) {
+    return postTopics.indexOf(topic) > -1;
+  });
+  // console.log('intersection: ' + typeof(intersection));
+
+  return Object.keys(intersection).length !== 0;
+}
+
+export const fetchPostsByUserTopics = () => dispatch => {
+
+  db.collection('posts').orderBy('createdAt', 'desc').limit(100).get().then(function (snapshot) {
+    if (snapshot.empty) {
+      return;
+    }
+
+    let posts = [];
+    const { username } = JSON.parse(localStorage.getItem('user'));
+
+    db.collection("collection").doc(username).get().then(function (following) {
+      snapshot.forEach(doc => {
+        const post = doc.data();
+        console.log(post.topics);
+        console.log(following.data()[post.author]);
+        console.log(post);
+        if (isRelevant(post.topics, following.data()[post.author]) || isAuthorUser(post.author)){
+          posts.push({ ...post, docID: doc.id });
+          console.log("^Accepted");
+        }
+      })
+    })
+
+    dispatch({
+      type: FETCH_POSTS,
+      payload: posts
+    })
+  });
 };
 
 export const fetchPostsByTopic = (query) => dispatch => {
