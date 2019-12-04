@@ -42,10 +42,6 @@ class UserProfile extends React.Component {
           </Col>
           {this.getDMWidget()}
         </Row>
-        <Row>
-          <Col className="mx-auto" md="4" >
-          </Col>
-        </Row>
       </Container>
     )
   }
