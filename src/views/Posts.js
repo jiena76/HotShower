@@ -104,7 +104,7 @@ class Posts extends React.Component {
                   {/* Body */}
                   <FormGroup className="m-0">
                     { post.topics.map((tag, idx) => (
-                        <Topic topic={tag} key={idx} username={username} author={author} />
+                        <Topic key={idx} topic={tag} username={username} author={author} />
                     )) }
                   </FormGroup>
                 </Form>
