@@ -5,6 +5,7 @@ import { Card, CardHeader, CardBody, Row, Col, Badge, Button } from "shards-reac
 import { connect } from "react-redux";
 import { db } from '../../utils/firebase';
 import { followUser, unfollowUser } from '../../actions/userActions';
+import Topic from "../../data/Topic";
 
 class UserDetails extends React.Component {
   constructor(props) {
@@ -176,9 +177,8 @@ class UserDetails extends React.Component {
                   {
                     following.map((tag, idx) => (
                       <Badge
-                        pill
-                        theme="light"
-                        className="text-light text-uppercase mb-0 border mr-1"
+                        outline pill
+                        className="text-uppercase border mb-1 mr-1"
                         key={idx}
                       ><Link to={'/u/' + tag}>
                         {tag}
@@ -194,19 +194,9 @@ class UserDetails extends React.Component {
               <Col>
                 <span>Topics</span>
                 <Row className="pl-3 pt-1">
-                  {
-                    topics.map((tag, idx) => (
-                      <Badge
-                        pill
-                        theme="light"
-                        className="text-light text-uppercase mb-0 border mr-1"
-                        key={idx}
-                      ><Link to={'/t/' + tag}>
-                        {tag}
-                        </Link>
-                      </Badge>
-                    ))
-                  }
+                  { topics.map((tag, idx) => (
+                    <Topic topic={tag} index={idx} username={username} />
+                  )) }
                 </Row>
               </Col>
             </Row>

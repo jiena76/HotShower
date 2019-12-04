@@ -113,7 +113,9 @@ class Posts extends React.Component {
                 
                 </Col>
                 <Col sm='6' md="5" lg='4'>
-                  <Button onClick={() => likePost(post)} theme='light' pill className="ml-auto">{likes.length} <span>{liked ? '❤️' : '♡' }</span></Button>
+                  <Button onClick={() => likePost(post)} theme='light' pill className="ml-auto">
+                    {likes.length} <span>{liked ? '❤️' : '♡' }</span>
+                  </Button>
                 </Col>
                 </Row>
               </CardBody>
