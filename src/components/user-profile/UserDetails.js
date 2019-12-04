@@ -197,8 +197,8 @@ class UserDetails extends React.Component {
                 <span>Topics</span>
                 <Row className="pl-3 pt-1">
                   { topics.map((tag, idx) => (
-                    <Topic topic={tag} index={idx} username={login_user} author={username} />
-                  )) }
+                    <Topic key={idx} topic={tag} username={login_user} author={username} />
+                  ), this) }
                 </Row>
               </Col>
             </Row>

@@ -31,9 +31,8 @@ import ProfileBackgroundPhoto from "../components/edit-user-profile/ProfileBackg
 class EditUserProfile extends React.Component {
   constructor(props) {
     super(props);
-    // const src =
+    
     let user = JSON.parse(localStorage.getItem('user'));
-    console.log(user)
 
     this.state = {
       preview: null,
@@ -55,9 +54,6 @@ class EditUserProfile extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteAccount = this.deleteAccount.bind(this);
     this.confirmDeleteAccount = this.confirmDeleteAccount.bind(this);
-
-    // this.onCrop = this.onCrop.bind(this)
-    // this.onClose = this.onClose.bind(this)
   }
 
   handleTagsChange(tags) {

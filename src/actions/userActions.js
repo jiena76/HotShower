@@ -103,14 +103,16 @@ export const followUser = (userToBeFollowed) => async dispatch => {
   localStorage.setItem('user', JSON.stringify(user));
 
   // push to DB: users/:username/following/:userToBeFollowed
-  await db.collection('users').doc(username).set({
-    following: following
-  }, { merge: true })
+  await db.collection('users').doc(username).update({
+    following: FieldValue.arrayUnion(userToBeFollowed)
+  });
+
   // push to DB: collection/:username/:userToBeFollowed
-  await db.collection("collection").doc(username).get().then(function (doc) {
-    let DB_followers = db.collection("collection").doc(username);
-    DB_followers.update({ [userToBeFollowed]: FieldValue.arrayUnion("all") })
-    .catch(function (error) {
+  const DB_following = db.collection("collection").doc(username);
+  await DB_following.get().then(function (doc) {
+    DB_following.update({ 
+      [userToBeFollowed]: FieldValue.arrayUnion("all")
+    }).catch(function (error) {
       console.error("Error while following: [" + userToBeFollowed + "], ", error);
     })
   });
@@ -131,17 +133,52 @@ export const unfollowUser = (userToBeUnfollowed) => async dispatch => {
   localStorage.setItem('user', JSON.stringify(user));
 
   // remove from DB: users/:username/following/:userToBeUnfollowed
-  await db.collection('users').doc(username).set({
-    following: following
-  }, { merge: true })
+  await db.collection('users').doc(username).update({
+    following: FieldValue.arrayRemove(userToBeUnfollowed)
+  });
+
   // remove from DB: collection/:username/:userToBeUnfollowed
-  let DB_followers = db.collection("collection").doc(username);
-  await db.collection("collection").doc(username).get().then(function (doc) {
-    DB_followers.update({ [userToBeUnfollowed]: FieldValue.delete() })
-    .catch(function (error) {
+  const DB_following = db.collection("collection").doc(username);
+  await DB_following.get().then(function (doc) {
+    DB_following.update({
+      [userToBeUnfollowed]: FieldValue.delete() 
+    }).catch(function (error) {
       console.error("Error while unfollowing: [" + userToBeUnfollowed + "], ", error);
     })
   });
+}
+
+export const followUserTopic = (author, topic) => {
+  let user = JSON.parse(localStorage.getItem('user'));
+  const { following, username } = user;
+  // user is not following author
+  if (following.indexOf(author) === -1) {
+    return;
+  }
+
+  // follow author
+  followUser(author);
+
+  topic = topic.toLowerCase().replace(/\s/g, '');
+  const DB_following = db.collection("collection").doc(username);
+  DB_following.get().then(function (doc) {
+    const authorTopics = doc.data()[author];
+    // remove "all," default topic when user first gets followed
+    if(authorTopics.length === 1 && authorTopics[0] === "all"){
+      DB_following.update({
+        [author]: FieldValue.arrayRemove("all")
+      });
+    }
+    // add topic
+    DB_following.update({
+      [author]: FieldValue.arrayUnion(topic)
+    });
+  });
+
+  // dispatch({
+  //   type: UPDATE_USER,
+  //   payload: user
+  // });
 }
 
 export const autoLoginUser = () => dispatch => {
