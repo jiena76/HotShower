@@ -16,6 +16,7 @@ class UserDetails extends React.Component {
       bio: '',
       email: '',
       topics: [],
+      following: [],
       isFollowing: false
     }
 
@@ -51,6 +52,7 @@ class UserDetails extends React.Component {
             email: user.email,
             topics: user.topics,
             displayName: user.displayName,
+            following: user.following,
             isFollowing: following.indexOf(this.props.username) !== -1
           })
         }
@@ -100,7 +102,8 @@ class UserDetails extends React.Component {
 
   render() {
     let { userData } = this.props;
-    const { username, photoUrl, bio, email, topics, displayName } = this.state;
+    const { username, photoUrl, bio, email, topics, displayName, following } = this.state;
+    console.log(following);
 
     return (
       <Card small className="user-details mb-4">
@@ -166,8 +169,29 @@ class UserDetails extends React.Component {
                 <span>{username}</span>
               </Col>
             </Row>
-            {/* Following Topics */}
+            {/* Following People */}
             <Row className="mb-3">
+              <Col>
+                <span>Following</span>
+                <Row className="pl-3 pt-1">
+                  {
+                    following.map((tag, idx) => (
+                      <Badge
+                        pill
+                        theme="light"
+                        className="text-light text-uppercase mb-0 border mr-1"
+                        key={idx}
+                      ><Link to={'/u/' + tag}>
+                        {tag}
+                        </Link>
+                      </Badge>
+                    ))
+                  }
+                </Row>
+              </Col>
+            </Row>
+            <Row className="mb-3">
+              {/* Following Topics */}
               <Col>
                 <span>Topics</span>
                 <Row className="pl-3 pt-1">
