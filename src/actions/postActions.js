@@ -61,8 +61,9 @@ export const fetchPostsByTopics = () => dispatch => {
 
   db.collection('posts').orderBy('createdAt', 'desc').limit(100).get()
     .then(function (snapshot) {
+      let posts = [];
+
       if (!snapshot.empty) {
-        let posts = [];
         snapshot.forEach(doc => {
           if (isRelevantTopic(JSON.parse(localStorage.getItem('user')).topics, doc.data().topics)
             || isAuthorUser(doc.data().author))
@@ -135,8 +136,9 @@ export const fetchPostsByTopic = (query) => dispatch => {
 
   collection.orderBy('createdAt', 'desc').limit(10).get()
     .then(function (snapshot) {
+      let posts = [];
+
       if (!snapshot.empty) {
-        let posts = [];
         snapshot.forEach(doc => {
           posts.push({ ...doc.data(), docID: doc.id });
         })
