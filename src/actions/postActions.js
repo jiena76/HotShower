@@ -61,16 +61,14 @@ export const fetchPostsByTopics = () => dispatch => {
 
   db.collection('posts').orderBy('createdAt', 'desc').limit(100).get()
     .then(function (snapshot) {
-      if (snapshot.empty) {
-        return;
+      if (!snapshot.empty) {
+        let posts = [];
+        snapshot.forEach(doc => {
+          if (isRelevantTopic(JSON.parse(localStorage.getItem('user')).topics, doc.data().topics)
+            || isAuthorUser(doc.data().author))
+            posts.push({ ...doc.data(), docID: doc.id });
+        })
       }
-
-      let posts = [];
-      snapshot.forEach(doc => {
-        if (isRelevantTopic(JSON.parse(localStorage.getItem('user')).topics, doc.data().topics)
-          || isAuthorUser(doc.data().author))
-          posts.push({ ...doc.data(), docID: doc.id });
-      })
 
       dispatch({
         type: FETCH_POSTS,
