@@ -52,7 +52,7 @@ export const registerUser = (user, password) => dispatch => {
           console.log('username taken')
           localStorage.setItem('user', 'username_taken');
       }
-    }.bind(this))
+    })
 };
 
 export const loginUser = (email, password) => dispatch => {
@@ -145,7 +145,7 @@ export const autoLoginUser = () => dispatch => {
         type: LOGIN_USER,
         payload: user
       })
-    }.bind(dispatch));
+    });
 };
 
 export const logoutUser = () => dispatch => {
