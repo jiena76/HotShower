@@ -169,7 +169,7 @@ class UserDetails extends React.Component {
               </Col>
             </Row>
             {/* Following People */}
-            <Row className="mb-3">
+            {/* <Row className="mb-3">
               <Col>
                 <span>Following</span>
                 <Row className="pl-3 pt-1">
@@ -188,9 +188,9 @@ class UserDetails extends React.Component {
                   }
                 </Row>
               </Col>
-            </Row>
+            </Row> */}
+            {/* Following Topics */}
             <Row className="mb-3">
-              {/* Following Topics */}
               <Col>
                 <span>Topics</span>
                 <Row className="pl-3 pt-1">

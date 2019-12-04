@@ -1,5 +1,5 @@
 import { REGISTER_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER } from './types';
-import { auth, db } from '../utils/firebase';
+import { auth, db, FieldValue } from '../utils/firebase';
 
 export const registerUser = (user, password) => dispatch => {
   db.collection('users').doc(user.username).get()
@@ -88,37 +88,60 @@ export const loginUser = (email, password) => dispatch => {
 
 export const followUser = (userToBeFollowed) => async dispatch => {
   console.log(userToBeFollowed);
-
+  
   let user = JSON.parse(localStorage.getItem('user'));
   const { following, username } = user;
+
+  // user already followed
   if (following.indexOf(userToBeFollowed) !== -1) {
     return;
   }
 
+  // push to local
   following.push(userToBeFollowed);
   user.following = following;
   localStorage.setItem('user', JSON.stringify(user));
 
+  // push to DB: users/:username/following/:userToBeFollowed
   await db.collection('users').doc(username).set({
     following: following
   }, { merge: true })
+  // push to DB: collection/:username/:userToBeFollowed
+  await db.collection("collection").doc(username).get().then(function (doc) {
+    let DB_followers = db.collection("collection").doc(username);
+    DB_followers.update({ [userToBeFollowed]: FieldValue.arrayUnion("all") })
+    .catch(function (error) {
+      console.error("Error while following: [" + userToBeFollowed + "], ", error);
+    })
+  });
 }
 
 export const unfollowUser = (userToBeUnfollowed) => async dispatch => {
   let user = JSON.parse(localStorage.getItem('user'));
   const { following, username } = user;
   let index = following.indexOf(userToBeUnfollowed);
+  // already unfollowing user
   if (index === -1) {
     return;
   }
 
+  // remove from local
   following.splice(index, 1);
   user.following = following;
   localStorage.setItem('user', JSON.stringify(user));
 
-  db.collection('users').doc(username).set({
+  // remove from DB: users/:username/following/:userToBeUnfollowed
+  await db.collection('users').doc(username).set({
     following: following
   }, { merge: true })
+  // remove from DB: collection/:username/:userToBeUnfollowed
+  let DB_followers = db.collection("collection").doc(username);
+  await db.collection("collection").doc(username).get().then(function (doc) {
+    DB_followers.update({ [userToBeUnfollowed]: FieldValue.delete() })
+    .catch(function (error) {
+      console.error("Error while unfollowing: [" + userToBeUnfollowed + "], ", error);
+    })
+  });
 }
 
 export const autoLoginUser = () => dispatch => {

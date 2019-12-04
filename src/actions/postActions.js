@@ -156,6 +156,8 @@ export const uploadPost = (text, topics) => dispatch => {
     .then(function (docRef) {
       // update collections/topics when new post created
       db.collection("collection").doc("topics").get().then(function (doc) {
+        // doc = document snapshot
+        // DP_topics = document reference
         let DB_topics = db.collection("collection").doc("topics");
         let topicsInDB = doc.data().topics;
 
