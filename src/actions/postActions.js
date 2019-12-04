@@ -137,21 +137,17 @@ export const fetchPostsByTopic = (query) => dispatch => {
 
   collection.orderBy('createdAt', 'desc').limit(10).get()
     .then(function (snapshot) {
-      if (snapshot.empty) {
-        return;
+      if (!snapshot.empty) {
+        let posts = [];
+        snapshot.forEach(doc => {
+          posts.push({ ...doc.data(), docID: doc.id });
+        })
       }
-      console.log('hot shower')
-
-      let posts = [];
-      snapshot.forEach(doc => {
-        posts.push({ ...doc.data(), docID: doc.id });
-      })
 
       dispatch({
         type: FETCH_POSTS,
         payload: posts
       })
-      
     }.bind(dispatch))
     .catch(function (error) {
       console.log(error)
