@@ -46,7 +46,7 @@ class DMList extends React.Component {
         <CardBody className="p-0">
           <Container fluid>
             {this.state.following.map((user, index) => (
-              <Link to={'/u/' + user}>
+              <Link key={index} to={'/u/' + user}>
                 <Row className="px-3" key={index}>
                   <Col lg="12" sm="1" className="user-teams__image my-auto p-0">
                     <img className="rounded" src={"https://media.licdn.com/dms/image/C5103AQHaon1-WBM-bQ/profile-displayphoto-shrink_100_100/0?e=1575504000&v=beta&t=P6kvQrDxobS1rHLQ7i9fHnLEsNjXVbZR-qjOiBa9SIE"} alt={user} />

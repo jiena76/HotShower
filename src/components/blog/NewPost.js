@@ -152,7 +152,7 @@ class NewPost extends React.Component {
 
                     const { topicName, selected } = topic;
                     return (
-                      <FormCheckbox onChange={(e) => { this.toggleTopic(e, idx) }} checked={selected}>{topicName}</FormCheckbox>
+                      <FormCheckbox key={idx} onChange={(e) => { this.toggleTopic(e, idx) }} checked={selected}>{topicName}</FormCheckbox>
                     )
                   })
                 }</div>

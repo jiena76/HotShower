@@ -104,7 +104,7 @@ class Posts extends React.Component {
                   {/* Body */}
                   <FormGroup className="m-0">
                     { post.topics.map((tag, idx) => (
-                        <Topic topic={tag} index={idx} username={username} author={author} />
+                        <Topic topic={tag} key={idx} username={username} author={author} />
                     )) }
                   </FormGroup>
                 </Form>
@@ -126,7 +126,6 @@ class Posts extends React.Component {
 };
 
 Posts.propTypes = {
-  fetchPosts: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,
   posts: PropTypes.array.isRequired,
 };

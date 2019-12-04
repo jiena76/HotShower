@@ -25,21 +25,20 @@ export default class Topic extends React.Component {
   render() {
     // username: logged-in user
     // author: person the topic belongs to
-    const { idx, topic, username, author, isFollowing } = this.props;
+    const { topic, username, author, isFollowing } = this.props;
 
     if (username === author){
       return (
         <Badge
           outline pill
           className="text-uppercase border mb-1 mr-1"
-          key={idx}
         >
           <Link to={'/t/' + topic}> {topic} </Link>
         </Badge>
       );
     }
     return (
-      <Dropdown open={this.state.open} toggle={this.toggle} key={idx}>
+      <Dropdown open={this.state.open} toggle={this.toggle} >
         <DropdownToggle className="text-uppercase badge badge-pill badge-outline-primary border mb-1 mr-1" >
           {topic} <i className="fas fa-caret-down"></i>
         </DropdownToggle>
