@@ -103,7 +103,6 @@ class UserDetails extends React.Component {
   render() {
     let { userData } = this.props;
     const { username, photoUrl, bio, email, topics, displayName, following } = this.state;
-    console.log(following);
 
     return (
       <Card small className="user-details mb-4">
