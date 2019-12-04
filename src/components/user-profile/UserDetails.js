@@ -79,9 +79,11 @@ class UserDetails extends React.Component {
 
     if (username === localStorage.getItem('uid')) {
       return <Link 
-      to="/edit-profile"
-      className="btn btn-pill btn-secondary d-table mx-auto mb-3"
-    >Edit Profile</Link>
+          to="/edit-profile"
+          className="btn btn-pill btn-secondary d-table mx-auto mb-3"
+        >
+          Edit Profile
+        </Link>
     }
     else if (!isFollowing) {
       return <Button
@@ -104,6 +106,7 @@ class UserDetails extends React.Component {
   render() {
     let { userData } = this.props;
     const { username, photoUrl, bio, email, topics, displayName, following } = this.state;
+    const login_user = JSON.parse(localStorage.getItem('user')).username;
 
     return (
       <Card small className="user-details mb-4">
@@ -180,9 +183,8 @@ class UserDetails extends React.Component {
                         outline pill
                         className="text-uppercase border mb-1 mr-1"
                         key={idx}
-                      ><Link to={'/u/' + tag}>
-                        {tag}
-                        </Link>
+                      >
+                        <Link to={'/u/' + tag}> {tag} </Link>
                       </Badge>
                     ))
                   }
@@ -195,7 +197,7 @@ class UserDetails extends React.Component {
                 <span>Topics</span>
                 <Row className="pl-3 pt-1">
                   { topics.map((tag, idx) => (
-                    <Topic topic={tag} index={idx} username={username} />
+                    <Topic topic={tag} index={idx} username={login_user} author={username} />
                   )) }
                 </Row>
               </Col>

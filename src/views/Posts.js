@@ -14,10 +14,9 @@ import {
   Form,
   FormGroup,
   Button,
-  Badge
 } from "shards-react";
 import moment from "moment";
-
+import Topic from "../data/Topic";
 
 class Posts extends React.Component {
   constructor(props) {
@@ -55,7 +54,9 @@ class Posts extends React.Component {
   }
 
   render() {
-    const { posts } = this.props;    return (
+    const { posts } = this.props;
+    const username = JSON.parse(localStorage.getItem('user')).username;
+    return (
       <div>
         {posts.map((post) => {
           const { author, authorPic, text, likes, createdAt } = post;
@@ -94,20 +95,9 @@ class Posts extends React.Component {
 
                   {/* Body */}
                   <FormGroup className="m-0">
-                    {
-                      post.topics.map((tag, idx) => (
-                        <Badge
-                          pill
-                          theme="light"
-                          className="text-light text-uppercase mb-0 border mr-1"
-                          key={idx}
-                        ><Link to={'/t/' + tag}>
-                          {tag}
-                          </Link>
-                        </Badge>
-                      ))
-                    }
-                    
+                    { post.topics.map((tag, idx) => (
+                        <Topic topic={tag} index={idx} username={username} author={author} />
+                    )) }
                   </FormGroup>
                 </Form>
                 

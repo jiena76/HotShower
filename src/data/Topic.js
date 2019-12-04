@@ -22,7 +22,20 @@ export default class DropdownExample extends React.Component {
   }
 
   render() {
-    const { topic, index, username } = this.props;
+    // username: logged-in user
+    // author: person the topic belongs to
+    const { topic, index, username, author } = this.props;
+    if (username === author){
+      return (
+        <Badge
+          outline pill
+          className="text-uppercase border mb-1 mr-1"
+          key={index}
+        >
+          <Link to={'/t/' + topic}> {topic} </Link>
+        </Badge>
+      );
+    }
     return (
       <Dropdown open={this.state.open} toggle={this.toggle} key={index}>
         <DropdownToggle className="text-uppercase badge badge-pill badge-outline-primary border mb-1 mr-1" >
@@ -30,7 +43,7 @@ export default class DropdownExample extends React.Component {
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem ><Link className="text-dark" to={'/t/' + topic}>Go to</Link></DropdownItem>
-          <DropdownItem >Follow {username}'s {topic}</DropdownItem>
+          <DropdownItem >Follow {author}'s {topic}</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     );
