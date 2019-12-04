@@ -36,21 +36,19 @@ let isAuthorUser = (author) => {
 }
 
 export const fetchPostsByUser = (user) => dispatch => {
-
   db.collection('posts')
     .where('author', '==', user)
     .orderBy('createdAt', 'desc').limit(100).get()
     .then(function (snapshot) {
-      if (snapshot.empty) {
-        return;
-      }
 
       let posts = [];
-      snapshot.forEach(doc => {
-        if (isRelevantTopic(JSON.parse(localStorage.getItem('user')).topics, doc.data().topics)
-          || isAuthorUser(doc.data().author))
-          posts.push({ ...doc.data(), docID: doc.id });
-      })
+      if (!snapshot.empty) {
+        snapshot.forEach(doc => {
+          if (isRelevantTopic(JSON.parse(localStorage.getItem('user')).topics, doc.data().topics)
+            || isAuthorUser(doc.data().author))
+            posts.push({ ...doc.data(), docID: doc.id });
+        })
+      }
 
       dispatch({
         type: FETCH_POSTS,
@@ -153,6 +151,7 @@ export const fetchPostsByTopic = (query) => dispatch => {
         type: FETCH_POSTS,
         payload: posts
       })
+      
     }.bind(dispatch))
     .catch(function (error) {
       console.log(error)

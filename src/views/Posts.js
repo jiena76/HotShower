@@ -57,7 +57,6 @@ class Posts extends React.Component {
     }
     else {
       fetchPostsByTopics();
-      // fetchPostsByUserTopics();
     }
   }
 
