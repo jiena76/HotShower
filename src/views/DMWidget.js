@@ -171,11 +171,11 @@ class DMWidget extends React.Component {
         <CardBody className="pt-3 px-0">
           <Container fluid>
             {
-              messages.map((msg) => {
+              messages.map((msg, idx) => {
                 // console.log(msg);
                 const { sender, message, sentAt } = msg;
                 return (
-                  <p style={{float : 'left'}}>
+                  <p key={idx} style={{float : 'left'}}>
                     <b> {sender + ": "} </b> {message}
                     <span style={{float : 'right'}}>
                       {sentAt ? moment.unix(sentAt.seconds).format("MM/DD LT") : ""}
